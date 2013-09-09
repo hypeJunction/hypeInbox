@@ -76,7 +76,7 @@ foreach ($types as $t => $opts) {
 
 $relationships = elgg_get_config('inbox_user_relationships');
 foreach ($relationships as $r) {
-	$user_relationships_options[$r] = elgg_echo("$r");
+	$user_relationships_options[$r] = $r;
 }
 
 
