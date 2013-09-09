@@ -19,6 +19,13 @@ function hj_inbox_integrated_user_types($hook, $type, $return, $params) {
 		);
 	}
 
+	if (elgg_is_active_plugin('hypeObserver')) {
+		$return['observer'] = array(
+			'validator' => 'hj_inbox_observer_role_validator',
+			'getter' => 'hj_inbox_observer_role_getter_options',
+		);
+	}
+
 	if (elgg_is_active_plugin('roles')) {
 		$roles = roles_get_all_selectable_roles();
 		foreach ($roles as $role) {
@@ -59,6 +66,48 @@ function hj_inbox_approve_role_validator($user, $role_name) {
 function hj_inbox_approve_role_getter_options($role_name) {
 
 	if (!elgg_is_active_plugin('hypeApprove')) {
+		return array();
+	}
+
+	global $INBOX_TABLE_ITERATOR;
+	$INBOX_TABLE_ITERATOR++;
+
+	$table = "inb$INBOX_TABLE_ITERATOR";
+
+	$dbprefix = elgg_get_config('dbprefix');
+	return array(
+		'types' => 'user',
+		'wheres' => array(
+			"EXISTS (SELECT * FROM {$dbprefix}entity_relationships $table WHERE $table.guid_one = e.guid AND $table.relationship = '$role_name')"
+		)
+	);
+}
+
+
+/**
+ * Validate hypeObserver role
+ *
+ * @param ElggUser $user
+ * @param string $role_name
+ * @return boolean
+ */
+function hj_inbox_observer_role_validator($user, $role_name) {
+
+	if (elgg_is_active_plugin('hypeObserver')
+			&& $role_name == 'observer') {
+		return hj_observer_is_observer($user);
+	}
+
+	return false;
+}
+
+/**
+ * Get hypeObserver role getter options
+ * @return array
+ */
+function hj_inbox_observer_role_getter_options($role_name) {
+
+	if (!elgg_is_active_plugin('hypeObserver')) {
 		return array();
 	}
 

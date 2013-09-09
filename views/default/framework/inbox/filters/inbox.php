@@ -24,14 +24,6 @@ $tabs = array(
 $message_types = hj_inbox_get_incoming_message_types($user);
 if ($message_types) {
 	foreach ($message_types as $type) {
-
-		if ($type == HYPEINBOX_NOTIFICATION) {
-			$methods = (array) get_user_notification_settings($user->guid);
-			if (!array_key_exists('site', $methods)) {
-				continue;
-			}
-		}
-		
 		$text = elgg_echo("item:object:message:$type:plural");
 		$count = hj_inbox_count_unread_messages($type, $user);
 		if ($count) {

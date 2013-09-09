@@ -80,8 +80,7 @@ function hj_inbox_get_user_group_relationships() {
 				FROM {$dbprefix}entity_relationships er
 				JOIN {$dbprefix}entities e1 on e1.guid = er.guid_one
 				JOIN {$dbprefix}entities e2 on e2.guid = er.guid_two
-				WHERE (e1.type = 'user' AND e2.type = 'group')
-					OR (e1.type = 'group' AND e2.type = 'user')";
+				WHERE (e1.type = 'user' AND e2.type = 'group')";
 
 	$data = get_data($query);
 
@@ -123,6 +122,7 @@ function hj_inbox_get_userpicker_options($message_type = HYPEINBOX_PRIVATE, $use
 		$sender_type = $policy['sender'];
 		$relationship_type = $policy['relationship'];
 		$inverse_relationship = $policy['inverse_relationship'];
+		$group_relationship = $policy['group_relationship'];
 
 		$validator = $user_types[$sender_type]['validator'];
 		$getter = $user_types[$recipient_type]['getter'];
@@ -146,6 +146,14 @@ function hj_inbox_get_userpicker_options($message_type = HYPEINBOX_PRIVATE, $use
 				$where = "$rel_table.guid_two = $user->guid AND $rel_table.relationship = '$relationship_type'";
 			}
 			$rel++;
+		}
+
+		if ($group_relationship && $group_relationship != 'all') {
+			$options['joins'][] = "JOIN {$dbprefix}entity_relationships ge_rel ON ge_rel.guid_one = $user->guid AND ge_rel.relationship = '$group_relationship'";
+			if ($where) {
+				$where .= " AND ";
+			}
+			$where .= "ge_rel.guid_two IN (SELECT guid_two FROM {$dbprefix}entity_relationships WHERE guid_one = e.guid AND relationship = 'member')";
 		}
 
 		if ($recipient_type != 'all') {
@@ -237,6 +245,13 @@ function hj_inbox_get_incoming_message_types($user = null) {
 
 	foreach ($message_types as $type => $options) {
 
+		if ($type == HYPEINBOX_NOTIFICATION) {
+			$methods = (array) get_user_notification_settings($user->guid);
+			if (!array_key_exists('site', $methods)) {
+				continue;
+			}
+		}
+
 		$policies = $options['policy'];
 		if (!$policies) {
 			$return[] = $type;
@@ -293,17 +308,22 @@ function hj_inbox_get_outgoing_message_types($user = null) {
 			continue;
 		}
 
+		$getter_options = hj_inbox_get_userpicker_options($type, $user);
+		$getter_options['count'] = true;
+
+		$valid_recipients_count = elgg_get_entities($getter_options);
+
 		foreach ($policies as $policy) {
 
 			$sender_type = $policy['sender'];
 
-			if ($sender_type == 'all') {
+			if ($sender_type == 'all' && $valid_recipients_count) {
 				$return[] = $type;
 				break;
 			}
 
 			$validator = $user_types[$sender_type]['validator'];
-			if ($validator && is_callable($validator) && call_user_func($validator, $user, $sender_type)) {
+			if ($validator && is_callable($validator) && call_user_func($validator, $user, $sender_type) && $valid_recipients_count) {
 				$return[] = $type;
 				break;
 			}
@@ -411,7 +431,7 @@ function hj_inbox_prepare_form_vars($recipient_guids = null, $message_type = HYP
 function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $message = '', $message_type = '', array $params = array()) {
 
 	$ia = elgg_set_ignore_access();
-	
+
 	if (!is_array($recipient_guids)) {
 		$recipient_guids = array($recipient_guids);
 	}
@@ -461,7 +481,7 @@ function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $m
 	$message_sent->msgHash = $message_hash;
 
 	$message_sent->save();
-	
+
 	if ($attachments) {
 		$count = count($attachments['name']);
 		for ($i = 0; $i < $count; $i++) {
@@ -474,7 +494,7 @@ function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $m
 			$file = new ElggFile();
 			$file->container_guid = $message_sent->guid;
 			$file->title = $name;
-			$file->access_id = (int)$acl_id;
+			$file->access_id = (int) $acl_id;
 
 			$prefix = "file/";
 			$filestorename = elgg_strtolower(time() . $name);
@@ -591,7 +611,7 @@ function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $m
 
 		$message_to->msgType = $message_type;
 		$message_to->msgHash = $message_hash;
-		
+
 		if ($message_to->save()) {
 			$success++;
 

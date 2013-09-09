@@ -66,13 +66,11 @@ if (is_array($recipient_guids)) {
 	));
 }
 
+$body .= (elgg_in_context('inbox-reply')) ? '<div class="hidden">' : '<div>';
+$body .= '<label>' . elgg_echo("messages:to") . '</label>';
 $body .= $recipients;
-if (!elgg_in_context('inbox-reply')) {
-	$body .= '<div>';
-	$body .= '<label>' . elgg_echo("messages:to") . '</label>';
-	$body .= $conversation;
-	$body .= '</div>';
-}
+$body .= $conversation;
+$body .= '</div>';
 
 if (!$entity) {
 	$body .= '<div>';

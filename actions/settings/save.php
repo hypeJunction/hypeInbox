@@ -49,7 +49,8 @@ foreach ($message_types as $name => $options) {
 				'sender' => $options['policy']['sender'][$i],
 				'recipient' => $options['policy']['recipient'][$i],
 				'relationship' => $options['policy']['relationship'][$i],
-				'inverse_relationship' => $options['policy']['inverse_relationship'][$i]
+				'inverse_relationship' => $options['policy']['inverse_relationship'][$i],
+				'group_relationship' => $options['policy']['group_relationship'][$i],
 			);
 		}
 	}

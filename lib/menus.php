@@ -116,16 +116,40 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 
 			foreach ($policies as $policy) {
 
+				$valid = false;
+				
 				$recipient_type = $policy['recipient'];
 				$sender_type = $policy['sender'];
+				$relationship = $policy['relationship'];
+				$inverse_relationship = $policy['inverse_relationship'];
+				$group_relationship = $policy['group_relationship'];
 
 				$recipient_validator = $user_types[$recipient_type]['validator'];
 				if ($recipient_type == 'all' ||
 						($recipient_validator && is_callable($recipient_validator) && call_user_func($recipient_validator, $recipient, $recipient_type))) {
+
 					$sender_validator = $user_types[$sender_type]['validator'];
 					if ($sender_type == 'all' ||
 							($sender_validator && is_callable($sender_validator) && call_user_func($sender_validator, $sender, $sender_type))) {
+						
 						$valid = true;
+						if ($relationship && $relationship != 'all') {
+							if ($inverse_relationship) {
+								$valid = check_entity_relationship($recipient->guid, $relationship, $sender->guid);
+							} else {
+								$valid = check_entity_relationship($sender->guid, $relationship, $recipient->guid);
+							}
+						}
+						if ($valid && $group_relationship && $group_relationship != 'all') {
+							$dbprefix = elgg_get_config('dbprefix');
+							$valid = elgg_get_entities_from_relationship(array(
+								'types' => 'group',
+								'relationship' => 'member',
+								'relationship_guid' => $recipient->guid,
+								'count' => true,
+								'wheres' => array("EXISTS (SELECT * FROM {$dbprefix}entity_relationships WHERE guid_one = $sender->guid AND relationship = '$group_relationship' AND guid_two = r.guid_two)")
+							));
+						}
 					}
 				}
 

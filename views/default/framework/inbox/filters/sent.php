@@ -15,7 +15,7 @@ $tabs = array(
 //	)
 );
 
-$message_types = hj_inbox_get_incoming_message_types($user);
+$message_types = hj_inbox_get_outgoing_message_types($user);
 if ($message_types) {
 	foreach ($message_types as $type) {
 		$text = elgg_echo("item:object:message:$type:plural");

@@ -30,6 +30,7 @@ $english = array(
 	'hj:inbox:user_type:admin' => 'Administrator',
 	'hj:inbox:user_type:editor' => 'Editor',
 	'hj:inbox:user_type:supervisor' => 'Supervisor',
+	'hj:inbox:user_type:observer' => 'Observer',
 
 	'item:object:message:label:singular' => 'Label (singular)',
 	'item:object:message:label:plural' => 'Label (plural)',
