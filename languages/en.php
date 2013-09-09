@@ -33,10 +33,6 @@ $english = array(
 	'hj:inbox:user_type:editor' => 'Editor',
 	'hj:inbox:user_type:supervisor' => 'Supervisor',
 
-	'hj:inbox:user_relationship:all' => '',
-	'hj:inbox:user_relationship:friend' => 'Friend of',
-	'hj:inbox:user_relationship:supervisor' => 'Supervisor of',
-
 	'item:object:message:label:singular' => 'Label (singular)',
 	'item:object:message:label:plural' => 'Label (plural)',
 
