@@ -20,6 +20,7 @@ elgg_set_config('inbox_user_labels', ($user_labels) ? unserialize($user_labels) 
 
 elgg_set_config('inbox_user_types', hj_inbox_get_user_types());
 elgg_set_config('inbox_user_relationships', hj_inbox_get_user_relationships());
+elgg_set_config('inbox_user_)group_relationships', hj_inbox_get_user_group_relationships());
 
 /**
  * Extendable configuration array of sender and recipient types
@@ -47,7 +48,7 @@ function hj_inbox_get_user_types() {
  */
 function hj_inbox_get_user_relationships() {
 
-	$return = array('all');
+	$return = array();
 
 	$dbprefix = elgg_get_config('dbprefix');
 
@@ -56,6 +57,31 @@ function hj_inbox_get_user_relationships() {
 				JOIN {$dbprefix}entities e1 on e1.guid = er.guid_one
 				JOIN {$dbprefix}entities e2 on e2.guid = er.guid_two
 				WHERE e1.type = 'user' AND e2.type = 'user'";
+
+	$data = get_data($query);
+
+	foreach ($data as $rel) {
+		$return[] = $rel->relationship;
+	}
+
+	return $return;
+}
+
+/**
+ * Get a list of existing user-group and group-user relationships
+ */
+function hj_inbox_get_user_group_relationships() {
+
+	$return = array();
+
+	$dbprefix = elgg_get_config('dbprefix');
+
+	$query = "SELECT DISTINCT(er.relationship)
+				FROM {$dbprefix}entity_relationships er
+				JOIN {$dbprefix}entities e1 on e1.guid = er.guid_one
+				JOIN {$dbprefix}entities e2 on e2.guid = er.guid_two
+				WHERE (e1.type = 'user' AND e2.type = 'group')
+					OR (e1.type = 'group' AND e2.type = 'user')";
 
 	$data = get_data($query);
 

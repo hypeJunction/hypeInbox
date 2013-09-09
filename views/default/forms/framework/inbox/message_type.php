@@ -75,10 +75,16 @@ foreach ($types as $t => $opts) {
 }
 
 $relationships = elgg_get_config('inbox_user_relationships');
+$user_relationships_options = array('all' => '');
 foreach ($relationships as $r) {
 	$user_relationships_options[$r] = $r;
 }
 
+$group_relationships = elgg_get_config('inbox_user_group_relationships');
+$user_group_relationships_options = array('all' => '');
+foreach ($group_relationships as $r) {
+	$user_group_relationships_options[$r] = $r;
+}
 
 $policy = elgg_extract('policy', $vars, array(''));
 
@@ -90,6 +96,7 @@ echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:sender') . '</
 echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:recipient') . '</div>';
 echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:relationship') . '</div>';
 echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:inverse_relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:group_relationship') . '</div>';
 echo '</div>';
 
 foreach ($policy as $p) {
@@ -117,6 +124,11 @@ foreach ($policy as $p) {
 			false => elgg_echo('No'),
 			true => elgg_echo('Yes')
 		)
+	)) . '</div>';
+	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+		'name' => "message_types[$name][policy][group_relationship][]",
+		'value' => $p['group_relationship'],
+		'options_values' => $user_group_relationships_options
 	)) . '</div>';
 	echo '<div class="elgg-col elgg-col-1of5"><i class="inbox-icon-plus"></i><i class="inbox-icon-minus"></i></div>';
 	echo '</div>';

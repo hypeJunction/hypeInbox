@@ -12,13 +12,11 @@ $english = array(
 	'item:object:message:setting:attachments' => 'Allow file attachments',
 	'item:object:message:setting:persistent' => 'Make persistent (can not be deleted by recipient)',
 	'item:object:message:setting:policy' => 'Communication policy',
-	'item:object:message:setting:policy:help' => 'Specifies groups of users between which this communication can occur.
-		If relationship is specified, senders of a given type will only be able to community this message type to recipients of a given type,
-		with whom the specified relationship (or inverse relationship) exists.
-
-		For example:
-		Users in any role can send private messages to other users in any role with whom they are friends
-		Users in any role can send bugreports to administrators (no role specified)
+	'item:object:message:setting:policy:help' => 'Specifies sets of users between which this communication can occur.
+		"Sender" and "Recipient" fields specify types of users (based on their "roles" on the site).
+		"Relationship to recipient" specifies the type of relationship that must exist between the Sender and the Recipient for this communication to be permissible (e.g. Sender must be a friend of the Recipient).
+		"Inverse relationship" specifies that the type of relationship should be inversed (e.g. Recipient must be a friend of the Sender for the Sender to be able to contact the Recipient)
+		"Relationship of the sender to the group" creates an additional level of filtering, whereas 1) the Recipient must be a member of a group and 2) the Sender must have a specified relationship with that group (e.g. setting this to "member" would indicate that this type of communication can only occur between members of the same group)
 	',
 
 	'item:object:message:all' => 'All Messages',
@@ -41,6 +39,8 @@ $english = array(
 	'hj:inbox:relationship' => 'Relationship to recipient',
 	'hj:inbox:recipient' => 'Recipient',
 	'hj:inbox:inverse_relationship' => 'Inverse relationship',
+	'hj:inbox:relationship' => 'Relationship to recipient',
+	'hj:inbox:group_relationship' => 'Relationship of the sender to the group that the recipient is a member of',
 
 	'hj:inbox' => 'Messages',
 	'hj:inbox:all' => 'All messages',
