@@ -92,31 +92,31 @@ echo '<label>' . elgg_echo('item:object:message:setting:policy') . '</label>';
 echo '<div class="elgg-text-help">' . elgg_echo('item:object:message:setting:policy:help') . '</div>';
 
 echo '<div class="clearfix">';
-echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:sender') . '</div>';
-echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:recipient') . '</div>';
-echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:relationship') . '</div>';
-echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:inverse_relationship') . '</div>';
-echo '<div class="elgg-col elgg-col-1of5">' . elgg_echo('hj:inbox:group_relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:sender') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:recipient') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:inverse_relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:group_relationship') . '</div>';
 echo '</div>';
 
 foreach ($policy as $p) {
 	echo '<div class="inbox-policy clearfix">';
-	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+	echo '<div class="elgg-col elgg-col-1of6">' . elgg_view('input/dropdown', array(
 		'name' => "message_types[$name][policy][sender][]",
 		'value' => $p['sender'],
 		'options_values' => $user_types_options
 	)) . '</div>';
-	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+	echo '<div class="elgg-col elgg-col-1of6">' . elgg_view('input/dropdown', array(
 		'name' => "message_types[$name][policy][recipient][]",
 		'value' => $p['recipient'],
 		'options_values' => $user_types_options
 	)) . '</div>';
-	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+	echo '<div class="elgg-col elgg-col-1of6">' . elgg_view('input/dropdown', array(
 		'name' => "message_types[$name][policy][relationship][]",
 		'value' => $p['relationship'],
 		'options_values' => $user_relationships_options
 	)) . '</div>';
-	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+	echo '<div class="elgg-col elgg-col-1of6">' . elgg_view('input/dropdown', array(
 		'name' => "message_types[$name][policy][inverse_relationship][]",
 		'value' => $p['inverse_relationship'],
 		'options_values' => array(
@@ -125,12 +125,12 @@ foreach ($policy as $p) {
 			true => elgg_echo('Yes')
 		)
 	)) . '</div>';
-	echo '<div class="elgg-col elgg-col-1of5">' . elgg_view('input/dropdown', array(
+	echo '<div class="elgg-col elgg-col-1of6">' . elgg_view('input/dropdown', array(
 		'name' => "message_types[$name][policy][group_relationship][]",
 		'value' => $p['group_relationship'],
 		'options_values' => $user_group_relationships_options
 	)) . '</div>';
-	echo '<div class="elgg-col elgg-col-1of5"><i class="inbox-icon-plus"></i><i class="inbox-icon-minus"></i></div>';
+	echo '<div class="elgg-col elgg-col-1of6"><i class="inbox-icon-plus"></i><i class="inbox-icon-minus"></i></div>';
 	echo '</div>';
 }
 

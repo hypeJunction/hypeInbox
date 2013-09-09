@@ -20,7 +20,7 @@ elgg_set_config('inbox_user_labels', ($user_labels) ? unserialize($user_labels) 
 
 elgg_set_config('inbox_user_types', hj_inbox_get_user_types());
 elgg_set_config('inbox_user_relationships', hj_inbox_get_user_relationships());
-elgg_set_config('inbox_user_)group_relationships', hj_inbox_get_user_group_relationships());
+elgg_set_config('inbox_user_group_relationships', hj_inbox_get_user_group_relationships());
 
 /**
  * Extendable configuration array of sender and recipient types
