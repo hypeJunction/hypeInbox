@@ -14,6 +14,7 @@ Enhanced inbox and user-to-user messaging for Elgg
 
 ## Attributions / Credits ##
 
+* Plugin inspired and partially sponsored by Whitemoor School
 * UI Icon by Glyphicons http://glyphicons.com/
 
 ## Usage / Configuration ##
