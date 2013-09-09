@@ -50,3 +50,9 @@ Group relationship: member
 * hypeFramework is not required
 
 
+
+## Screenshots ##
+
+![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/config.png "Config page")
+![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/folders.png "Inbox folders")
+![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/thread.png "Message thread")
