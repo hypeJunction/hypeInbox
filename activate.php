@@ -28,6 +28,6 @@ $message_types = array(
 	),
 );
 
-if (is_null(elgg_get_plugin_setting('message_types', 'hypeInbox'))) {
-	elgg_set_plugin_setting('message_types', serialize($message_types), 'hypeInbox');
+if (is_null(elgg_get_plugin_setting('default_message_types', 'hypeInbox'))) {
+	elgg_set_plugin_setting('default_message_types', serialize($message_types), 'hypeInbox');
 }
