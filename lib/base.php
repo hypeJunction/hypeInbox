@@ -1,6 +1,6 @@
 <?php
 
-$default_message_types = elgg_get_plugin_setting('default_message_types', 'hypeInbox');
+$default_message_types = unserialize(elgg_get_plugin_setting('default_message_types', 'hypeInbox'));
 $message_types = elgg_get_plugin_setting('message_types', 'hypeInbox');
 if ($message_types) {
 	$message_types = unserialize($message_types);
