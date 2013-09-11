@@ -101,7 +101,7 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 	if ($sender->guid == $recipient->guid) {
 		return $return;
 	}
-	
+
 	$message_types = elgg_get_config('inbox_message_types');
 	$user_types = elgg_get_config('inbox_user_types');
 
@@ -121,7 +121,7 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 			foreach ($policies as $policy) {
 
 				$valid = false;
-				
+
 				$recipient_type = $policy['recipient'];
 				$sender_type = $policy['sender'];
 				$relationship = $policy['relationship'];
@@ -135,7 +135,7 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 					$sender_validator = $user_types[$sender_type]['validator'];
 					if ($sender_type == 'all' ||
 							($sender_validator && is_callable($sender_validator) && call_user_func($sender_validator, $sender, $sender_type))) {
-						
+
 						$valid = true;
 						if ($relationship && $relationship != 'all') {
 							if ($inverse_relationship) {
@@ -167,6 +167,7 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 						'name' => "messages:$type",
 						'text' => elgg_echo("hj:inbox:send", array(strtolower(elgg_echo("item:object:message:$type:singular")))),
 						'href' => elgg_http_add_url_query_elements("messages/compose", array('message_type' => $type, 'send_to' => $recipient->guid)),
+						'section' => 'action'
 			));
 		}
 	}
