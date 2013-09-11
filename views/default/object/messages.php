@@ -162,7 +162,7 @@ __MSG;
 	$from_icon = elgg_view_entity_icon($from, 'small');
 	$from_name = elgg_view('output/url', array(
 		'text' => $from->name,
-		'href' => "messages/compose?send_to=$from->name",
+		'href' => "messages/compose?send_to=$from->guid",
 	));
 	$header = '<div class="inbox-message-from">' . $from_name . '</div>';
 
