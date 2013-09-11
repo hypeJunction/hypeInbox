@@ -98,6 +98,10 @@ function hj_inbox_user_hover_menu_setup($hook, $type, $return, $params) {
 		return $return;
 	}
 
+	if ($sender->guid == $recipient->guid) {
+		return $return;
+	}
+	
 	$message_types = elgg_get_config('inbox_message_types');
 	$user_types = elgg_get_config('inbox_user_types');
 
