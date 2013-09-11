@@ -2,19 +2,17 @@
 
 $default_message_types = unserialize(elgg_get_plugin_setting('default_message_types', 'hypeInbox'));
 $message_types = elgg_get_plugin_setting('message_types', 'hypeInbox');
-if ($message_types) {
-	$message_types = unserialize($message_types);
-	foreach ($message_types as $type => $options) {
-		if (isset($options['labels'])) {
-			foreach ($options['labels'] as $suffix => $label) {
-				add_translation('en', array("item:object:message:$type:$suffix" => $label));
-			}
+$message_types = ($message_types) ? unserialize($message_types) : array();
+$message_types = array_merge($default_message_types, $message_types);
+
+foreach ($message_types as $type => $options) {
+	if (isset($options['labels'])) {
+		foreach ($options['labels'] as $suffix => $label) {
+			add_translation('en', array("item:object:message:$type:$suffix" => $label));
 		}
 	}
-} else {
-	$message_types = array();
 }
-$message_types = array_merge($default_message_types, $message_types);
+
 elgg_set_config('inbox_message_types', $message_types);
 
 $user_labels = elgg_get_plugin_user_setting('labels', elgg_get_logged_in_user_guid(), 'hypeInbox');
