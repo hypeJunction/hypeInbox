@@ -48,16 +48,18 @@ if (!$count) {
 	return;
 }
 
-$query = "SELECT DISTINCT md.value_id
+$query = "SELECT DISTINCT md.value_id, MAX(e.time_updated) as MaxDate
 			FROM {$dbprefix}metadata md
 			JOIN {$dbprefix}entities e ON e.guid = md.entity_guid
 			JOIN {$dbprefix}metadata md2 ON md2.entity_guid = md.entity_guid AND md2.name_id = {$map['msgType']}
-			WHERE e.type = 'object' AND e.subtype = $subtype_id
+    
+                                WHERE e.type = 'object' AND e.subtype = $subtype_id
 				AND md.name_id = {$map['msgHash']}
 				AND md2.value_id = {$map[$message_type]}
 				AND e.owner_guid = $user->guid
 				AND $access
-			ORDER BY e.time_created DESC
+                        GROUP BY md.value_id
+			ORDER BY MaxDate DESC
 			LIMIT $offset, $limit";
 $hashes = get_data($query);
 
