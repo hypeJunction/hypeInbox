@@ -24,8 +24,10 @@ $messages = elgg_get_entities(array(
 	'offset' => $offset,
 		));
 
-		error_log(print_r($messages, true));
-		
+if ($CONFIG->debug) {
+	error_log(print_r($messages, true));
+}
+
 if (!$messages) {
 	print json_encode(array('complete' => true));
 	forward(REFERER);

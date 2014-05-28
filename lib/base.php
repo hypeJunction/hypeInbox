@@ -454,14 +454,20 @@ function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $m
 	$dbprefix = elgg_get_config('dbprefix');
 	$query = "SELECT * FROM {$dbprefix}access_collections WHERE name = '$acl_hash'";
 	$collection = get_data_row($query);
-	error_log(print_r($collection, true));
+	if ($CONFIG->debug) {
+		error_log(print_r($collection, true));
+	}
+	
 	$acl_id = $collection->id;
 	if (!$acl_id) {
 		$site = elgg_get_site_entity();
 		$acl_id = create_access_collection($acl_hash, $site->guid);
 		update_access_collection($acl_id, $user_guids);
 	}
-	error_log($acl_id);
+	if ($CONFIG->debug) {
+		error_log($acl_id);
+	}
+	
 	$message_sent = new ElggObject();
 	$message_sent->subtype = "messages";
 	$message_sent->owner_guid = $sender_guid;
