@@ -623,27 +623,26 @@ function hj_inbox_send_message($sender_guid, $recipient_guids, $subject = '', $m
 			}
 
 			// Send out notifications skipping 'site' notification handler
-			if ($recipient_guid != $sender_guid) {
-				$methods = (array) get_user_notification_settings($recipient_guid);
-				unset($methods['site']);
-				if (count($methods)) {
-					$recipient = get_user($recipient_guid);
-					$sender = get_user($sender_guid);
+			if ($recipient_guid != $sender_guid && $message_type == HYPEINBOX_PRIVATE) {
+                            $methods = (array) get_user_notification_settings($recipient_guid);
+                            if($methods['email'] == '1'){
+                                    $recipient = get_user($recipient_guid);
+                                    $sender = get_user($sender_guid);
 
-					$notification_subject = elgg_echo('messages:email:subject');
-					$notification_message = strip_tags($message);
-					if ($uploaded_attachments) {
-						$notification_message .= elgg_view_module('inbox-attachments', elgg_echo('messages:attachments'), $attachment_urls);
-					}
-					$notification_body = elgg_echo('messages:email:body', array(
-						$sender->name,
-						$notification_message,
-						elgg_get_site_url() . "messages/inbox/$recipient->username?message_type=$message_type",
-						$sender->name,
-						elgg_get_site_url() . "messages/thread/$message_hash"
-					));
-					notify_user($recipient_guid, $sender_guid, $notification_subject, $notification_body, null, $methods);
-				}
+                                    $notification_subject = elgg_echo('messages:email:subject');
+                                    $notification_message = strip_tags($message);
+                                    if ($uploaded_attachments) {
+                                            $notification_message .= elgg_view_module('inbox-attachments', elgg_echo('messages:attachments'), $attachment_urls);
+                                    }
+                                    $notification_body = elgg_echo('messages:email:body', array(
+                                            $sender->name,
+                                            $notification_message,
+                                            elgg_get_site_url() . "messages/inbox/$recipient->username?message_type=$message_type",
+                                            $sender->name,
+                                            elgg_get_site_url() . "messages/thread/$message_hash"
+                                    ));
+                                    notify_user($recipient_guid, $sender_guid, $notification_subject, $notification_body, null, "email");
+                            }
 			}
 		} else {
 			$error++;
