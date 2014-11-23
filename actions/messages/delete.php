@@ -1,48 +1,26 @@
 <?php
 
-$hashes = get_input('hashes');
-$guids = get_input('guids');
-$owner_guid = get_input('owner_guid', elgg_get_logged_in_user_guid());
+namespace hypeJunction\Inbox;
 
-$error = $success = $persistent = $notfound = 0;
-
-$message_types = elgg_get_config('inbox_message_types');
-if ($hashes) {
-	foreach ($hashes as $hash) {
-		$options = array(
-			'types' => 'object',
-			'subtypes' => 'messages',
-			'owner_guid' => $owner_guid,
-			'metadata_name_value_pairs' => array(
-				'name' => 'msgHash', 'value' => $hash,
-			),
-			'limit' => 0,
-		);
-
-		$batch = new ElggBatch('elgg_get_entities_from_metadata', $options);
-		foreach ($batch as $message) {
-			if (!$message_types[$message->msgType]['persistent']) {
-				if (!$message->delete()) {
-					$error++;
-				} else {
-					$success++;
-				}
-			} else {
-				$persistent++;
-			}
-		}
-	}
+$threaded = get_input('threaded', false);
+$guids = get_input('guids', array());
+if (!is_array($guids) || !count($guids)) {
+	register_error(elgg_echo('inbox:delete:error'));
+	forward(REFERER);
 }
 
-if ($guids) {
+$count = count($guids);
+$error = $success = $persistent = $notfound = 0;
+
+if (!empty($guids)) {
 	foreach ($guids as $guid) {
 		$message = get_entity($guid);
-		if (!elgg_instanceof($message, 'object', 'messages')) {
+		if (!$message instanceof Message) {
 			$notfound++;
 			continue;
 		}
-		if (!$message_types[$message->msgType]['persistent']) {
-			if (!$message->delete()) {
+		if (!$message->isPersistent()) {
+			if (!$message->delete(true, $threaded)) {
 				$error++;
 			} else {
 				$success++;
@@ -53,15 +31,26 @@ if ($guids) {
 	}
 }
 
-$count = $success + $error + $notfound + $persistent;
+if ($count > 1) {
+	$msg[] = elgg_echo('inbox:delete:success', array($success));
+	if ($notfound > 0) {
+		$msg[] = elgg_echo('hj:approve:error:notfound', array($notfound));
+	}
+	if ($persistent > 0) {
+		$msg[] = elgg_echo('hj:approve:error:canedit', array($persistent));
+	}
+	if ($error > 0) {
+		$msg[] = elgg_echo('hj:approve:error:unknown', array($error));
+	}
+} else if ($success) {
+	$msg[] = elgg_echo('inbox:delete:success:single');
+} else {
+	$msg[] = elgg_echo('inbox:delete:error');
+}
 
-$msg[] = elgg_echo('hj:inbox:delete:success', array($success, $count));
-if ($notfound > 0)
-	$msg[] = elgg_echo('hj:approve:error:notfound', array($notfound));
-if ($persistent > 0)
-	$msg[] = elgg_echo('hj:approve:error:canedit', array($persistent));
-if ($error > 0)
-	$msg[] = elgg_echo('hj:approve:error:unknown', array($error));
-
-
-system_message(implode('<br />', $msg));
+$msg = implode('<br />', $msg);
+if ($success < $count) {
+	register_error($msg);
+} else {
+	system_message($msg);
+}

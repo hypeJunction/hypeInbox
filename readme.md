@@ -9,13 +9,12 @@ Enhanced inbox and user-to-user messaging for Elgg
 * Multiple inboxes for private messages, notifications and custom message types
 * Message threading - messages are grouped based on message title and recipients
 * Multi-user threads
-* Message attachments
+* Message attachments (requires elgg_dropzone https://github.com/hypeJunction/elgg_dropzone)
 * Policing includes user roles integration with hypeApprove and roles (extendable via hooks)
 
 ## Attributions / Credits ##
 
 * Plugin is inspired and partially sponsored by Whitemoor School
-* UI Icon by Glyphicons http://glyphicons.com/
 
 ## Usage / Configuration ##
 
@@ -43,12 +42,6 @@ Recipient: Any user
 Relationship: --blank--
 Inverse relationship: --blank--
 Group relationship: member
-
-
-## Notes ##
-
-* hypeFramework is not required
-
 
 
 ## Screenshots ##

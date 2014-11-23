@@ -11,6 +11,7 @@ $english = array(
 	'item:object:message:setting:multiple' => 'Allow multiple recipients',
 	'item:object:message:setting:attachments' => 'Allow file attachments',
 	'item:object:message:setting:persistent' => 'Make persistent (can not be deleted by recipient)',
+	'item:object:message:setting:no_subject' => 'Disable subject line',
 	'item:object:message:setting:policy' => 'Communication policy',
 	'item:object:message:setting:policy:help' => 'Specifies sets of users between which this communication can occur.
 		"Sender" and "Recipient" fields specify types of users (based on their "roles" on the site).
@@ -21,70 +22,122 @@ $english = array(
 
 	'item:object:message:all' => 'All Messages',
 
-	'hj:inbox:admin:import' => 'Import older messages',
-	'hj:inbox:admin:import_stats' => '%s messages are lacking metadata information required for hypeInbox compatibility',
-	'hj:inbox:admin:import_start' => 'Start Import',
-	'hj:inbox:admin:import_complete' => 'Import complete',
+	'inbox:admin:import' => 'Import older messages',
+	'inbox:admin:import_stats' => '%s messages are lacking metadata information required for hypeInbox compatibility',
+	'inbox:admin:import_start' => 'Start Import',
+	'inbox:admin:import_complete' => 'Import complete',
 	
-	'hj:inbox:user_type:all' => 'Any user',
-	'hj:inbox:user_type:admin' => 'Administrator',
-	'hj:inbox:user_type:editor' => 'Editor',
-	'hj:inbox:user_type:supervisor' => 'Supervisor',
-	'hj:inbox:user_type:observer' => 'Observer',
+	'inbox:user_type:all' => 'Any user',
+	'inbox:user_type:admin' => 'Administrator',
+	'inbox:user_type:editor' => 'Editor',
+	'inbox:user_type:supervisor' => 'Supervisor',
+	'inbox:user_type:observer' => 'Observer',
 
 	'item:object:message:label:singular' => 'Label (singular)',
 	'item:object:message:label:plural' => 'Label (plural)',
 
-	'hj:inbox:send' => 'Send %s',
-	'hj:inbox:sender' => 'Sender',
-	'hj:inbox:relationship' => 'Relationship to recipient',
-	'hj:inbox:recipient' => 'Recipient',
-	'hj:inbox:inverse_relationship' => 'Inverse relationship',
-	'hj:inbox:relationship' => 'Relationship to recipient',
-	'hj:inbox:group_relationship' => 'Relationship of the sender to the group that the recipient is a member of',
+	'inbox:send' => 'Send %s',
+	'inbox:sender' => 'Sender',
+	'inbox:relationship' => 'Relationship to recipient',
+	'inbox:recipient' => 'Recipient',
+	'inbox:inverse_relationship' => 'Inverse relationship',
+	'inbox:relationship' => 'Relationship to recipient',
+	'inbox:group_relationship' => 'Relationship of the sender to the group that the recipient is a member of',
 
-	'hj:inbox' => 'Messages',
-	'hj:inbox:all' => 'All messages',
-	'hj:inbox:inbox' => 'Inbox',
-	'hj:inbox:sent' => 'Sent messages',
-	'hj:inbox:compose' => 'Compose',
+	'inbox' => 'Messages',
+	'inbox:all' => 'All messages',
+	'inbox:inbox' => 'Inbox',
+	'inbox:sent' => 'Sent messages',
+	'inbox:compose' => 'Compose',
+	'inbox:compose:message_type' => 'Compose a %s',
+	'inbox:reply' => 'Reply',
+	'inbox:reply:message_type' => 'Reply to a %s',
+	'inbox:reply:prefix' => 'Re:',
+	'inbox:message_type' => '%s',
+	'inbox:message_type:sent' => 'Sent %s',
 
-	'hj:inbox:usersettings:grouping' => 'Group inbox messages by sender',
-	'hj:inbox:group' => 'Group',
-	'hj:inbox:dontgroup' => 'Don\'t Group',
-
-	'hj:inbox:message_not_found' => 'Message not found',
+	'inbox:conversation:user' => 'Conversation with %s',
+	'inbox:conversation:group' => 'Group conversation',
 	
-	'hj:inbox:untitled' => 'Untitled',
-	'hj:inbox:you' => 'You',
-	'hj:inbox:thread' => 'View all %s messages in this thread',
-	'hj:inbox:thread:unread' => '%s new',
+	'inbox:usersettings:grouping' => 'Group inbox messages by sender',
+	'inbox:group' => 'Group',
+	'inbox:dontgroup' => 'Don\'t Group',
 
-	'hj:inbox:message' => 'Message: %s',
-	'hj:inbox:conversation' => 'Conversation between you and %s',
-
-	'hj:inbox:nomessages' => 'There are no messages in this folder',
-
-	'messages:attachments' => 'Attachments',
-
-	'hj:inbox:load:before' => 'Load previous %s messages',
-	'hj:inbox:load:after' => 'Load next %s messages',
-
-	'hj:inbox:delete' => 'Delete',
-	'hj:inbox:markread' => 'Mark as read',
-	'hj:inbox:markunread' => 'Mark as unread',
+	'inbox:message_not_found' => 'Message not found',
 	
-	'hj:inbox:delete:success' => '%s of %s messages were successfully deleted',
-	'hj:inbox:markread:success' => '%s of %s messages were marked as read',
-	'hj:inbox:markunread:success' => '%s of %s messages were marked as unread',
-	'hj:inbox:error:notfound' => '%s messages could not be found',
-	'hj:inbox:error:persistent' => '%s messages cound not be delete due to their read-only setting',
-	'hj:inbox:error:unknown' => '%s messages could not be deleted because of an unknown error',
-	'hj:inbox:delete:thread:confirm' => 'Are you sure you want to delete all messages in this thread?',
-	'hj:inbox:delete:message:confirm' => 'Are you sure you want to delete this message?',
+	'inbox:untitled' => 'Untitled',
+	'inbox:me' => 'me',
+	'inbox:recipients:others' => '%s others',
 	
+	'inbox:thread' => 'View all %s messages in this thread',
+	'inbox:thread:unread' => '%s new messages',
+	'inbox:thread:new' => 'New message',
+	'inbox:thread:participants' => 'Members in this thread',
+
+	'inbox:attachments:count' => '%s attachments',
+	
+	'inbox:message' => 'Message: %s',
+	'inbox:conversation' => 'Conversation between you and %s',
+
+	'inbox:nomessages' => 'There are no messages in this thread',
+
+	'inbox:load:before' => 'Load previous %s messages',
+	'inbox:load:after' => 'Load next %s messages',
+
+	'inbox:delete' => 'Delete',
+	'inbox:markread' => 'Mark as read',
+	'inbox:markunread' => 'Mark as unread',
+	
+	'inbox:delete:success' => '%s messages were successfully deleted',
+	'inbox:delete:success:single' => 'Message was successfully deleted',
+	'inbox:delete:error' => 'Messages could not be deleted',
+	'inbox:delete:inbox:confirm' => 'Are you sure you want to delete all selected messages?',
+	'inbox:delete:thread:confirm' => 'Are you sure you want to delete all messages in this thread?',
+	'inbox:delete:message:confirm' => 'Are you sure you want to delete this message?',
+	
+	'inbox:markread:success' => '%s messages were marked as read',
+	'inbox:markread:success:single' => 'Message was marked as read',
+	'inbox:markread:error' => 'Messages could not be marked as read',
+	
+	'inbox:markunread:success' => '%s messages were marked as unread',
+	'inbox:markunread:success:single' => 'Message was marked as unread',
+	'inbox:markunread:error' => 'Messages could not be marked as unread',
+	
+	'inbox:error:notfound' => '%s messages could not be found',
+	'inbox:error:persistent' => '%s messages cound not be delete due to their read-only setting',
+	'inbox:error:unknown' => '%s messages could not be deleted because of an unknown error',
+
+	'inbox:send:success' => 'Message was successfully sent',
+	'inbox:send:error:no_recipients' => 'No recipients were selected',
+	'inbox:send:error:no_body' => 'You need add a message body',
+	'inbox:send:error:generic' => 'An unknown error ocurred while sending the message',
+	
+	'inbox:user:unknown' => 'Unknown',
+	'inbox:form:toggle_all' => 'Toggle all',
+	
+	'inbox:message:recipient' => 'Recipient',
+	'inbox:message:recipients' => 'Recipients',
+	'inbox:message:subject' => 'Subject',
+	'inbox:message:body' => 'Message',
+	'inbox:message:attachments' => 'Attachments',
+	'inbox:message:send' => 'Send',
+	
+	'inbox:notification:subject' => 'You have a new %s',
+	'inbox:notification:body' => "You have a new %s from %s. It reads:
+
+
+	%s
+
+
+	To view your messages, click here:
+
+	%s
+
+	To send %s a message, click here:
+
+	%s
+
+	Please do not reply to this email.",
 );
 
-
 add_translation("en", $english);
-?>

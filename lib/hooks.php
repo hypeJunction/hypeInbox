@@ -1,1 +1,566 @@
 <?php
+
+namespace hypeJunction\Inbox;
+
+use Elgg_Notifications_Event;
+use Elgg_Notifications_Notification;
+use ElggEntity;
+use ElggMenuItem;
+
+/**
+ * Add third party user types/roles to the config array
+ * 
+ * @param string $hook   "config:user_types"
+ * @param string $type   "framework:inbox"
+ * @param array  $return User types config array
+ * @param array  $params Hook params
+ * @return array
+ */
+function filter_user_types($hook, $type, $return, $params) {
+
+	if (elgg_is_active_plugin('hypeApprove')) {
+		$return['editor'] = array(
+			'validator' => __NAMESPACE__ . '\\has_role',
+			'getter' => __NAMESPACE__ . '\\getter_direct_relationship_exists',
+		);
+		$return['supervisor'] = array(
+			'validator' => __NAMESPACE__ . '\\has_role',
+			'getter' => __NAMESPACE__ . '\\getter_direct_relationship_exists',
+		);
+	}
+
+	if (elgg_is_active_plugin('hypeObserver')) {
+		$return['observer'] = array(
+			'validator' => __NAMESPACE__ . '\\has_role',
+			'getter' => __NAMESPACE__ . '\\getter_direct_relationship_exists',
+		);
+	}
+
+	if (elgg_is_active_plugin('roles')) {
+		$roles = roles_get_all_selectable_roles();
+		foreach ($roles as $role) {
+			$return[$role->name] = array(
+				'validator' => __NAMESPACE__ . '\\has_role',
+				'getter' => __NAMESPACE__ . '\\getter_role_exists',
+			);
+		}
+	}
+
+	return $return;
+}
+
+/**
+ * Messages page menu setup
+ *
+ * @param string $hook   "register"
+ * @param string $type   "menu:page"
+ * @param array  $return An array of menu items
+ * @param array  $params Additional parameters
+ * @return array An array of menu items
+ */
+function page_menu_setup($hook, $type, $return, $params) {
+
+	if (!elgg_in_context('messages')) {
+		return $return;
+	}
+
+	$user = elgg_get_page_owner_entity();
+
+	$return = array();
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'inbox',
+				'text' => elgg_echo('inbox:inbox'),
+				'href' => 'messages/inbox',
+				'priority' => 100,
+				'link_class' => 'inbox-load'
+	));
+
+	$intypes = get_incoming_message_types($user);
+
+	if ($intypes) {
+		foreach ($intypes as $type) {
+			$return[] = ElggMenuItem::factory(array(
+						'name' => "inbox:$type",
+						'parent_name' => 'inbox',
+						'text' => elgg_echo("item:object:message:$type:plural"),
+						'href' => "messages/inbox?message_type=$type",
+						'link_class' => 'inbox-load'
+			));
+		}
+	}
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'sentmessages',
+				'text' => elgg_echo('inbox:sent'),
+				'href' => 'messages/sent',
+				'priority' => 500,
+				'link_class' => 'inbox-load'
+	));
+
+	$outtypes = get_outgoing_message_types($user);
+
+	if ($outtypes) {
+		foreach ($outtypes as $type) {
+			$return[] = ElggMenuItem::factory(array(
+						'name' => "sent:$type",
+						'parent_name' => 'sentmessages',
+						'text' => elgg_echo("item:object:message:$type:plural"),
+						'href' => "messages/sent?message_type=$type",
+						'link_class' => 'inbox-load'
+			));
+		}
+	}
+
+	return $return;
+}
+
+/**
+ * Register user hover menu items
+ * 
+ * @param string $hook   "register"
+ * @param string $type   "menu:user_hover"
+ * @param array  $return An array of menu items
+ * @param array  $params Additional parameters
+ * @return array An array of menu items
+ */
+function user_hover_menu_setup($hook, $type, $return, $params) {
+
+	$recipient = elgg_extract('entity', $params);
+	$sender = elgg_get_logged_in_user_entity();
+
+	if (!$sender || !$recipient) {
+		return $return;
+	}
+
+	if ($sender->guid == $recipient->guid) {
+		return $return;
+	}
+
+	$message_types = elgg_get_config('inbox_message_types');
+	$user_types = elgg_get_config('inbox_user_types');
+
+	foreach ($message_types as $type => $options) {
+
+		if ($type == HYPEINBOX_NOTIFICATION) {
+			continue;
+		}
+
+		$valid = false;
+
+		$policies = $options['policy'];
+		if (!$policies) {
+			$valid = true;
+		} else {
+
+			foreach ($policies as $policy) {
+
+				$valid = false;
+
+				$recipient_type = $policy['recipient'];
+				$sender_type = $policy['sender'];
+				$relationship = $policy['relationship'];
+				$inverse_relationship = $policy['inverse_relationship'];
+				$group_relationship = $policy['group_relationship'];
+
+				$recipient_validator = $user_types[$recipient_type]['validator'];
+				if ($recipient_type == 'all' ||
+						($recipient_validator && is_callable($recipient_validator) && call_user_func($recipient_validator, $recipient, $recipient_type))) {
+
+					$sender_validator = $user_types[$sender_type]['validator'];
+					if ($sender_type == 'all' ||
+							($sender_validator && is_callable($sender_validator) && call_user_func($sender_validator, $sender, $sender_type))) {
+
+						$valid = true;
+						if ($relationship && $relationship != 'all') {
+							if ($inverse_relationship) {
+								$valid = check_entity_relationship($recipient->guid, $relationship, $sender->guid);
+							} else {
+								$valid = check_entity_relationship($sender->guid, $relationship, $recipient->guid);
+							}
+						}
+						if ($valid && $group_relationship && $group_relationship != 'all') {
+							$dbprefix = elgg_get_config('dbprefix');
+							$valid = elgg_get_entities_from_relationship(array(
+								'types' => 'group',
+								'relationship' => 'member',
+								'relationship_guid' => $recipient->guid,
+								'count' => true,
+								'wheres' => array("EXISTS (SELECT * FROM {$dbprefix}entity_relationships WHERE guid_one = $sender->guid AND relationship = '$group_relationship' AND guid_two = r.guid_two)")
+							));
+						}
+					}
+				}
+
+				if ($valid) {
+					break;
+				}
+			}
+		}
+		if ($valid) {
+			$return[] = ElggMenuItem::factory(array(
+						'name' => "inbox:$type",
+						'text' => elgg_echo("inbox:send", array(strtolower(elgg_echo("item:object:message:$type:singular")))),
+						'href' => elgg_http_add_url_query_elements("messages/compose", array('message_type' => $type, 'send_to' => $recipient->guid)),
+						'section' => 'action'
+			));
+		}
+	}
+
+	return $return;
+}
+
+/**
+ * Message entity menu setup
+ *
+ * @param string $hook "register"
+ * @param string $type "menu:entity"
+ * @param array $return An array of menu items
+ * @param array $params An array of additional parameters
+ * @return array An array of menu items
+ */
+function message_menu_setup($hook, $type, $return, $params) {
+
+	$entity = elgg_extract('entity', $params);
+
+	if (!$entity instanceof Message || !$entity->canEdit()) {
+		return $return;
+	}
+
+	$threaded = elgg_extract('threaded', $params, false);
+	$action_params = array(
+		'guids' => array($entity->guid),
+		'threaded' => $threaded,
+	);
+
+	$return = array();
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'actions',
+				'text' => '<span class="inbox-icon-ellipsis"></span>',
+				'href' => '#',
+				'priority' => 100,
+	));
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'markread',
+				'parent_name' => 'actions',
+				'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
+				'text' => elgg_echo('inbox:markread'),
+				'priority' => 100,
+	));
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'markunread',
+				'parent_name' => 'actions',
+				'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
+				'text' => elgg_echo('inbox:markunread'),
+				'priority' => 110,
+	));
+
+	if (!$entity->isPersistent()) {
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'delete',
+					'parent_name' => 'actions',
+					'text' => elgg_echo('delete'),
+					'title' => elgg_echo('inbox:delete'),
+					'href' => elgg_http_add_url_query_elements('action/messages/delete', $action_params),
+					'data-confirm' => ($threaded) ? elgg_echo('inbox:delete:thread:confirm') : elgg_echo('inbox:delete:message:confirm'),
+					'priority' => 900,
+		));
+	}
+
+	return $return;
+}
+
+/**
+ * Inbox controls setup
+ *
+ * @param string $hook "register"
+ * @param string $type "menu:inbox"
+ * @param array $return An array of menu items
+ * @param array $params An array of additional parameters
+ * @return array An array of menu items
+ */
+function inbox_menu_setup($hook, $type, $return, $params) {
+
+	$count = elgg_extract('count', $params);
+
+	if ($count) {
+		$chkbx = elgg_view('input/checkbox', array(
+					'id' => 'inbox-form-toggle-all',
+				)) . elgg_echo('inbox:form:toggle_all');
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'toggle',
+					'text' => elgg_format_element('label', array(), $chkbx, array('encode_text' => false)),
+					'title' => elgg_echo('inbox:markread'),
+					'href' => false,
+					'priority' => 50,
+					'section' => '1_toggle',
+		));
+
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'markread',
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
+					'title' => elgg_echo('inbox:markread'),
+					'href' => 'action/messages/markread',
+					'data-submit' => true,
+					'priority' => 100,
+					'section' => '2_actions',
+		));
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'markunread',
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
+					'title' => elgg_echo('inbox:markunread'),
+					'href' => 'action/messages/markunread',
+					'data-submit' => true,
+					'priority' => 200,
+					'section' => '2_actions',
+		));
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'delete',
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-trash')),
+					'title' => elgg_echo('inbox:delete'),
+					'href' => 'action/messages/delete',
+					'data-confirm' => elgg_echo('inbox:delete:inbox:confirm'),
+					'data-submit' => true,
+					'priority' => 300,
+					'section' => '2_actions',
+		));
+	}
+
+	$outgoing_message_types = get_outgoing_message_types();
+	$text = elgg_format_element('span', array('class' => 'inbox-icon-send'));
+	$text .= elgg_format_element('span', array(), elgg_echo('inbox:compose'));
+	if (sizeof($outgoing_message_types) > 0) {
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'compose',
+					'text' => $text,
+					'title' => elgg_echo('inbox:compose'),
+					'href' => (sizeof($outgoing_message_types) > 1) ? '#' :
+							elgg_http_add_url_query_elements('messages/compose', array(
+								'message_type' => $outgoing_message_types[0]
+							)),
+					'priority' => 800,
+					'section' => '3_compose',
+		));
+	}
+	if (sizeof($outgoing_message_types) > 1) {
+		foreach ($outgoing_message_types as $mt) {
+			$return[] = ElggMenuItem::factory(array(
+						'name' => "compose:$mt",
+						'parent_name' => 'compose',
+						'text' => elgg_echo("item:object:message:$mt:singular"),
+						'title' => elgg_echo('inbox:compose'),
+						'href' => elgg_http_add_url_query_elements('messages/compose', array(
+							'message_type' => $mt,
+							'send_to' => get_input('send_to', null),
+						)),
+						'section' => '3_compose',
+			));
+		}
+	}
+
+	return $return;
+}
+
+/**
+ * Thread controls setup
+ *
+ * @param string $hook "register"
+ * @param string $type "menu:inbox:thread"
+ * @param array $return An array of menu items
+ * @param array $params An array of additional parameters
+ * @return array An array of menu items
+ */
+function inbox_thread_menu_setup($hook, $type, $return, $params) {
+
+	$entity = elgg_extract('entity', $params);
+
+	if (!$entity instanceof Message || !$entity->canEdit()) {
+		return $return;
+	}
+
+	$action_params = array(
+		'guids' => array($entity->guid),
+		'threaded' => true,
+	);
+
+	$return = array();
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'reply',
+				'href' => '#reply',
+				'text' => elgg_format_element('span', array('class' => 'inbox-icon-reply')),
+				'priority' => 100,
+				'section' => '1_actions',
+	));
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'markread',
+				'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
+				'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
+				'title' => elgg_echo('inbox:markread'),
+				'priority' => 200,
+				'section' => '1_actions',
+	));
+
+	$return[] = ElggMenuItem::factory(array(
+				'name' => 'markunread',
+				'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
+				'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
+				'title' => elgg_echo('inbox:markunread'),
+				'priority' => 210,
+				'section' => '1_actions',
+	));
+
+	if (!$entity->isPersistent()) {
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'delete',
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-trash')),
+					'title' => elgg_echo('inbox:delete'),
+					'href' => elgg_http_add_url_query_elements('action/messages/delete', $action_params),
+					'data-confirm' => elgg_echo('inbox:delete:thread:confirm'),
+					'priority' => 900,
+					'section' => '1_actions',
+		));
+	}
+
+	return $return;
+}
+
+/**
+ * Pretty URL for message objects
+ *
+ * @param string $hook   "entity:url"
+ * @param string $type   "object"
+ * @param string $return Icon URL
+ * @param array  $params Hook params
+ * @return string Filtered URL
+ */
+function message_url($hook, $type, $return, $params) {
+
+	$entity = elgg_extract('entity', $params);
+
+	if (!$entity instanceof Message) {
+		return $return;
+	}
+
+	$path = implode('/', array(
+		'messages',
+		'read',
+		$entity->guid,
+		elgg_get_friendly_title($entity->title),
+		"#elgg-object-{$entity->guid}"
+	));
+
+	return elgg_normalize_url($path);
+}
+
+/**
+ * Replace message icon with a sender icon
+ * 
+ * @param string $hook   "entity:icon:url"
+ * @param string $type   "object"
+ * @param string $return Icon URL
+ * @param array  $params Hook params
+ * @return string Filtered URL
+ */
+function message_icon_url($hook, $type, $return, $params) {
+
+	$entity = elgg_extract('entity', $params);
+
+	if (!$entity instanceof Message) {
+		return $return;
+	}
+
+	return $entity->getSender()->getIconURL();
+}
+
+/**
+ * Prepare notification message
+ * 
+ * @param string                          $hook         "prepare"
+ * @param string                          $type         "notification:send:after:object:messages"
+ * @param Elgg_Notifications_Notification $notification A notification to prepare
+ * @param array                           $params       Hook params
+ * @return Elgg_Notifications_Notification
+ */
+function prepare_notification($hook, $type, $notification, $params) {
+
+	$event = elgg_extract('event', $params);
+	/* @var $event Elgg_Notifications_Event */
+
+	$recipient = elgg_extract('recipient', $params);
+	$language = elgg_extract('language', $params);
+	$method = elgg_extract('method', $params);
+
+	$entity = $event->getObject();
+	error_log(print_r($entity, true));
+
+	if (!$entity instanceof Message) {
+		return $notification;
+	}
+
+	$sender = $entity->getSender();
+	$message_type = $entity->getMessageType();
+	$message_hash = $entity->getHash();
+
+	$config = new Config;
+	$ruleset = $config->getRuleset($message_type);
+	$type_label = $ruleset->getSingularLabel($language);
+
+	$body = array_filter(array(
+		($ruleset->hasSubject()) ? $entity->subject : '',
+		$entity->getBody(),
+		$entity->listAttachments('link'),
+	));
+
+	$notification_body = implode(PHP_EOL, $body);
+
+	$notification->subject = elgg_echo('inbox:notification:subject', array($type_label), $language);
+	$notification->body = elgg_echo('inbox:notification:body', array(
+		$type_label,
+		$sender->name,
+		$notification_body,
+		elgg_view('output/url', array(
+			'href' => $entity->getURL(),
+		)),
+		$sender->name,
+		elgg_view('output/url', array(
+			'href' => elgg_normalize_url("messages/thread/$message_hash#reply")
+		)),
+			), $language);
+
+	$notification->summary = elgg_echo('inbox:notification:summary', array($type_label), $language);
+
+	return $notification;
+}
+
+/**
+ * Filters subscriptions for a sent message event
+ * 
+ * @param string $hook          "get"
+ * @param string $type          "subscriptions"
+ * @param array  $subscriptions Subscriptions
+ * @param array  $params        Hook params
+ * @return Fitlered subscriptions
+ */
+function get_subscriptions($hook, $type, $subscriptions, $params) {
+
+	$event = elgg_extract('event', $params);
+	/* @var $event Elgg_Notifications_Event */
+
+	$entity = $event->getObject();
+	$action = $event->getAction();
+
+	if ($entity instanceof Message && $action == 'send:after') {
+		$subscriptions = array();
+		$recipients = $entity->getRecipients();
+		foreach ($recipients as $recipient) {
+			$methods = get_user_notification_settings($recipient->guid);
+			$subscriptions[$recipient->guid] = (array) $methods;
+		}
+	}
+
+	return $subscriptions;
+}

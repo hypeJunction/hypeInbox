@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
+
 	<name>hypeInbox</name>
-	<author>Ismayil Khayredinov (hypeJunction)</author>
-	<version>1.9.1</version>
-	<category>enhancements</category>
-	<category>categories</category>
-	<category>hypeJunction</category>
-	<description>Enhanced inbox for Elgg</description>
+	<id>hypeInbox</id>
+	<version>3.0.0</version>
+
+	<description>Enhanced messaging</description>
+	<category>communication</category>
+
+	<author>Ismayil Khayredinov (ismayil.khayredinov@gmail.com)</author>
 	<website>http://hypeJunction.com</website>
-	<copyright>See lisence.txt</copyright>
+	<copyright>2011-2014 (c) Ismayil Khayredinov</copyright>
 	<license>GNU Public License version 2</license>
+
 	<requires>
-		<type>elgg_version</type>
-		<version>2012041801</version>
+		<type>elgg_release</type>
+		<version>1.9</version>
 	</requires>
+
 	<requires>
 		<type>plugin</type>
-		<name>messages</name>
-		<priority>after</priority>
+		<name>elgg_tokeninput</name>
+		<version>3.0.0</version>
 	</requires>
 	<suggests>
 		<type>plugin</type>
-		<name>file</name>
+		<name>hypeScraper</name>
 	</suggests>
-	<screenshot>
-		<description>Config</description>
-		<path>screenshots/config.png</path>
-	</screenshot>
-	<screenshot>
-		<description>Inbox folders</description>
-		<path>screenshots/folders.png</path>
-	</screenshot>
-	<screenshot>
-		<description>Message thread</description>
-		<path>screenshots/thread.png</path>
-	</screenshot>
-	<activate_on_install>false</activate_on_install>
+	<suggests>
+		<type>plugin</type>
+		<name>elgg_dropzone</name>
+		<version>3.0.0</version>
+	</suggests>
+	
 </plugin_manifest>

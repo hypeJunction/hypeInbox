@@ -1,132 +1,112 @@
 <?php
-
 /**
  * Compose message form
  */
-elgg_load_js('inbox.user.js');
 
-$message_type = elgg_extract('message_type', $vars, HYPEINBOX_PRIVATE);
+namespace hypeJunction\Inbox;
+
 $entity = elgg_extract('entity', $vars, false);
-
-$recipient_guids = elgg_extract('recipient_guids', $vars, false);
+$message_type = elgg_extract('message_type', $vars);
+$recipient_guids = elgg_extract('recipient_guids', $vars, array());
 $subject = elgg_extract('subject', $vars, '');
 $message = elgg_extract('body', $vars, '');
+$multiple = elgg_extract('multiple', $vars, false);
+$has_subject = elgg_extract('has_subject', $vars, true);
+$allows_attachments = elgg_extract('allows_attachments', $vars, false);
+?>
 
-$message_types = elgg_get_config('inbox_message_types');
-$rules = elgg_extract($message_type, $message_types);
-
-if (!is_array($recipient_guids) && elgg_instanceof($entity, 'object', 'messages')) {
-
-	$from = $entity->fromId;
-	$to = $entity->toId;
-	if (!is_array($from)) {
-		$from = array($from);
-	}
-	if (!is_array($to)) {
-		$to = array($to);
-	}
-
-	$recipient_guids = array_merge($from, $to);
-}
-
-if (is_array($recipient_guids)) {
-
-	foreach ($recipient_guids as $guid) {
-
-		if ($guid == elgg_get_logged_in_user_guid()) {
-			continue;
-		}
-
-		$user = get_entity($guid);
-		if (!elgg_instanceof($user))
-			continue;
-
-		$icon = elgg_view('output/img', array(
-			'src' => $user->getIconURL('tiny'),
-			'width' => 16,
-			'height' => 16
-		));
-		$name = $user->name;
-		$user_names[] = '<span class="inbox-conversation-user">' . $icon . $name . '</span>';
-
-		$recipients .= elgg_view('input/hidden', array(
-			'name' => 'recipient_guids[]',
-			'value' => $user->guid
-		));
-	}
-
-	$conversation = implode('', $user_names);
-} else {
-
-	$recipients = elgg_view('input/messages/userpicker', array(
-		'name' => 'recipient_guids',
-		'endpoint' => "messages/userpicker?message_type=$message_type",
-		'value' => $recipient_guids,
-		'multiple' => elgg_extract('multiple', $rules, false)
-	));
-}
-
-$body .= (elgg_in_context('inbox-reply')) ? '<div class="hidden">' : '<div>';
-$body .= '<label>' . elgg_echo("messages:to") . '</label>';
-$body .= $recipients;
-$body .= $conversation;
-$body .= '</div>';
-
+<?php
 if (!$entity) {
-	$body .= '<div>';
-	$body .= '<label>' . elgg_echo("messages:title") . '</label>';
-	$body .= elgg_view('input/text', array(
-		'name' => 'subject',
-		'value' => $subject
-	));
-	$body .= '</div>';
-} else {
-	$body .= elgg_view('input/hidden', array(
-		'name' => 'subject',
-		'value' => "Re: " . trim(str_replace('re:', '', strtolower($entity->title)))
-	));
-}
-
-
-$body .= '<div>';
-$body .= '<label>' . elgg_echo("messages:message") . '</label>';
-$body .= elgg_view("input/plaintext", array(
-	'name' => 'body',
-	'value' => $message,
+	?>
+	<div class="inbox-form-row">
+		<label><?php
+			if ($multiple) {
+				echo elgg_echo('inbox:message:recipients');
+			} else {
+				echo elgg_echo('inbox:message:recipient');
+			}
+			?></label>
+		<?php
+		echo elgg_view('input/tokeninput', array(
+			'name' => 'recipient_guids',
+			'value' => $recipient_guids,
+			'multiple' => $multiple,
+			'callback' => __NAMESPACE__ . '\\recipient_tokeninput_callback',
+			'query' => array(
+				'message_type' => $message_type,
+			)
 		));
-$body .= '</div>';
-
-if (elgg_extract('attachments', $rules, false)) {
-	$body .= '<div>';
-	$body .= '<label>' . elgg_echo("messages:attachments") . '</label>';
-	$body .= elgg_view("input/file", array(
-		'name' => 'attachments[]',
-		'multiple' => true
-	));
-	$body .= '</div>';
-}
-
-
-$body .= '<div class = "elgg-foot">';
-if ($entity) {
-	$body .= elgg_view('input/hidden', array(
-		'name' => 'message_type',
-		'value' => $entity->msgType
-	));
-	$body .= elgg_view('input/hidden', array(
-		'name' => 'message_hash',
-		'value' => $entity->msgHash
-	));
+		?>
+	</div>
+	<?php
 } else {
-	$body .= elgg_view('input/hidden', array(
-		'name' => 'message_type',
-		'value' => $message_type
-	));
+	foreach ($recipient_guids as $guid) {
+		echo elgg_view('input/hidden', array(
+			'name' => 'recipient_guids[]',
+			'value' => $guid,
+		));
+	}
 }
 
-$body .= elgg_view('input/submit', array(
-	'value' => elgg_echo('messages:send')
+if ($has_subject) {
+	if (!$entity) {
+		?>
+		<div class="inbox-form-row">
+			<label><?php echo elgg_echo('inbox:message:subject') ?></label>
+			<?php
+			echo elgg_view('input/text', array(
+				'name' => 'subject',
+				'value' => $subject
+			));
+			?>
+		</div>
+		<?php
+	} else {
+		echo elgg_view('input/hidden', array(
+			'name' => 'subject',
+			'value' => $entity->getReplySubject(),
 		));
-$body .= '</div>';
-
-echo $body;
+	}
+}
+?>
+<div class="inbox-form-row">
+	<label><?php echo elgg_echo('inbox:message:body') ?></label>
+	<?php
+	echo elgg_view('input/plaintext', array(
+		'name' => 'body',
+		'value' => $message,
+		'rows' => 5,
+	));
+	?>
+</div>
+<?php
+if ($allows_attachments && elgg_view_exists('input/dropzone')) {
+	?>
+	<div class="inbox-form-row">
+		<label><?php echo elgg_echo('inbox:message:attachments') ?></label>
+		<?php
+		echo elgg_view('input/dropzone', array(
+			'name' => 'attachments',
+			'max' => 25,
+			'multiple' => true,
+		));
+		?>
+	</div>
+	<?php
+}
+?>
+<div class="inbox-form-row elgg-foot text-right">
+	<?php
+	echo elgg_view('input/hidden', array(
+		'name' => 'message_type',
+		'value' => $message_type,
+	));
+	echo elgg_view('input/hidden', array(
+		'name' => 'guid',
+		'value' => $entity->guid,
+	));
+	echo elgg_view('input/submit', array(
+		'value' => elgg_echo('inbox:message:send')
+	));
+	?>
+</div>

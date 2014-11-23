@@ -1,0 +1,33 @@
+{
+	"name": "hypejunction/hypeinbox",
+	"type": "elgg-plugin",
+	"description": "Enhanced messaging capabilities",
+	"homepage": "http://hypejunction.com",
+	"keywords": [
+		"elgg", "plugin", "inbox", "messages"
+	],
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Ismayil Khayredinov",
+			"email": "ismayil.khayredinov@gmail.com"
+		}
+	],
+	"extra": {
+		"installer-name": "hypeInbox"
+	},
+	"config": {
+		"vendor-dir": "vendors",
+		"preferred-install": "dist"
+	},
+	"require": {
+		"php": ">=5.3.3",
+		"composer/installers": "1.0.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"hypeJunction\\": ["classes/hypeJunction/", "tests/phpunit/classes/hypeJunction"]
+		}
+	}
+}
+

@@ -1,7 +1,7 @@
 <?php
 
 $params = get_input('params', array(), false); // don't filter the results so that html inputs remain unchanged
-$plugin_id = 'hypeInbox';
+$plugin_id = HYPEINBOX;
 $plugin = elgg_get_plugin_from_id($plugin_id);
 
 if (!($plugin instanceof ElggPlugin)) {
@@ -29,8 +29,9 @@ $config = array();
 $message_types = get_input('message_types');
 foreach ($message_types as $name => $options) {
 
-	if (empty($options['name']))
+	if (empty($options['name'])) {
 		continue;
+	}
 
 	if ($name == '__new') {
 		$name = strtolower(str_replace(' ', '_', $options['name']));
@@ -40,7 +41,8 @@ foreach ($message_types as $name => $options) {
 		'labels' => $options['labels'],
 		'attachments' => elgg_extract('attachments', $options, false),
 		'persistent' => elgg_extract('persistent', $options, false),
-		'multiple' => elgg_extract('multiple', $options, false)
+		'multiple' => elgg_extract('multiple', $options, false),
+		'no_subject' => elgg_extract('no_subject', $options, false),
 	);
 
 	if (isset($options['policy'])) {
@@ -56,7 +58,7 @@ foreach ($message_types as $name => $options) {
 	}
 }
 
-elgg_set_plugin_setting('message_types', serialize($config), 'hypeInbox');
+elgg_set_plugin_setting('message_types', serialize($config), $plugin_id);
 
 system_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
 forward(REFERER);

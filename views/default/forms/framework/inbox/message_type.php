@@ -1,8 +1,10 @@
 <?php
 
+namespace hypeJunction\Inbox;
+
 $name = elgg_extract('name', $vars, '__new');
 
-if ($name == HYPEINBOX_NOTIFICATION || $name == HYPEINBOX_PRIVATE) {
+if ($name == Message::TYPE_NOTIFICATION || $name == Message::TYPE_PRIVATE) {
 	echo elgg_view('input/hidden', array(
 		'name' => "message_types[$name][name]",
 		'value' => $name
@@ -44,7 +46,16 @@ echo '<div><label>' . elgg_view('input/checkbox', array(
 
 echo '<br />';
 
-if ($name == HYPEINBOX_NOTIFICATION) {
+echo '<div><label>' . elgg_view('input/checkbox', array(
+	'name' => "message_types[$name][no_subject]",
+	'checked' => elgg_extract('no_subject', $vars, false),
+	'value' => 1,
+	'default' => false
+)) . elgg_echo("item:object:message:setting:no_subject") . '</label></div>';
+
+echo '<br />';
+
+if ($name == Message::TYPE_NOTIFICATION) {
 	return;
 }
 
@@ -71,7 +82,7 @@ echo '<br />';
 // allowed recipients and senders
 $types = elgg_get_config('inbox_user_types');
 foreach ($types as $t => $opts) {
-	$user_types_options[$t] = elgg_echo("hj:inbox:user_type:$t");
+	$user_types_options[$t] = elgg_echo("inbox:user_type:$t");
 }
 
 $relationships = elgg_get_config('inbox_user_relationships');
@@ -92,11 +103,11 @@ echo '<label>' . elgg_echo('item:object:message:setting:policy') . '</label>';
 echo '<div class="elgg-text-help">' . elgg_echo('item:object:message:setting:policy:help') . '</div>';
 
 echo '<div class="clearfix">';
-echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:sender') . '</div>';
-echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:recipient') . '</div>';
-echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:relationship') . '</div>';
-echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:inverse_relationship') . '</div>';
-echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('hj:inbox:group_relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('inbox:sender') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('inbox:recipient') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('inbox:relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('inbox:inverse_relationship') . '</div>';
+echo '<div class="elgg-col elgg-col-1of6">' . elgg_echo('inbox:group_relationship') . '</div>';
 echo '</div>';
 
 foreach ($policy as $p) {

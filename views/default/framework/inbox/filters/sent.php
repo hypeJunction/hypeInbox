@@ -1,5 +1,7 @@
 <?php
 
+namespace hypeJunction\Inbox;
+
 $message_type = elgg_extract('message_type', $vars, 'all');
 
 $user = elgg_get_page_owner_entity();
@@ -8,14 +10,14 @@ $i = 100;
 
 $tabs = array(
 //	'all' => array(
-//		'text' => elgg_echo('hj:inbox:all'),
+//		'text' => elgg_echo('inbox:all'),
 //		'href' => "messages/sent/$user->username",
 //		'priority' => $i++,
 //		'class' => 'inbox-load'
 //	)
 );
 
-$message_types = hj_inbox_get_outgoing_message_types($user);
+$message_types = get_outgoing_message_types($user);
 if ($message_types) {
 	foreach ($message_types as $type) {
 		$text = elgg_echo("item:object:message:$type:plural");
@@ -23,7 +25,7 @@ if ($message_types) {
 			'text' => $text,
 			'href' => "messages/sent/$user->username?message_type=$type",
 			'priority' => $i++,
-			'class' => 'inbox-load'
+			'link_class' => 'inbox-load'
 		);
 	}
 }

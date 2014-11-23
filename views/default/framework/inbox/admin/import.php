@@ -1,15 +1,17 @@
 <?php
 
-elgg_load_js('inbox.admin.js');
+namespace hypeJunction\Inbox;
 
-$title = elgg_echo('hj:inbox:admin:import');
+elgg_require_js('framework/inbox/admin');
 
-$body = '<p class="mam">' . elgg_echo('hj:inbox:admin:import_stats', array($vars['count'])) . '</p>';
+$title = elgg_echo('inbox:admin:import');
+
+$body = '<p class="mam">' . elgg_echo('inbox:admin:import_stats', array($vars['count'])) . '</p>';
 $body .= elgg_view('output/url', array(
 	'id' => 'inbox-admin-import',
-	'text' => elgg_echo('hj:inbox:admin:import_start'),
+	'text' => elgg_echo('inbox:admin:import_start'),
 	'class' => 'elgg-button elgg-button-action float mam',
-	'rel' => elgg_echo('hj:inbox:admin:import_warning'),
+	'rel' => elgg_echo('inbox:admin:import_warning'),
 	'data-count' => $vars['count']
 ));
 $body .= '<div id="import-progress" class="mam"></div>';

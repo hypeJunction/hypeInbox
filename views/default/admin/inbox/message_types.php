@@ -1,7 +1,9 @@
 <?php
 
+namespace hypeJunction\Inbox;
+
 elgg_load_css('inbox.base.css');
-elgg_load_js('inbox.admin.js');
+elgg_require_js('framework/inbox/admin');
 
 $message_types = elgg_get_config('inbox_message_types');
 
