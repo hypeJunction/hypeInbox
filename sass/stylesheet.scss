@@ -6,105 +6,115 @@
 @import "variables";
 @import "mixins";
 
-.inbox-messages-table {
-	display: table;
-	width: 100%;
-	border: none;
-	margin: 0;
-	& > li {
-		border: none;
+.elgg-list {
+	& > .elgg-item-object-messages {
 		padding: 0;
-		display: table-row;
-		width: 100%;
-		article {
-			border-bottom: 1px solid $border-color;
-		}
-		&:first-child {
-			article {
-				border-top: 1px solid $border-color;
-			}
-		}
-		article > div {
-			display: table-cell;
-			padding: 5px;
-			vertical-align: top;
-		}
 	}
-
 }
 
 .inbox-message {
 	z-index: 1;
+	padding: 5px;
+	position: relative;
 	&[data-href] {
 		cursor: pointer;
 	}
-	&[data-read="no"] {
+	.elgg-content, p {
+		margin: 0;
+		font-size: 14px;
+		line-height: normal;
+	}
+	h3 {
+		font-size: 14px;
+		line-height: normal;
+		margin: 0;
+	}
+	&.inbox-message-unread {
 		background-color: $subtle-bg;
 		.elgg-menu-item-markunread {
 			display: none;
 		}
 	}
-	&[data-read="yes"] {
+	&.inbox-message-read {
 		background-color: #ffffff;
-		.inbox-message-element-unread-indicator {
-			display: none;
-		}
+		.elgg-menu-item-unread,
 		.elgg-menu-item-markread {
 			display: none;
 		}
 	}
-	.inbox-message-cell-controls {
-		min-width: 22px;
-		input[type="checkbox"] {
-			margin: 3px 0;
+	&.inbox-message-form-row {
+		[type="checkbox"] {
+			float: left;
+			margin: 5px;
 		}
-		[class^="inbox-icon-"] {
-			font-size: 12px;
-			width: 12px;
-			height: 12px;
-			line-height: 12px;
+		.inbox-message-image-block {
+			margin-left: 20px;
 		}
-		text-align: center;
 	}
-	.inbox-message-cell-sender {
-		min-width: 40px;
-	}
-	.inbox-message-cell-details {
-		position: relative;
-		width: 100%;
-		font-size: 13px;
-		.inbox-message-element-time {
-			@media #{$medium} {
-				position: absolute;
-				top: 0;
-				right: 0;
-				padding: 5px;
+	&.inbox-message-threaded {
+		.elgg-content {
+			.inbox-message-subject + .inbox-message-body-excerpt:before {
+				content: " - ";
+				display: inline;
 			}
 		}
-		.elgg-module-embed {
-			max-width: 600px;
-			margin: 5px 0;
-		}
-		p {
-			font-size: 14px;
-			line-height: normal;
-		}
 	}
-	.elgg-menu-entity {
-		margin: 0;
+	.elgg-module-embed {
+		margin: 5px 0;
+	}
+}
+.inbox-message-image-block {
+	position: relative;
+	@include box-sizing(border-box);
+	& > .elgg-image {
 		float: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0 5px;
+	}
+	& > .elgg-body {
+		position: relative;
+		padding-left: 55px;
+		width: 100%;
+	}
+}
+.inbox-menu {
+	& > li {
+		.inbox-message-count-indicator,
+		.inbox-message-unread-indicator {
+			&, &:hover {
+				color: white;
+				background: $border-color;
+				@include border-radius(1000px);
+				padding: 2px 4px;
+				font-size: 11px;
+				font-weight: bold;
+				line-height: 16px;
+				height: 20px;
+				min-width: 20px;
+				text-align: center;
+			}
+		}
+		.inbox-message-unread-indicator {
+			&, &:hover {
+				background: $primary-color;
+			}
+		}
 	}
 }
 
 .inbox-messages-control-group {
 	display: inline-block;
 	padding: 4px;
+	margin: 0 0 5px 0;
 }
 .elgg-menu-inbox, .elgg-menu-inbox-thread {
 	margin: 0 10px 0 0;
 	display: inline-block;
 	& > li {
 		display: inline-block;
+		position: relative;
 		& > a {
 			padding: 5px 10px;
 			background: $subtle-bg;
@@ -120,45 +130,38 @@
 				border-left: 1px solid $border-color;
 			}
 		}
-	}
-}
-
-.inbox-layout .elgg-layout-content {
-	[class^="elgg-menu-item-"] {
-		position: relative;
-		& > a {
-			position: relative;
-		}
-		& > .elgg-child-menu {
+		.elgg-child-menu {
 			display: none;
 			position: absolute;
-			background: white;
-			width: 175px;
+			right: 0;
+			margin: 2px -1px;
 			border: 1px solid $border-color;
-			box-shadow: 1px 1px 5px $border-color;
-			margin: 0;
+			@include box-shadow(2px 2px 3px $border-color);
+			background: #fff;
 			z-index: 2;
+			width: 150px;
 			& > li {
-				margin: 0;
-				padding: 5px 10px;
-				&:hover {
-					background: $subtle-bg;
+				border-bottom: 1px solid $border-color;
+				&:last-child {
+					border-bottom: none;
 				}
 				& > a {
 					display: block;
 					width: 100%;
+					padding: 5px 10px;
+					background: #fff;
+					&:hover {
+						background: $subtle-bg;
+					}
 				}
 			}
 		}
+		&:hover, &.elgg-state-active {
+			.elgg-child-menu {
+				display: block;
+			}
+		}
 	}
-}
-
-.inbox-message-unread-indicator {
-	display: inline-block;
-	width: $indicator-size;
-	height: $indicator-size;
-	background: $primary-color;
-	@include border-radius($indicator-size);
 }
 
 [class^="inbox-icon-"] {
@@ -171,9 +174,6 @@
 	& + span {
 		margin-left: 8px;
 	}
-}
-.inbox-icon-ellipsis {
-	@include icon($fa-var-ellipsis-v);
 }
 .inbox-icon-trash {
 	@include icon($fa-var-trash);
@@ -201,21 +201,25 @@
 	@include modal;
 }
 
-.inbox-form-row {
-	margin-bottom: 15px;
+.elgg-form-messages-inbox {
 	input, textarea, select {
 		margin-bottom: 0;
 	}
 }
+.inbox-form-row {
+	margin-bottom: 15px;
+}
 
 .inbox-message-image-attachments {
-	& > img {
-		&, &:hover {
-			border: 1px solid $border-color;
-			padding: 4px;
-			margin: 5px 0;
-			max-width: 100%;
-			box-shadow: none;
+	@include clearfix;
+	& > div {
+		@media #{$medium} {
+			float: left;
+			width: 33.33333%;
+			padding: 5px;
+			margin: 0;
+			&:nth-of-type(1n) {clear: none;}
+			&:nth-of-type(3n+1) { clear:both; }
 		}
 	}
 }
@@ -225,20 +229,18 @@
 	margin: 5px 0;
 	border-top: 1px solid $border-color;
 	border-bottom: 1px solid $border-color;
-	& > li {
-		display: table-row;
+	& > div {
+		padding: 3px;
 		& > div {
-			display: table-cell;
-			padding: 4px;
-			&.icon {
-				img, img:hover {
-					border: none;
-					padding: 0;
-					margin: 0;
-					max-width: 25px;
-					box-shadow: none;
-				}
-			}
+			padding: 2px;
+			font-size: 90%;
+		}
+		img, img:hover {
+			border: none;
+			padding: 0;
+			margin: 0;
+			max-width: 25px;
+			box-shadow: none;
 		}
 		&:nth-child(even) {
 			background: #f4f4f4;
@@ -246,11 +248,17 @@
 	}
 }
 
-.inbox-thread-load-before, .inbox-thread-load-after {
-	display: block;
-	width: 100%;
-	text-align: center;
-	padding: 4px 8px;
-	font-size: 12px;
-	font-weight: bold;
+.inbox-footer-controls {
+	& > li {
+		display: inline-block;
+		&:after {
+			content: "|";
+			color: $border-color;
+			display: inline-block;
+			padding: 0 5px;
+		}
+		&:last-child:after {
+			display: none;
+		}
+	}
 }

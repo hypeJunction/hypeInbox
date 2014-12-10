@@ -2,12 +2,10 @@
 
 namespace hypeJunction\Inbox;
 
-$entity = elgg_extract('entity', $vars);
-
-echo elgg_view_menu('entity', array(
-	'entity' => $entity,
+$params = array(
 	'handler' => 'messages',
 	'sort_by' => 'priority',
-	'params' => $vars,
-	'class' => 'inbox-menu',
-));
+	'class' => 'inbox-menu elgg-menu-hz',
+);
+$params = array_merge($vars, $params);
+echo elgg_view_menu('entity', $params);

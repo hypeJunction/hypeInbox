@@ -12,12 +12,13 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			$(document).on('click', '.inbox-message[data-href]', inbox.navigateToMessage);
 			$(document).on('click', '#inbox-form-toggle-all', inbox.toggleAll);
 			$(document).on('click', '[data-submit]', inbox.submitBulkForm);
-			$(document).on('click', '.elgg-menu-item-actions > a', inbox.showChildMenu);
-			$(document).on('click', '*', inbox.hideChildMenu);
 			$(document).on('click', '.elgg-menu-item-delete > a', inbox.deleteMessage);
 			$(document).on('click', '.elgg-menu-item-markread > a', inbox.markMessageAsRead);
 			$(document).on('click', '.elgg-menu-item-markunread > a', inbox.markMessageAsUnread);
-			$(document).on('click', '.inbox-thread-load-before, .inbox-thread-load-after', inbox.threadLoadMore);
+			$(document).on('submit', '.elgg-form-messages-send', inbox.sendMessage);
+			$(document).on('click', '.elgg-menu-inbox li:has(.elgg-child-menu) > a', inbox.toggleChildMenu);
+			$(document).on('click', '.inbox-toggle-attachments-form', inbox.toggleAttachmentsForm);
+			
 			elgg.config.inboxUser = true;
 		},
 		navigateToMessage: function (e) {
@@ -28,7 +29,7 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 		},
 		toggleAll: function (e) {
 			var prop = $(this).prop('checked');
-			$(this).closest('form').find('[type="checkbox"][name="guids[]"]').prop('checked', prop);
+			$(this).closest('form').find('[type="checkbox"][name="guids[]"]:visible').prop('checked', prop);
 		},
 		submitBulkForm: function (e) {
 			var $elem = $(this);
@@ -44,39 +45,6 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			e.preventDefault();
 
 			$form.attr('action', $elem.attr('href')).trigger('submit');
-		},
-		showChildMenu: function (e) {
-			if ($(e.target).closest('.inbox-menu').length === 0) {
-				return;
-			}
-
-			e.preventDefault();
-
-			var $anchor = $(this);
-			var $item = $anchor.parent('li');
-			var $menu = $(this).data('menu') || null;
-
-			if (!$menu) {
-				$menu = $item.children('.elgg-child-menu').eq(0);
-				$(this).data('menu', $menu);
-			}
-
-			if ($menu.is(':visible')) {
-				$menu.hide();
-			} else {
-				$menu.show().position({
-					my: $menu.data('my') || 'right top',
-					at: $menu.data('at') || 'right bottom',
-					of: $item,
-				});
-			}
-
-			$('.inbox-menu .elgg-child-menu:visible').not($menu).hide();
-		},
-		hideChildMenu: function (e) {
-			if ($(e.target).parents('.inbox-menu').length === 0) {
-				$('.elgg-child-menu:visible').hide();
-			}
 		},
 		deleteMessage: function (e) {
 			if ($(e.target).closest('.elgg-item-object-messages').length === 0) {
@@ -96,7 +64,6 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			elgg.action($elem.attr('href'), {
 				beforeSend: function () {
 					$('body').addClass('elgg-state-loading');
-					$('.inbox-menu .elgg-child-menu:visible').hide();
 				},
 				complete: function () {
 					$('body').removeClass('elgg-state-loading');
@@ -118,13 +85,15 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			elgg.action($elem.attr('href'), {
 				beforeSend: function () {
 					$('body').addClass('elgg-state-loading');
-					$('.inbox-menu .elgg-child-menu:visible').hide();
 				},
 				complete: function () {
 					$('body').removeClass('elgg-state-loading');
 				},
 				success: function (data) {
-					$elem.closest('.elgg-item-object-messages').find('[data-read="no"]').attr('data-read', 'yes').data('read', 'yes');
+					var $msg = $elem.closest('.inbox-message');
+					$msg.addClass('inbox-message-read').removeClass('inbox-message-unread');
+					var txt = $msg.find('.inbox-message-count-indicator').text();
+					$msg.find('.inbox-message-unread-indicator').text(txt);
 				}
 			});
 		},
@@ -140,32 +109,59 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			elgg.action($elem.attr('href'), {
 				beforeSend: function () {
 					$('body').addClass('elgg-state-loading');
-					$('.inbox-menu .elgg-child-menu:visible').hide();
 				},
 				complete: function () {
 					$('body').removeClass('elgg-state-loading');
 				},
 				success: function (data) {
-					$elem.closest('.elgg-item-object-messages').find('[data-read="yes"]').attr('data-read', 'no').data('read', 'no');
+					var $msg = $elem.closest('.inbox-message');
+					$elem.closest('.inbox-message').addClass('inbox-message-unread').removeClass('inbox-message-read');
+					var txt = $msg.find('.inbox-message-count-indicator').text();
+					$msg.find('.inbox-message-unread-indicator').text(txt);
 				}
 			});
 		},
-		threadLoadMore: function(e) {
+		sendMessage: function (e) {
+
+			if (!require.defined('hypeList')) {
+				return true;
+			}
+
 			e.preventDefault();
+			require('hypeList');
 
-			var $elem = $(this);
-
-			elgg.get($elem.attr('href'), {
+			var $form = $(this);
+			elgg.action($form.attr('action'), {
+				data: $form.serialize(),
 				beforeSend: function () {
+					$form.find('[type="submit"]').prop('disabled', true).addClass('elgg-state-disabled');
 					$('body').addClass('elgg-state-loading');
 				},
 				complete: function () {
+					$form.find('[type="submit"]').prop('disabled', false).removeClass('elgg-state-disabled');
 					$('body').removeClass('elgg-state-loading');
 				},
 				success: function (data) {
-					$elem.replaceWith($(data));
+					if (data.status >= 0) {
+						if ($form.closest('#reply').length) {
+							$form.resetForm();
+							$('.elgg-dropzone-preview', $form).remove();
+							$('.inbox-messages').children('.elgg-list').hypeList('fetchNewItems', null, true);
+						} else {
+							document.location.href = data.forward_url;
+						}
+					}
 				}
 			});
+		},
+		toggleChildMenu: function(e) {
+			e.preventDefault();
+			$(this).parent().toggleClass('elgg-state-active');
+		},
+		toggleAttachmentsForm: function(e) {
+			e.preventDefault();
+			$(this).closest('form').find('.inbox-attachments-form').show();
+			$(this).parent().remove();
 		}
 	};
 

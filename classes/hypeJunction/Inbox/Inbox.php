@@ -195,8 +195,23 @@ class Inbox {
 	 * @return int
 	 */
 	public function getCount(array $options = array()) {
-		$options['count'] = true;
-		return $this->getMessages($options);
+		if ($this->threaded) {
+			$options = $this->getFilterOptions($options);
+			$options['selects'][] = 'COUNT(DISTINCT md_msgHash.value_id) AS total';
+			unset($options['group_by']);
+			$options['limit'] = 1;
+			$options['callback'] = array($this, 'getCountCallback');
+			$messages = elgg_get_entities($options);
+			return $messages[0]->total;
+		} else {
+			$options['count'] = true;
+			return $this->getMessages($options);
+		}
+	}
+	
+	public static function getCountCallback($row) {
+		error_log(print_r($row, true));
+		return $row;
 	}
 
 	/**
@@ -220,7 +235,6 @@ class Inbox {
 
 		$options['joins']['md_msgHash'] = "JOIN {$this->dbprefix}metadata md_msgHash ON e.guid = md_msgHash.entity_guid";
 		$options['wheres'][] = "md_msgHash.name_id = {$map['msgHash']}";
-
 
 		$direction = $this->getDirection();
 		if ($direction == self::DIRECTION_SENT) {

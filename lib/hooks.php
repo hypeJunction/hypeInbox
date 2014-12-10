@@ -235,37 +235,65 @@ function message_menu_setup($hook, $type, $return, $params) {
 
 	$return = array();
 
-	$return[] = ElggMenuItem::factory(array(
-				'name' => 'actions',
-				'text' => '<span class="inbox-icon-ellipsis"></span>',
-				'href' => '#',
-				'priority' => 100,
-	));
+	$attachments = elgg_view('object/messages/elements/attachments-indicator', $params);
+	if ($attachments) {
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'attachments',
+					'text' => $attachments,
+					'href' => false,
+					'priority' => 50,
+					'section' => 'indicators',
+		));
+	}
 
-	$return[] = ElggMenuItem::factory(array(
-				'name' => 'markread',
-				'parent_name' => 'actions',
-				'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
-				'text' => elgg_echo('inbox:markread'),
-				'priority' => 100,
-	));
-	$return[] = ElggMenuItem::factory(array(
-				'name' => 'markunread',
-				'parent_name' => 'actions',
-				'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
-				'text' => elgg_echo('inbox:markunread'),
-				'priority' => 110,
-	));
+	if ($threaded) {
+		$unread = elgg_view('object/messages/elements/unread-indicator', $params);
+		if ($unread) {
+			$return[] = ElggMenuItem::factory(array(
+						'name' => 'unread',
+						'text' => $unread,
+						'href' => false,
+						'priority' => 75,
+						'section' => 'indicators',
+			));
+		}
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'count',
+					'text' => elgg_view('object/messages/elements/count-indicator', $params),
+					'href' => false,
+					'priority' => 100,
+					'section' => 'indicators',
+		));
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'markread',
+					'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
+					'title' => elgg_echo('inbox:markread'),
+					'is_action' => true,
+					'priority' => 100,
+					'section' => 'actions',
+		));
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'markunread',
+					'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
+					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
+					'title' => elgg_echo('inbox:markunread'),
+					'is_action' => true,
+					'priority' => 110,
+					'section' => 'actions',
+		));
+	}
 
 	if (!$entity->isPersistent()) {
 		$return[] = ElggMenuItem::factory(array(
 					'name' => 'delete',
-					'parent_name' => 'actions',
-					'text' => elgg_echo('delete'),
+					'text' => elgg_view_icon('delete'),
 					'title' => elgg_echo('inbox:delete'),
 					'href' => elgg_http_add_url_query_elements('action/messages/delete', $action_params),
 					'data-confirm' => ($threaded) ? elgg_echo('inbox:delete:thread:confirm') : elgg_echo('inbox:delete:message:confirm'),
+					'is_action' => true,
 					'priority' => 900,
+					'section' => 'actions',
 		));
 	}
 
@@ -400,6 +428,7 @@ function inbox_thread_menu_setup($hook, $type, $return, $params) {
 				'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
 				'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
 				'title' => elgg_echo('inbox:markread'),
+				'is_action' => true,
 				'priority' => 200,
 				'section' => '1_actions',
 	));
@@ -409,6 +438,7 @@ function inbox_thread_menu_setup($hook, $type, $return, $params) {
 				'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
 				'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
 				'title' => elgg_echo('inbox:markunread'),
+				'is_action' => true,
 				'priority' => 210,
 				'section' => '1_actions',
 	));
@@ -420,6 +450,7 @@ function inbox_thread_menu_setup($hook, $type, $return, $params) {
 					'title' => elgg_echo('inbox:delete'),
 					'href' => elgg_http_add_url_query_elements('action/messages/delete', $action_params),
 					'data-confirm' => elgg_echo('inbox:delete:thread:confirm'),
+					'is_action' => true,
 					'priority' => 900,
 					'section' => '1_actions',
 		));
@@ -495,7 +526,6 @@ function prepare_notification($hook, $type, $notification, $params) {
 	$method = elgg_extract('method', $params);
 
 	$entity = $event->getObject();
-	error_log(print_r($entity, true));
 
 	if (!$entity instanceof Message) {
 		return $notification;
@@ -512,7 +542,6 @@ function prepare_notification($hook, $type, $notification, $params) {
 	$body = array_filter(array(
 		($ruleset->hasSubject()) ? $entity->subject : '',
 		$entity->getBody(),
-		$entity->listAttachments('link'),
 	));
 
 	$notification_body = implode(PHP_EOL, $body);

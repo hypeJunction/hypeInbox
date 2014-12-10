@@ -21,9 +21,9 @@ $attachments = $entity->getAttachments(array('limit' => 0), $threaded);
 $images = $details = array();
 foreach ($attachments as $attachment) {
 	if ($attachment->simpletype == 'image') {
-		$images[] = elgg_view_entity_icon($attachment, 'large', array(
+		$images[] = '<div>' . elgg_view_entity_icon($attachment, 'large', array(
 			'href' => false,
-		));
+		)) . '</div>';
 	}
 
 	$icon = elgg_view_entity_icon($attachment, 'small', array(
@@ -34,17 +34,18 @@ foreach ($attachments as $attachment) {
 		'text' => elgg_view_icon('download'),
 		'href' => "file/download/$attachment->guid"
 	));
-	$item = '<li>';
-	$item .= '<div class="icon">' . $icon . '</div>';
-	$item .= '<div>' . $attachment->title . '</div>';
-	$item .= '<div>' . $download . '</div>';
-	$item .= '</li>';
-	$details[] = $item;
+
+	$item = elgg_view_image_block($icon, $attachment->title, array(
+		'image_alt' => $download,
+	));
+	$details[] = elgg_format_element('div', array(
+		'class' => 'inbox-message-attachment-row',
+			), $item);
 }
 
-echo '<ul class="inbox-message-attachments">';
+echo '<div class="inbox-message-attachments">';
 echo implode('', $details);
-echo '</ul>';
+echo '</div>';
 
 if (count($images)) {
 	echo '<div class="inbox-message-image-attachments">';

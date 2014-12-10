@@ -11,7 +11,11 @@ if ($full) {
 	$body = elgg_trigger_plugin_hook('link:qualifiers', 'messages', array('source' => $entity->getBody()), $body);
 	echo elgg_view('output/longtext', array(
 		'value' => $body,
-	));
+		'class' => 'inbox-message-body',
+			));
 } else {
-	echo elgg_get_excerpt($entity->description, 100);
+//	$body = elgg_get_excerpt($entity->description);
+//	echo elgg_format_element('span', array(
+//		'class' => 'inbox-message-body-excerpt',
+//			), $body);
 }

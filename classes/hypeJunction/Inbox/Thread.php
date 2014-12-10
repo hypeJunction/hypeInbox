@@ -9,6 +9,8 @@ class Thread {
 
 	protected $message;
 
+	const LIMIT = 10;
+	
 	/**
 	 * Construct a magic thread
 	 * @param Message $message Message entity
@@ -38,6 +40,20 @@ class Thread {
 			$options['order_by'] = 'e.guid ASC';
 		}
 		return $options;
+	}
+
+	/**
+	 * Calculate a page offset to the given message
+	 *
+	 * @param int $limit Items per page
+	 * @return int
+	 */
+	public function getOffset($limit = self::LIMIT) {
+		if ($limit === 0) {
+			return 0;
+		}
+		$before = $this->getMessagesBefore(array('count' => true, 'offset' => 0));
+		return floor($before / $limit) * $limit;
 	}
 
 	/**
@@ -143,6 +159,7 @@ class Thread {
 	 */
 	public function getAll($getter = 'elgg_get_entities_from_metadata', $options = array()) {
 		$options['limit'] = 0;
+		$options = $this->getFilterOptions($options);
 		return new ElggBatch($getter, $options);
 	}
 
@@ -155,7 +172,7 @@ class Thread {
 	public function getMessagesBefore(array $options = array()) {
 		$options['wheres'][] = "e.guid < {$this->message->guid}";
 		$options['order_by'] = 'e.guid DESC';
-		$messages = $this->getMessages($options);
+		$messages = elgg_get_entities_from_metadata($this->getFilterOptions($options));
 		if (is_array($messages)) {
 			return array_reverse($messages);
 		}
@@ -170,7 +187,7 @@ class Thread {
 	 */
 	public function getMessagesAfter(array $options = array()) {
 		$options['wheres'][] = "e.guid > {$this->message->guid}";
-		return $this->getMessages($options);
+		return elgg_get_entities_from_metadata($this->getFilterOptions($options));
 	}
 
 	/**

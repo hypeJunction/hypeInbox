@@ -2,16 +2,12 @@
 
 namespace hypeJunction\Inbox;
 
-use ElggBatch;
-
 /**
  * Messages page handler
  *   /messages/inbox/<username>?message_type=<message_type>
  *   /messages/sent/<username>?message_type=<message_type>
  *   /messages/read/<guid>
- *   /messages/thread/<guid>
- *   /messages/thread/<guid>/before
- *   /messages/thread/<guid>/after
+ *   /messages/thread/<hash>
  *   /messages/compose?send_to=<guid>
  *
  * @param array $segments An array of URL segments
@@ -33,39 +29,31 @@ function page_handler($segments) {
 		default :
 		case 'inbox' :
 		case 'incoming' :
-			$page = elgg_view('resources/messages/inbox', array(
-				'segments' => $segments,
-			));
+			$page = elgg_view('resources/messages/inbox');
 			break;
 
 		case 'outbox' :
 		case 'outgoing' :
 		case 'sent' :
-			$page = elgg_view('resources/messages/sent', array(
-				'segments' => $segments,
-			));
+			$page = elgg_view('resources/messages/sent');
 			break;
 
 		case 'read' :
 		case 'view' :
 		case 'reply' :
-			$page = elgg_view('resources/messages/read', array(
-				'segments' => $segments,
-			));
+			set_input('guid', $segments[1]);
+			$page = elgg_view('resources/messages/read');
 			break;
 
 		case 'thread' :
-			$page = elgg_view('resources/messages/thread', array(
-				'segments' => $segments,
-			));
+			set_input('hash', $segments[1]);
+			$page = elgg_view('resources/messages/thread');
 			break;
 
 		case 'compose' :
 		case 'add' :
-
-			$page = elgg_view('resources/messages/compose', array(
-				'segments' => $segments,
-			));
+			set_input('guid', $segments[1]);
+			$page = elgg_view('resources/messages/compose');
 			break;
 	}
 

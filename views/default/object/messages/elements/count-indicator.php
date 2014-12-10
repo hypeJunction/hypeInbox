@@ -8,12 +8,13 @@ $entity = elgg_extract('entity', $vars);
 $full = elgg_extract('full_view', $vars, false);
 $threaded = elgg_extract('threaded', $vars, !$full);
 
-$count = 0;
 if ($threaded) {
-	$count = $entity->thread()->getUnreadCount();
+	$count = $entity->thread()->getCount();
 }
 
-echo elgg_format_element('span', array(
-	'class' => 'inbox-message-unread-indicator',
-	'title' => elgg_echo('inbox:thread:unread', array($count))
-		), $count);
+if ($count) {
+	echo elgg_format_element('span', array(
+		'class' => 'inbox-message-count-indicator',
+		'title' => elgg_echo('inbox:thread:count', array($count))
+			), $count);
+}

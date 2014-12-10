@@ -42,10 +42,13 @@ if ($count > 1) {
 	if ($error > 0) {
 		$msg[] = elgg_echo('hj:approve:error:unknown', array($error));
 	}
+	$forward = REFERRER;
 } else if ($success) {
 	$msg[] = elgg_echo('inbox:delete:success:single');
+	$forward = 'messages';
 } else {
 	$msg[] = elgg_echo('inbox:delete:error');
+	$forward = REFERRER;
 }
 
 $msg = implode('<br />', $msg);
@@ -54,3 +57,4 @@ if ($success < $count) {
 } else {
 	system_message($msg);
 }
+forward($forward);

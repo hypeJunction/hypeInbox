@@ -3,8 +3,7 @@
 namespace hypeJunction\Inbox;
 
 $list_params = array(
-	'item_class' => 'inbox-message-item',
-	'list_class' => 'inbox-messages-table',
+	'container_class' => 'inbox-messages',
 	'full_view' => false,
 	'pagination' => true,
 	'no_results' => elgg_echo('inbox:nomessages'),

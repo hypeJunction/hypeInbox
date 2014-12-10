@@ -21,8 +21,11 @@
 	<requires>
 		<type>plugin</type>
 		<name>elgg_tokeninput</name>
-		<version>3.0.0</version>
 	</requires>
+	<suggests>
+		<type>plugin</type>
+		<name>hypeLists</name>
+	</suggests>
 	<suggests>
 		<type>plugin</type>
 		<name>hypeScraper</name>
@@ -30,7 +33,6 @@
 	<suggests>
 		<type>plugin</type>
 		<name>elgg_dropzone</name>
-		<version>3.0.0</version>
 	</suggests>
 	
 </plugin_manifest>

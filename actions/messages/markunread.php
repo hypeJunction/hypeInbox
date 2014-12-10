@@ -41,3 +41,5 @@ if ($success < $count) {
 } else {
 	system_message($msg);
 }
+
+forward('messages');

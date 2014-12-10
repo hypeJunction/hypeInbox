@@ -2,8 +2,7 @@
 
 namespace hypeJunction\Inbox;
 
-$segments = elgg_extract('segments', $vars, array());
-$hash = $segments[1];
+$hash = get_input('hash');
 
 if (is_numeric($hash)) {
 	$entity = get_entity($hash);
@@ -23,8 +22,6 @@ if (is_numeric($hash)) {
 }
 
 if ($entity instanceof Message) {
-	$segments[1] = $entity->guid;
-	echo elgg_view('resources/messages/read', array(
-		'segments' => $segments,
-	));
+	set_input('guid', $entity->guid);
+	echo elgg_view('resources/messages/read');
 }

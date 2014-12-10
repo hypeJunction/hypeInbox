@@ -6,10 +6,10 @@ elgg_load_css('fonts.font-awesome');
 elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/user');
 
-$segments = elgg_extract('segments', $vars, array());
+$guid = get_input('guid');
 $page_owner = elgg_get_page_owner_entity();
 
-$message = get_entity($segments[1]);
+$message = get_entity($guid);
 
 if ($message instanceof Message) {
 	$recipients = $message->getParticipantGuids();
@@ -25,10 +25,6 @@ if ($message instanceof Message) {
 $params = prepare_form_vars($recipients, $message_type, $entity);
 
 $title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:message:$message_type:singular")));
-
-elgg_load_css('fonts.font-awesome');
-elgg_load_css('inbox.base.css');
-elgg_require_js('framework/inbox/user');
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";

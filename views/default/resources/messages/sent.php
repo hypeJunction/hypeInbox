@@ -2,7 +2,6 @@
 
 namespace hypeJunction\Inbox;
 
-$segments = elgg_extract('segments', $vars, array());
 $page_owner = elgg_get_page_owner_entity();
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 

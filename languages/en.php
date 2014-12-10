@@ -70,7 +70,8 @@ $english = array(
 	'inbox:recipients:others' => '%s others',
 	
 	'inbox:thread' => 'View all %s messages in this thread',
-	'inbox:thread:unread' => '%s new messages',
+	'inbox:thread:count' => '%s messages',
+	'inbox:thread:unread' => '%s new',
 	'inbox:thread:new' => 'New message',
 	'inbox:thread:participants' => 'Members in this thread',
 
@@ -81,8 +82,8 @@ $english = array(
 
 	'inbox:nomessages' => 'There are no messages in this thread',
 
-	'inbox:load:before' => 'Load previous %s messages',
-	'inbox:load:after' => 'Load next %s messages',
+	'inbox:load:before' => 'Show previous %s messages',
+	'inbox:load:after' => 'Show next %s messages',
 
 	'inbox:delete' => 'Delete',
 	'inbox:markread' => 'Mark as read',
@@ -120,6 +121,7 @@ $english = array(
 	'inbox:message:subject' => 'Subject',
 	'inbox:message:body' => 'Message',
 	'inbox:message:attachments' => 'Attachments',
+	'inbox:message:attachments:add' => 'Add attachments',
 	'inbox:message:send' => 'Send',
 	
 	'inbox:notification:subject' => 'You have a new %s',

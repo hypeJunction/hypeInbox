@@ -34,7 +34,7 @@ $attachments = Group::create(get_input('attachments'))->entities();
 
 $access_id = AccessCollection::create(array($sender_guid, $recipient_guids))->getCollectionId();
 foreach ($attachments as $attachment) {
-	$attachment->source = 'messages';
+	$attachment->origin = 'messages';
 	$attachment->access_id = $access_id;
 	$attachment->save();
 }

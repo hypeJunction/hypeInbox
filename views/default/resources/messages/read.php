@@ -2,8 +2,8 @@
 
 namespace hypeJunction\Inbox;
 
-$segments = elgg_extract('segments', $vars, array());
-$message = get_entity($segments[1]);
+$guid = get_input('guid');
+$message = get_entity($guid);
 
 if (!$message instanceof Message) {
 	return true;
@@ -24,32 +24,25 @@ elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username")
 elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
 elgg_push_breadcrumb(elgg_get_excerpt($subject, 50));
 
-$before = $after = true;
-$chronology = $segments[2];
-if ($chronology == 'after') {
-	$before = false;
-} else if ($chronology == 'before') {
-	$after = false;
-}
 $params = array(
 	'entity' => $message,
 	'message_type' => $message_type,
-	'before' => $before,
-	'after' => $after,
 );
 
-$content['participants'] = elgg_view('framework/inbox/participants', $params);
-$content['controls'] = elgg_view('framework/inbox/controls/thread', $params);
-$content['thread'] = elgg_view('framework/inbox/thread', $params);
-$content['reply'] = elgg_view('framework/inbox/reply', $params);
+$thread = elgg_view('framework/inbox/thread', $params);
 
 if (elgg_is_xhr()) {
-	echo $content['thread'];
+	echo $thread;
 } else {
+	$content = elgg_view('framework/inbox/participants', $params);
+	$content .= elgg_view('framework/inbox/controls/thread', $params);
+	$content .= $thread;
+	$content .= elgg_view('framework/inbox/reply', $params);
+
 	$layout = elgg_view_layout('content', array(
 		'title' => $subject,
 		'filter' => false,
-		'content' => implode('', $content),
+		'content' => $content,
 		'sidebar' => elgg_view('framework/inbox/sidebar', $params),
 		'class' => 'inbox-layout inbox-thread-layout',
 	));

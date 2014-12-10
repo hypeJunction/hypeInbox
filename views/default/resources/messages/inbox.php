@@ -2,7 +2,6 @@
 
 namespace hypeJunction\Inbox;
 
-$segments = elgg_extract('segments', $vars, array());
 $page_owner = elgg_get_page_owner_entity();
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 
@@ -20,12 +19,16 @@ $params = array(
 	'message_type' => $message_type
 );
 
-$layout = elgg_view_layout('content', array(
-	'title' => elgg_echo('inbox:inbox'),
-	'filter' => elgg_view('framework/inbox/filters/inbox', $params),
-	'content' => elgg_view('framework/inbox/inbox', $params),
-	'sidebar' => elgg_view('framework/inbox/sidebar', $params),
-	'class' => 'inbox-layout'
-		));
-
-echo elgg_view_page($title, $layout);
+$content = elgg_view('framework/inbox/inbox', $params);
+if (elgg_is_xhr()) {
+	echo $content;
+} else {
+	$layout = elgg_view_layout('content', array(
+		'title' => elgg_echo('inbox:inbox'),
+		'filter' => elgg_view('framework/inbox/filters/inbox', $params),
+		'content' => $content,
+		'sidebar' => elgg_view('framework/inbox/sidebar', $params),
+		'class' => 'inbox-layout'
+	));
+	echo elgg_view_page($title, $layout);
+}
