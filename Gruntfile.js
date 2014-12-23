@@ -113,8 +113,8 @@ module.exports = function (grunt) {
 			test: {
 				color: true,
 				verbose: true,
-				logJson: true,
-				coverageClover: true,
+				logJson: './tests/logs/log.json',
+				coverageClover: './tests/coverage/clover.xml'
 			}
 		}
 	});

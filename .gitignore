@@ -9,5 +9,6 @@ robots.txt
 /release/
 /releases/
 /tests/coverage/
+/tests/logs/
 manifest.xml
 /views/default/css/

@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'hypeJunction\\' => array($baseDir . '/classes/hypeJunction'),
+    'hypeJunction\\' => array($baseDir . '/classes/hypeJunction', $baseDir . '/tests/phpunit/classes/hypeJunction'),
 );

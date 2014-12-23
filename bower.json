@@ -1,6 +1,5 @@
 {
-	"name": "hypeLists",
+	"name": "hypeInbox",
 	"dependencies": {
-		"sticky-kit": "1.1.*"
 	}
 }
