@@ -77,7 +77,7 @@ function init() {
 	 * JS/CSS
 	 */
 	elgg_register_css('inbox.base.css', elgg_get_simplecache_url('css', 'framework/inbox/stylesheet.css'));
-	elgg_register_css('fonts.font-awesome', "/mod/$plugin_id/vendors/fonts/font-awesome.css");
+	elgg_register_css('fonts.font-awesome', "/mod/$plugin_id/fonts/font-awesome.css");
 	
 	/**
 	 * Hooks

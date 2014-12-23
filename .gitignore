@@ -2,5 +2,12 @@
 .DS_Store
 .htaccess
 robots.txt
-/nbproject/
+/nbproject/private/
 /.sass-cache/
+/node_modules/
+/vendors/
+/release/
+/releases/
+/tests/coverage/
+manifest.xml
+/views/default/css/

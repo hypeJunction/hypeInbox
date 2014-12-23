@@ -210,7 +210,6 @@ class Inbox {
 	}
 	
 	public static function getCountCallback($row) {
-		error_log(print_r($row, true));
 		return $row;
 	}
 

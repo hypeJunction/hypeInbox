@@ -12,6 +12,11 @@ Enhanced inbox and user-to-user messaging for Elgg
 * Message attachments (requires elgg_dropzone https://github.com/hypeJunction/elgg_dropzone)
 * Policing includes user roles integration with hypeApprove and roles (extendable via hooks)
 
+## Screenshots ##
+
+![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/compose.png "Compose")
+![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/inbox.png "Inbox")
+
 ## Attributions / Credits ##
 
 * Plugin is inspired and partially sponsored by Whitemoor School
@@ -44,8 +49,32 @@ Inverse relationship: --blank--
 Group relationship: member
 
 
-## Screenshots ##
+### Build
 
-![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/config.png "Config page")
-![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/folders.png "Inbox folders")
-![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/thread.png "Message thread")
+If downloading from github, you will need to run:
+```sh
+
+# if you don't have grunt
+npm install -g grunt
+npm install -g grunt-cli
+
+# install node modules
+npm install
+
+# initialize the plugin, install bower and composer dependencies
+grunt init
+
+# compile sass
+grunt compile
+
+# watch for changes in sass, js, composer, bower etc
+grunt watch
+
+# to run phpunit tests
+grunt test
+
+# to create a clean Elgg plugin without all the dev overhead
+# release will be zipped into a releases folder
+grunt release
+
+```

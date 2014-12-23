@@ -1,0 +1,6 @@
+{
+	"name": "hypeLists",
+	"dependencies": {
+		"sticky-kit": "1.1.*"
+	}
+}

@@ -1,10 +1,10 @@
 @import "compass/css3"; // compass css3 helpers
 
-@import "font-awesome/variables";
-@import "font-awesome/mixins";
+@import "../_partials/font-awesome/variables";
+@import "../_partials/font-awesome/mixins";
 
-@import "variables";
-@import "mixins";
+@import "../_variables/variables";
+@import "../_partials/mixins";
 
 .elgg-list {
 	& > .elgg-item-object-messages {
