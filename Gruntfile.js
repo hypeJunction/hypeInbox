@@ -76,9 +76,7 @@ module.exports = function (grunt) {
 					'!tests/**',
 					'!phpunit.xml',
 					'!nbproject/**',
-					'!config.rb',
-					'!release/**',
-					'!releases/**'
+					'!config.rb'
 				],
 				dest: '<%= pkg.name %>/'
 			}

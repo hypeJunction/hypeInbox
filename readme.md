@@ -57,11 +57,11 @@ If downloading from github, you will need to run:
 # install node modules
 npm install
 
-# initialize the plugin, install bower and composer dependencies in development mode
+# initialize the plugin, install bower and composer dependencies, compile stylesheets in development mode
 grunt
 
-# initialize the plugin, install bower and composer dependencies in production mode
-grunt build:dist
+# install bower and composer dependencies, compile stylesheets in production mode
+grunt dist
 
 # watch for changes in sass, js, composer, bower etc
 grunt watch
