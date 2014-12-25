@@ -2,7 +2,7 @@
 .DS_Store
 .htaccess
 robots.txt
-/nbproject/private/
+/nbproject/
 /.sass-cache/
 /node_modules/
 /vendors/
@@ -12,3 +12,4 @@ robots.txt
 /tests/logs/
 manifest.xml
 /views/default/css/
+composer.lock

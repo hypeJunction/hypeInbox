@@ -1,10 +1,12 @@
 @import "compass/css3"; // compass css3 helpers
+@import "../../../../../vendors/hypejunction/sass/_variables/variables";
+@import "variables";
 
-@import "../_partials/font-awesome/variables";
-@import "../_partials/font-awesome/mixins";
+$prefix: 'inbox';
 
-@import "../_variables/variables";
-@import "../_partials/mixins";
+[class~=#{$prefix}] {
+	@include box-sizing(border-box);
+}
 
 .elgg-list {
 	& > .elgg-item-object-messages {
@@ -12,7 +14,7 @@
 	}
 }
 
-.inbox-message {
+.#{$prefix}-message {
 	z-index: 1;
 	padding: 5px;
 	position: relative;
@@ -29,31 +31,31 @@
 		line-height: normal;
 		margin: 0;
 	}
-	&.inbox-message-unread {
-		background-color: $subtle-bg;
+	&.#{$prefix}-message-unread {
+		background-color: $lighter-bg-color;
 		.elgg-menu-item-markunread {
 			display: none;
 		}
 	}
-	&.inbox-message-read {
+	&.#{$prefix}-message-read {
 		background-color: #ffffff;
 		.elgg-menu-item-unread,
 		.elgg-menu-item-markread {
 			display: none;
 		}
 	}
-	&.inbox-message-form-row {
+	&.#{$prefix}-message-form-row {
 		[type="checkbox"] {
 			float: left;
 			margin: 5px;
 		}
-		.inbox-message-image-block {
+		.#{$prefix}-message-image-block {
 			margin-left: 20px;
 		}
 	}
-	&.inbox-message-threaded {
+	&.#{$prefix}-message-threaded {
 		.elgg-content {
-			.inbox-message-subject + .inbox-message-body-excerpt:before {
+			.#{$prefix}-message-subject + .#{$prefix}-message-body-excerpt:before {
 				content: " - ";
 				display: inline;
 			}
@@ -63,7 +65,7 @@
 		margin: 5px 0;
 	}
 }
-.inbox-message-image-block {
+.#{$prefix}-message-image-block {
 	position: relative;
 	@include box-sizing(border-box);
 	& > .elgg-image {
@@ -79,10 +81,10 @@
 		width: 100%;
 	}
 }
-.inbox-menu {
+.#{$prefix}-menu {
 	& > li {
-		.inbox-message-count-indicator,
-		.inbox-message-unread-indicator {
+		.#{$prefix}-message-count-indicator,
+		.#{$prefix}-message-unread-indicator {
 			&, &:hover {
 				color: white;
 				background: $border-color;
@@ -96,7 +98,7 @@
 				text-align: center;
 			}
 		}
-		.inbox-message-unread-indicator {
+		.#{$prefix}-message-unread-indicator {
 			&, &:hover {
 				background: $primary-color;
 			}
@@ -104,7 +106,7 @@
 	}
 }
 
-.inbox-messages-control-group {
+.#{$prefix}-messages-control-group {
 	display: inline-block;
 	padding: 4px;
 	margin: 0 0 5px 0;
@@ -117,7 +119,7 @@
 		position: relative;
 		& > a {
 			padding: 5px 10px;
-			background: $subtle-bg;
+			background: $lighter-bg-color;
 			border: 1px solid $border-color;
 			color: #222;
 			border-left: 0;
@@ -151,7 +153,7 @@
 					padding: 5px 10px;
 					background: #fff;
 					&:hover {
-						background: $subtle-bg;
+						background: $lighter-bg-color;
 					}
 				}
 			}
@@ -175,29 +177,29 @@
 		margin-left: 8px;
 	}
 }
-.inbox-icon-trash {
+.#{$prefix}-icon-trash {
 	@include icon($fa-var-trash);
 }
-.inbox-icon-send {
+.#{$prefix}-icon-send {
 	@include icon($fa-var-paper-plane-o);
 }
-.inbox-icon-markread {
+.#{$prefix}-icon-markread {
 	@include icon($fa-var-eye);
 }
-.inbox-icon-markunread {
+.#{$prefix}-icon-markunread {
 	@include icon($fa-var-eye-slash);
 }
-.inbox-icon-attachment {
+.#{$prefix}-icon-attachment {
 	@include icon($fa-var-paperclip);
 }
-.inbox-icon-reply {
+.#{$prefix}-icon-reply {
 	@include icon($fa-var-reply-all);
 }
-.inbox-hidden {
+.#{$prefix}-hidden {
 	display: none !important;
 }
 
-.ui-dialog.inbox-dialog-window {
+.ui-dialog.#{$prefix}-dialog-window {
 	@include modal;
 }
 
@@ -206,11 +208,11 @@
 		margin-bottom: 0;
 	}
 }
-.inbox-form-row {
+.#{$prefix}-form-row {
 	margin-bottom: 15px;
 }
 
-.inbox-message-image-attachments {
+.#{$prefix}-message-image-attachments {
 	@include clearfix;
 	& > div {
 		@media #{$medium} {
@@ -223,7 +225,7 @@
 		}
 	}
 }
-.inbox-message-attachments {
+.#{$prefix}-message-attachments {
 	display: table;
 	width: 100%;
 	margin: 5px 0;
@@ -248,7 +250,7 @@
 	}
 }
 
-.inbox-footer-controls {
+.#{$prefix}-footer-controls {
 	& > li {
 		display: inline-block;
 		&:after {

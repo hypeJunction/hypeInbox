@@ -19,29 +19,33 @@ module.exports = function (grunt) {
 			}
 		},
 		compass: {
-			release: {
-				options: {
-					sassDir: 'sass/',
-					cssDir: 'views/default/css/framework/',
-					imagesDir: 'graphics/',
-					javascripts: 'views/default/js/framework/',
-					fonts: 'fonts/',
-					outputStyle: 'compact',
-					environment: 'production',
-					force: true
-				}
+			options: {
+				sassDir: 'sass/',
+				cssDir: 'views/default/css/',
+				imagesDir: 'graphics/',
+				force: true
+			},
+			dist: {
+				outputStyle: 'compact',
+				environment: 'production',
 			},
 			dev: {
-				options: {
-					sassDir: 'sass/',
-					cssDir: 'views/default/css/framework/',
-					imagesDir: 'graphics/',
-					javascripts: 'views/default/js/framework/',
-					fonts: 'fonts/',
-					outputStyle: 'expanded',
-					environment: 'development',
-					debugInfo: true,
-					force: true
+				outputStyle: 'expanded',
+				environment: 'development',
+				debugInfo: true,
+			}
+		},
+		bower: {
+			install: {
+				dev: {
+					bowerOptions: {
+						production: false
+					}
+				},
+				dist: {
+					bowerOptions: {
+						production: true
+					}
 				}
 			}
 		},
@@ -49,14 +53,18 @@ module.exports = function (grunt) {
 			dev: {
 				options: {}
 			},
-			release: {
+			dist: {
 				options: {
 					flags: ['no-dev']
 				}
-			},
+			}
 		},
-		copy: {
+		// Compress the release folder into an upload-ready zip file
+		compress: {
 			release: {
+				options: {
+					archive: '../../releases/<%= pkg.name %>/<%= pkg.name %>-<%= pkg.version %>.zip'
+				},
 				src: ['**',
 					'!node_modules/**',
 					'!Gruntfile.js',
@@ -69,44 +77,10 @@ module.exports = function (grunt) {
 					'!phpunit.xml',
 					'!nbproject/**',
 					'!config.rb',
+					'!release/**',
 					'!releases/**'
 				],
-				dest: 'release/',
-			}
-		},
-		// Clean the release folder
-		clean: {
-			release: {
-				src: ['release/']
-			}
-		},
-		// Compress the release folder into an upload-ready zip file
-		compress: {
-			release: {
-				options: {
-					archive: 'releases/<%= pkg.version %>.zip'
-				},
-				cwd: 'release/',
-				src: ['**/*'],
-				//dest: '<%= pkg.name %>/'
-			}
-		},
-		bower: {
-			install: {
-				dev: {
-					options: {
-						bowerOptions: {
-							production: true
-						}
-					}
-				},
-				release: {
-					options: {
-						bowerOptions: {
-							production: true
-						}
-					}
-				}
+				dest: '<%= pkg.name %>/'
 			}
 		},
 		phpunit: {
@@ -118,17 +92,13 @@ module.exports = function (grunt) {
 			}
 		}
 	});
-
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-version');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-composer');
 	grunt.loadNpmTasks('grunt-bower-task');
 	grunt.loadNpmTasks('grunt-phpunit');
-
 	grunt.registerTask('createPluginManifest', function () {
 		var pkg = grunt.file.readJSON('package.json')
 		var js2xmlparser = require('js2xmlparser');
@@ -144,7 +114,6 @@ module.exports = function (grunt) {
 			'license': pkg.license || nul,
 			'copyright': pkg.copyright || null,
 		};
-
 		var config = pkg.config.plugin_manifest;
 		for (var index in config) {
 			if (config.hasOwnProperty(index)) {
@@ -156,19 +125,22 @@ module.exports = function (grunt) {
 		var xml = js2xmlparser('plugin_manifest', manifest);
 		return grunt.file.write('manifest.xml', xml, {'encoding': 'utf8'});
 	});
-
-	grunt.registerTask('init', ['createPluginManifest', 'bower:install:dev', 'composer:dev:update', 'compass:dev']);
-	grunt.registerTask('default', ['watch']);
-	grunt.registerTask('release', [
-		'bower:install:release',
-		'composer:release:update',
+	grunt.registerTask('dev', [
 		'createPluginManifest',
-		'clean:release',
-		'copy:release',
-		'compress:release',
-		'clean:release'
+		'bower:install:dev',
+		'composer:dev:install',
+		'compass:dev'
 	]);
-	grunt.registerTask('test', ['phpunit']);
-
-	/** @todo: add Test task **/
+	grunt.registerTask('dist', [
+		'createPluginManifest',
+		'bower:install:dist',
+		'composer:dist:update',
+		'compass:dist'
+	]);
+	grunt.registerTask('default', ['dev']);
+	grunt.registerTask('release', [
+		'dist',
+		'compress:release'
+	]);
+	grunt.registerTask('test', ['dev', 'phpunit']);
 };

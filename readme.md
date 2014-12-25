@@ -54,27 +54,19 @@ Group relationship: member
 If downloading from github, you will need to run:
 ```sh
 
-# if you don't have grunt
-npm install -g grunt
-npm install -g grunt-cli
-
 # install node modules
 npm install
 
-# initialize the plugin, install bower and composer dependencies
-grunt init
+# initialize the plugin, install bower and composer dependencies in development mode
+grunt
 
-# compile sass
-grunt compile
+# initialize the plugin, install bower and composer dependencies in production mode
+grunt build:dist
 
 # watch for changes in sass, js, composer, bower etc
 grunt watch
 
 # to run phpunit tests
 grunt test
-
-# to create a clean Elgg plugin without all the dev overhead
-# release will be zipped into a releases folder
-grunt release
 
 ```
