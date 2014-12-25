@@ -66,20 +66,7 @@ $prefix: 'inbox';
 	}
 }
 .#{$prefix}-message-image-block {
-	position: relative;
-	@include box-sizing(border-box);
-	& > .elgg-image {
-		float: none;
-		position: absolute;
-		top: 0;
-		left: 0;
-		margin: 0 5px;
-	}
-	& > .elgg-body {
-		position: relative;
-		padding-left: 55px;
-		width: 100%;
-	}
+	@include image-block(40px, 10px);
 }
 .#{$prefix}-menu {
 	& > li {
