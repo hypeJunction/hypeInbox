@@ -65,8 +65,7 @@ $message = send_message(array(
 		));
 
 if (!$message) {
-// delete 
-	attachment if message failed to send
+	// delete attachment if message failed to send
 	foreach ($attachments as $attachment) {
 		$attachment->delete();
 	}
