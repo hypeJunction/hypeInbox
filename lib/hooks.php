@@ -539,9 +539,14 @@ function prepare_notification($hook, $type, $notification, $params) {
 	$ruleset = $config->getRuleset($message_type);
 	$type_label = $ruleset->getSingularLabel($language);
 
+	$attachments = $entity->getAttachments(array('limit' => 0));
+	if ($attachments && count($attachments)) {
+		$attachments = array_map('get_linked_entity_name', $attachments);
+	}
 	$body = array_filter(array(
 		($ruleset->hasSubject()) ? $entity->subject : '',
 		$entity->getBody(),
+		implode(', ', array_filter($attachments))
 	));
 
 	$notification_body = implode(PHP_EOL, $body);

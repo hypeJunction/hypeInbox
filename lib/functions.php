@@ -431,3 +431,18 @@ function get_page_owner($segments = array()) {
 	
 	return $owner;
 }
+
+/**
+ * Get entity URL wrapped in an <a></a> tag
+ * @return string
+ */
+function get_linked_entity_name($entity) {
+	if (elgg_instanceof($entity)) {
+		return elgg_view('output/url', array(
+			'text' => $entity->getDisplayName(),
+			'href' => $entity->getURL(),
+			'is_trusted' => true,
+		));
+	}
+	return '';
+}
