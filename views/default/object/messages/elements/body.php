@@ -8,7 +8,12 @@ $entity = elgg_extract('entity', $vars);
 $full = elgg_extract('full_view', $vars, false);
 
 if ($full) {
-	$body = elgg_trigger_plugin_hook('link:qualifiers', 'messages', array('source' => $entity->getBody()), $body);
+	$body = $entity->getBody();
+	if (elgg_view_exists('output/linkify')) {
+		$body = elgg_view('output/linkify', array(
+			'value' => $body,
+		));
+	}
 	echo elgg_view('output/longtext', array(
 		'value' => $body,
 		'class' => 'inbox-message-body',
