@@ -2,6 +2,8 @@
 
 namespace hypeJunction\Inbox;
 
+use ElggEntity;
+
 elgg_make_sticky_form('messages');
 
 $guid = get_input('guid');
@@ -29,7 +31,21 @@ if ($entity instanceof Message) {
 	$message_type = get_input('message_type', Message::TYPE_PRIVATE);
 }
 
-$attachments = Group::create(get_input('attachments'))->entities();
+$attachment_guids = get_input('attachments', array());
+
+if (class_exists('hypeJunction\\Filestore\\UploadHandler')) {
+	// files being uploaded via $_FILES
+	$uploads = hypeJunction\Filestore\UploadHandler::handle('attachments');
+	if ($uploads) {
+		foreach ($uploads as $upload) {
+			if ($upload->guid) {
+				$attachment_guids[] = $upload->guid;
+			}
+		}
+	}
+}
+
+$attachments = Group::create($attachment_guids)->entities();
 /* @var $attachments ElggEntity[] */
 
 $access_id = AccessCollection::create(array($sender_guid, $recipient_guids))->getCollectionId();
@@ -49,7 +65,8 @@ $message = send_message(array(
 		));
 
 if (!$message) {
-	// delete attachment if  message failed to send
+// delete 
+	attachment if message failed to send
 	foreach ($attachments as $attachment) {
 		$attachment->delete();
 	}
