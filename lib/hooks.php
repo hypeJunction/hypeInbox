@@ -541,7 +541,7 @@ function prepare_notification($hook, $type, $notification, $params) {
 
 	$attachments = $entity->getAttachments(array('limit' => 0));
 	if ($attachments && count($attachments)) {
-		$attachments = array_map('get_linked_entity_name', $attachments);
+		$attachments = array_map(__NAMESPACE__ . '\\get_linked_entity_name', $attachments);
 	}
 	$body = array_filter(array(
 		($ruleset->hasSubject()) ? $entity->subject : '',
