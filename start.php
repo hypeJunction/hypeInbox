@@ -1,7 +1,7 @@
 <?php
 
-/* hypeInbox
- *
+/**
+ * hypeInbox
  * Enhanced inbox for Elgg
  * 
  * @package    hypeJunction
