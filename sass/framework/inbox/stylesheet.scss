@@ -232,7 +232,10 @@ $prefix: 'inbox';
 			box-shadow: none;
 		}
 		&:nth-child(even) {
-			background: #f4f4f4;
+			background: $light-bg-color;
+		}
+		&:nth-child(odd) {
+			background: $lighter-bg-color;
 		}
 	}
 }

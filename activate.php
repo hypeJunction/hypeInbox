@@ -27,8 +27,8 @@ $message_types = array(
 	),
 	'__notification' => array(
 		'labels' => array(
-			'singular' => 'Notification',
-			'plural' => 'Notifications',
+			'singular' => 'Site Message',
+			'plural' => 'Site Messages',
 		),
 		'persistent' => false,
 	),

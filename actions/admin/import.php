@@ -22,7 +22,11 @@ $site = elgg_get_site_entity();
 
 foreach ($messages as $msg) {
 
-	$msg->msgHash = $msg->calcMessageHash();
+	if (!$msg instanceof Message) {
+		continue;
+	}
+	
+	$msg->msgHash = $msg->calcHash();
 
 	if ($msg->fromId == $site->guid) {
 		// if sent by site, qualify as a notification
