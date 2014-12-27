@@ -104,15 +104,6 @@ function init() {
 	// Replace page handler defined by messages plugin
 	elgg_unregister_page_handler('messages', 'messages_page_handler');
 	elgg_register_page_handler('messages', __NAMESPACE__ . '\\page_handler');
-
-	// Notifications
-	$type = Message::TYPE;
-	$subtype = Message::SUBTYPE;
-	$action = 'send:after';
-	elgg_register_notification_event($type, $subtype, array($action));
-	elgg_register_plugin_hook_handler('prepare', "notification:$action:$type:$subtype", __NAMESPACE__ . '\\prepare_notification');
-	// we only want message recipients to recieve a notification thus late priority
-	elgg_register_plugin_hook_handler('get', 'subscriptions', __NAMESPACE__ . '\\get_subscriptions', 9999);
 }
 
 /**
