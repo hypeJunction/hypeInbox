@@ -2,21 +2,15 @@
 @import "../../../../../sass/global/variables";
 @import "variables";
 
-$prefix: 'inbox';
-
-[class~=#{$prefix}] {
-	@include box-sizing(border-box);
-}
-
-.elgg-list {
-	& > .elgg-item-object-messages {
-		padding: 0;
+[class~="inbox"] {
+	&, & * {
+		@include box-sizing(border-box);
 	}
 }
 
-.#{$prefix}-message {
+.inbox-message {
 	z-index: 1;
-	padding: 5px;
+	padding: 10px;
 	position: relative;
 	&[data-href] {
 		cursor: pointer;
@@ -31,31 +25,31 @@ $prefix: 'inbox';
 		line-height: normal;
 		margin: 0;
 	}
-	&.#{$prefix}-message-unread {
+	&.inbox-message-unread {
 		background-color: $lighter-bg-color;
 		.elgg-menu-item-markunread {
 			display: none;
 		}
 	}
-	&.#{$prefix}-message-read {
+	&.inbox-message-read {
 		background-color: #ffffff;
 		.elgg-menu-item-unread,
 		.elgg-menu-item-markread {
 			display: none;
 		}
 	}
-	&.#{$prefix}-message-form-row {
+	&.inbox-message-form-row {
 		[type="checkbox"] {
 			float: left;
 			margin: 5px;
 		}
-		.#{$prefix}-message-image-block {
-			margin-left: 20px;
+		.inbox-message-image-block {
+			margin-left: 25px;
 		}
 	}
-	&.#{$prefix}-message-threaded {
+	&.inbox-message-threaded {
 		.elgg-content {
-			.#{$prefix}-message-subject + .#{$prefix}-message-body-excerpt:before {
+			.inbox-message-subject + .inbox-message-body-excerpt:before {
 				content: " - ";
 				display: inline;
 			}
@@ -65,17 +59,17 @@ $prefix: 'inbox';
 		margin: 5px 0;
 	}
 }
-.#{$prefix}-message-image-block {
+.inbox-message-image-block {
 	@include image-block(40px, 10px);
 }
-.#{$prefix}-menu {
+.inbox-menu {
+	margin-left: 0;
 	& > li {
-		.#{$prefix}-message-count-indicator,
-		.#{$prefix}-message-unread-indicator {
+		.inbox-message-count-indicator,
+		.inbox-message-unread-indicator {
 			&, &:hover {
 				color: white;
 				background: $border-color;
-				@include border-radius(1000px);
 				padding: 2px 4px;
 				font-size: 11px;
 				font-weight: bold;
@@ -83,9 +77,11 @@ $prefix: 'inbox';
 				height: 20px;
 				min-width: 20px;
 				text-align: center;
+				@include border-radius(1000px);
+				@include box-sizing(border-box);
 			}
 		}
-		.#{$prefix}-message-unread-indicator {
+		.inbox-message-unread-indicator {
 			&, &:hover {
 				background: $primary-color;
 			}
@@ -93,14 +89,20 @@ $prefix: 'inbox';
 	}
 }
 
-.#{$prefix}-messages-control-group {
+.inbox-messages-control-group {
 	display: inline-block;
-	padding: 4px;
-	margin: 0 0 5px 0;
+	padding: 5px 15px;
+	margin: 5px 0;
+	width: 100%;
+	border-bottom: 1px solid $border-color;
+	border-top: 1px solid $border-color;
+	@include box-sizing(border-box);
 }
+
 .elgg-menu-inbox, .elgg-menu-inbox-thread {
 	margin: 0 10px 0 0;
 	display: inline-block;
+	overflow: visible;
 	& > li {
 		display: inline-block;
 		position: relative;
@@ -123,7 +125,7 @@ $prefix: 'inbox';
 			display: none;
 			position: absolute;
 			right: 0;
-			margin: 2px -1px;
+			margin: -1px;
 			border: 1px solid $border-color;
 			@include box-shadow(2px 2px 3px $border-color);
 			background: #fff;
@@ -139,6 +141,7 @@ $prefix: 'inbox';
 					width: 100%;
 					padding: 5px 10px;
 					background: #fff;
+					@include box-sizing(border-box);
 					&:hover {
 						background: $lighter-bg-color;
 					}
@@ -164,29 +167,29 @@ $prefix: 'inbox';
 		margin-left: 8px;
 	}
 }
-.#{$prefix}-icon-trash {
+.inbox-icon-trash {
 	@include icon($fa-var-trash);
 }
-.#{$prefix}-icon-send {
+.inbox-icon-send {
 	@include icon($fa-var-paper-plane-o);
 }
-.#{$prefix}-icon-markread {
+.inbox-icon-markread {
 	@include icon($fa-var-eye);
 }
-.#{$prefix}-icon-markunread {
+.inbox-icon-markunread {
 	@include icon($fa-var-eye-slash);
 }
-.#{$prefix}-icon-attachment {
+.inbox-icon-attachment {
 	@include icon($fa-var-paperclip);
 }
-.#{$prefix}-icon-reply {
+.inbox-icon-reply {
 	@include icon($fa-var-reply-all);
 }
-.#{$prefix}-hidden {
+.inbox-hidden {
 	display: none !important;
 }
 
-.ui-dialog.#{$prefix}-dialog-window {
+.ui-dialog.inbox-dialog-window {
 	@include modal;
 }
 
@@ -195,13 +198,14 @@ $prefix: 'inbox';
 		margin-bottom: 0;
 	}
 }
-.#{$prefix}-form-row {
+.inbox-form-row {
 	margin-bottom: 15px;
 }
 
-.#{$prefix}-message-image-attachments {
+.inbox-message-image-attachments {
 	@include clearfix;
 	& > div {
+		@include box-sizing(border-box);
 		@media #{$medium} {
 			float: left;
 			width: 33.33333%;
@@ -212,7 +216,7 @@ $prefix: 'inbox';
 		}
 	}
 }
-.#{$prefix}-message-attachments {
+.inbox-message-attachments {
 	display: table;
 	width: 100%;
 	margin: 5px 0;
@@ -240,7 +244,7 @@ $prefix: 'inbox';
 	}
 }
 
-.#{$prefix}-footer-controls {
+.inbox-footer-controls {
 	& > li {
 		display: inline-block;
 		&:after {

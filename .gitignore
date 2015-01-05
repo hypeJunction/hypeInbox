@@ -4,12 +4,3 @@
 robots.txt
 /nbproject/
 /.sass-cache/
-/node_modules/
-/vendors/
-/release/
-/releases/
-/tests/coverage/
-/tests/logs/
-manifest.xml
-/views/default/css/
-composer.lock
