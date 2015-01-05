@@ -47,26 +47,3 @@ Recipient: Any user
 Relationship: --blank--
 Inverse relationship: --blank--
 Group relationship: member
-
-
-### Build
-
-If downloading from github, you will need to run:
-```sh
-
-# install node modules
-npm install
-
-# initialize the plugin, install bower and composer dependencies, compile stylesheets in development mode
-grunt
-
-# install bower and composer dependencies, compile stylesheets in production mode
-grunt dist
-
-# watch for changes in sass, js, composer, bower etc
-grunt watch
-
-# to run phpunit tests
-grunt test
-
-```
