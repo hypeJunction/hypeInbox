@@ -30,6 +30,20 @@ $messages = $inbox->getMessages(array(
 	'offset' => $offset,
 		));
 
+if ($threaded && $messages) {
+	$latest_messages = array();
+// Fix for 'GROUP_BY' statememtn returning wrong order
+	foreach ($messages as $msg) {
+		$lastMsg = $msg->getVolatileData('select:lastMsg');
+		if ($lastMsg && $lastMsg != $msg->guid) {
+			$latest_messages[] = get_entity($lastMsg);
+		} else {
+			$latest_messages[] = $msg;
+		}
+	}
+	$messages = $latest_messages;
+}
+
 $params = array(
 	'items' => $messages,
 	'limit' => $limit,

@@ -243,7 +243,9 @@ class Inbox {
 			$options['joins']['md_toId'] = "JOIN {$this->dbprefix}metadata md_toId ON e.guid = md_toId.entity_guid";
 			$options['wheres'][] = "md_toId.name_id = {$map['toId']} AND md_toId.value_id = {$map[$this->owner->guid]}";
 		} else if ($this->threaded) {
+			$options['selects'][] = 'MAX(e.guid) as lastMsg';
 			$options['group_by'] = "md_msgHash.value_id";
+			$options['order_by'] = 'MAX(e.guid) DESC';
 		}
 		
 		if ($this->msgType) {
