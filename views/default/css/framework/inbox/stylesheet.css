@@ -19,18 +19,18 @@
 .inbox-message-image-block > .elgg-body { position: relative; padding-left: 50px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 .inbox-menu { margin-left: 0; }
-.inbox-menu > li .inbox-message-count-indicator, .inbox-menu > li .inbox-message-count-indicator:hover, .inbox-menu > li .inbox-message-unread-indicator, .inbox-menu > li .inbox-message-unread-indicator:hover { color: white; background: #cccccc; padding: 2px 4px; font-size: 11px; font-weight: bold; line-height: 16px; height: 20px; min-width: 20px; text-align: center; -moz-border-radius: 1000px; -webkit-border-radius: 1000px; border-radius: 1000px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-.inbox-menu > li .inbox-message-unread-indicator, .inbox-menu > li .inbox-message-unread-indicator:hover { background: #4690d6; }
+.inbox-menu > li .inbox-message-count-indicator, .inbox-menu > li .inbox-message-count-indicator:hover, .inbox-menu > li .inbox-message-unread-indicator, .inbox-menu > li .inbox-message-unread-indicator:hover { color: white; background: #c3c3c3; padding: 2px 4px; font-size: 11px; font-weight: bold; line-height: 16px; height: 20px; min-width: 20px; text-align: center; -moz-border-radius: 1000px; -webkit-border-radius: 1000px; border-radius: 1000px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+.inbox-menu > li .inbox-message-unread-indicator, .inbox-menu > li .inbox-message-unread-indicator:hover { background: #306eb4; }
 
-.inbox-messages-control-group { display: inline-block; padding: 5px 15px; margin: 5px 0; width: 100%; border-bottom: 1px solid #cccccc; border-top: 1px solid #cccccc; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+.inbox-messages-control-group { display: inline-block; padding: 5px 15px; margin: 5px 0; width: 100%; border-bottom: 1px solid #c3c3c3; border-top: 1px solid #c3c3c3; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 .elgg-menu-inbox, .elgg-menu-inbox-thread { margin: 0 10px 0 0; display: inline-block; overflow: visible; }
 .elgg-menu-inbox > li, .elgg-menu-inbox-thread > li { display: inline-block; position: relative; }
-.elgg-menu-inbox > li > a, .elgg-menu-inbox-thread > li > a { padding: 5px 10px; background: #fafafa; border: 1px solid #cccccc; color: #222; border-left: 0; }
+.elgg-menu-inbox > li > a, .elgg-menu-inbox-thread > li > a { padding: 5px 10px; background: #fafafa; border: 1px solid #c3c3c3; color: #222; border-left: 0; }
 .elgg-menu-inbox > li > a span, .elgg-menu-inbox-thread > li > a span { color: #222; }
-.elgg-menu-inbox > li:first-child > a, .elgg-menu-inbox-thread > li:first-child > a { border-left: 1px solid #cccccc; }
-.elgg-menu-inbox > li .elgg-child-menu, .elgg-menu-inbox-thread > li .elgg-child-menu { display: none; position: absolute; right: 0; margin: -1px; border: 1px solid #cccccc; -moz-box-shadow: 2px 2px 3px #cccccc; -webkit-box-shadow: 2px 2px 3px #cccccc; box-shadow: 2px 2px 3px #cccccc; background: #fff; z-index: 2; width: 150px; }
-.elgg-menu-inbox > li .elgg-child-menu > li, .elgg-menu-inbox-thread > li .elgg-child-menu > li { border-bottom: 1px solid #cccccc; }
+.elgg-menu-inbox > li:first-child > a, .elgg-menu-inbox-thread > li:first-child > a { border-left: 1px solid #c3c3c3; }
+.elgg-menu-inbox > li .elgg-child-menu, .elgg-menu-inbox-thread > li .elgg-child-menu { display: none; position: absolute; right: 0; margin: -1px; border: 1px solid #c3c3c3; -moz-box-shadow: 2px 2px 3px #c3c3c3; -webkit-box-shadow: 2px 2px 3px #c3c3c3; box-shadow: 2px 2px 3px #c3c3c3; background: #fff; z-index: 2; width: 150px; }
+.elgg-menu-inbox > li .elgg-child-menu > li, .elgg-menu-inbox-thread > li .elgg-child-menu > li { border-bottom: 1px solid #c3c3c3; }
 .elgg-menu-inbox > li .elgg-child-menu > li:last-child, .elgg-menu-inbox-thread > li .elgg-child-menu > li:last-child { border-bottom: none; }
 .elgg-menu-inbox > li .elgg-child-menu > li > a, .elgg-menu-inbox-thread > li .elgg-child-menu > li > a { display: block; width: 100%; padding: 5px 10px; background: #fff; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 .elgg-menu-inbox > li .elgg-child-menu > li > a:hover, .elgg-menu-inbox-thread > li .elgg-child-menu > li > a:hover { background: #fafafa; }
@@ -59,12 +59,12 @@
 
 .inbox-hidden { display: none !important; }
 
-.ui-dialog.inbox-dialog-window { position: absolute; top: 0; left: 0; outline: 0; border: 1px solid #cccccc; background: #FFF; padding: 0; -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; font-size: 14px; }
-.ui-dialog.inbox-dialog-window .ui-dialog-titlebar { margin: 0; padding: 10px; background: none; border: none; border-bottom: 1px solid #cccccc; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; }
+.ui-dialog.inbox-dialog-window { position: absolute; top: 0; left: 0; outline: 0; border: 1px solid #c3c3c3; background: #FFF; padding: 0; -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; font-size: 14px; }
+.ui-dialog.inbox-dialog-window .ui-dialog-titlebar { margin: 0; padding: 10px; background: none; border: none; border-bottom: 1px solid #c3c3c3; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; }
 .ui-dialog.inbox-dialog-window .ui-dialog-titlebar .ui-dialog-title { margin: 0; }
 .ui-dialog.inbox-dialog-window .ui-dialog-titlebar-close { position: absolute; right: 0; top: 0; margin: 0; padding: 0; border: none; background: none; height: 35px; width: 40px; display: block; }
-.ui-dialog.inbox-dialog-window .ui-dialog-titlebar-close .ui-icon-closethick { text-indent: 0; color: transparent; position: relative; display: inline-block; font-family: FontAwesome; font-style: normal; font-weight: normal; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: none; border: 0; margin: 0 auto; left: 0; right: 0; width: 40px; height: 35px; border-left: 1px solid #cccccc; }
-.ui-dialog.inbox-dialog-window .ui-dialog-titlebar-close .ui-icon-closethick:after { position: absolute; top: 0; right: 0; content: "\f00d"; text-align: center; font-size: 16px; line-height: 35px; color: #b8b8b8; padding: 0 12px; }
+.ui-dialog.inbox-dialog-window .ui-dialog-titlebar-close .ui-icon-closethick { text-indent: 0; color: transparent; position: relative; display: inline-block; font-family: FontAwesome; font-style: normal; font-weight: normal; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: none; border: 0; margin: 0 auto; left: 0; right: 0; width: 40px; height: 35px; border-left: 1px solid #c3c3c3; }
+.ui-dialog.inbox-dialog-window .ui-dialog-titlebar-close .ui-icon-closethick:after { position: absolute; top: 0; right: 0; content: "\f00d"; text-align: center; font-size: 16px; line-height: 35px; color: #afafaf; padding: 0 12px; }
 
 .elgg-form-messages-inbox input, .elgg-form-messages-inbox textarea, .elgg-form-messages-inbox select { margin-bottom: 0; }
 
@@ -78,7 +78,7 @@
   .inbox-message-image-attachments > div:nth-of-type(1n) { clear: none; }
   .inbox-message-image-attachments > div:nth-of-type(3n+1) { clear: both; } }
 
-.inbox-message-attachments { display: table; width: 100%; margin: 5px 0; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; }
+.inbox-message-attachments { display: table; width: 100%; margin: 5px 0; border-top: 1px solid #c3c3c3; border-bottom: 1px solid #c3c3c3; }
 .inbox-message-attachments > div { padding: 3px; }
 .inbox-message-attachments > div > div { padding: 2px; font-size: 90%; }
 .inbox-message-attachments > div img, .inbox-message-attachments > div img:hover { border: none; padding: 0; margin: 0; max-width: 25px; box-shadow: none; }
@@ -86,5 +86,5 @@
 .inbox-message-attachments > div:nth-child(odd) { background: #fafafa; }
 
 .inbox-footer-controls > li { display: inline-block; }
-.inbox-footer-controls > li:after { content: "|"; color: #cccccc; display: inline-block; padding: 0 5px; }
+.inbox-footer-controls > li:after { content: "|"; color: #c3c3c3; display: inline-block; padding: 0 5px; }
 .inbox-footer-controls > li:last-child:after { display: none; }
