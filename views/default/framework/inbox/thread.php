@@ -30,6 +30,7 @@ echo elgg_view('framework/inbox/list', array(
 	'offset' => $offset,
 	'full_view' => true,
 	'threaded' => false,
+	'list_class' => 'inbox-messages-thread-full',
 	
 	// hypeList options
 	'list_id' => "inbox-thread-" . $entity->getHash(),
