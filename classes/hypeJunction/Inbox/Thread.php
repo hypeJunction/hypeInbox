@@ -141,7 +141,8 @@ class Thread {
 	public function delete($recursive = true) {
 		$success = 0;
 		$count = $this->getCount();
-		$messages = $this->getAll()->setIncrementOffset(false);
+		$messages = $this->getAll();
+		$messages->setIncrementOffset(false);
 		foreach ($messages as $message) {
 			if ($message->delete($recursive)) {
 				$success++;
