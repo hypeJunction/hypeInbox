@@ -12,7 +12,6 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			$(document).on('click', '.inbox-message[data-href]', inbox.navigateToMessage);
 			$(document).on('click', '#inbox-form-toggle-all', inbox.toggleAll);
 			$(document).on('click', '[data-submit]', inbox.submitBulkForm);
-			$(document).on('click', '.elgg-menu-item-delete > a', inbox.deleteMessage);
 			$(document).on('click', '.elgg-menu-item-markread > a', inbox.markMessageAsRead);
 			$(document).on('click', '.elgg-menu-item-markunread > a', inbox.markMessageAsUnread);
 			$(document).on('submit', '.elgg-form-messages-send', inbox.sendMessage);
@@ -45,33 +44,6 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 			e.preventDefault();
 
 			$form.attr('action', $elem.attr('href')).trigger('submit');
-		},
-		deleteMessage: function (e) {
-			if ($(e.target).closest('.elgg-item-object-messages').length === 0) {
-				return;
-			}
-
-			var $elem = $(this);
-
-			if ($elem.data('confirm')) {
-				if (!confirm($elem.data('confirm'))) {
-					return false;
-				}
-			}
-
-			e.preventDefault();
-
-			elgg.action($elem.attr('href'), {
-				beforeSend: function () {
-					$('body').addClass('elgg-state-loading');
-				},
-				complete: function () {
-					$('body').removeClass('elgg-state-loading');
-				},
-				success: function (data) {
-					$elem.closest('.elgg-item-object-messages').slideUp().remove();
-				}
-			});
 		},
 		markMessageAsRead: function (e) {
 			if ($(e.target).closest('.elgg-item-object-messages').length === 0) {
@@ -167,5 +139,3 @@ define(['jquery', 'elgg'], function ($, elgg, ui) {
 
 	inbox.init();
 });
-
-
