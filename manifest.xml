@@ -20,6 +20,11 @@
 		<type>plugin</type>
 		<name>hypeLists</name>
 	</requires>
+	<requires>
+		<type>priority</type>
+		<plugin>messages</plugin>
+		<priority>after</priority>
+	</requires>
 	<suggests>
 		<type>plugin</type>
 		<name>hypeScraper</name>
