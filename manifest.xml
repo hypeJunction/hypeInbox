@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
-	<id>hypeInbox</id>
 	<name>hypeInbox</name>
-	<author>hypejunction(ismayil@hypejunction.com)</author>
+	<id>hypeInbox</id>
 	<version>3.0.3</version>
+
 	<description>Enhanced messaging for Elgg</description>
-	<license>GPL-2.0</license>
-	<copyright>2011-2014 (c) Ismayil Khayredinov</copyright>
+	<category>hypeJunction</category>
 	<category>messages</category>
+
+	<author>Ismayil Khayredinov (ismayil.khayredinov@gmail.com)</author>
+	<website>http://hypeJunction.com</website>
+	<copyright>2011-2014 (c) Ismayil Khayredinov</copyright>
+	<license>GNU Public License version 2</license>
+	
 	<requires>
 		<type>elgg_release</type>
 		<version>1.9</version>
@@ -25,6 +30,7 @@
 		<plugin>messages</plugin>
 		<priority>after</priority>
 	</requires>
+
 	<suggests>
 		<type>plugin</type>
 		<name>hypeScraper</name>
@@ -33,4 +39,5 @@
 		<type>plugin</type>
 		<name>elgg_dropzone</name>
 	</suggests>
+	
 </plugin_manifest>
