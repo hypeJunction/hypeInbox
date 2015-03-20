@@ -1,4 +1,4 @@
-define(['jquery', 'elgg'], function ($, elgg, ui) {
+define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 
 	var inbox = {
 		/**
