@@ -10,7 +10,7 @@ $tags = elgg_view('output/tags', array(
 	'entity' => $entity
 		));
 
-$title = elgg_view('output/url', array(
+echo elgg_view('output/url', array(
 	'text' => "<b>$title</b> - $summary",
 	'href' => $entity->getURL(),
 		));

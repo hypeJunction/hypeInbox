@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 elgg_load_css('fonts.font-awesome');
 elgg_load_css('inbox.base.css');
@@ -22,7 +22,7 @@ if ($message instanceof Message) {
 
 }
 
-$params = prepare_form_vars($recipients, $message_type, $entity);
+$params = hypeInbox()->model->prepareFormValues($recipients, $message_type, $entity);
 
 $title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:message:$message_type:singular")));
 

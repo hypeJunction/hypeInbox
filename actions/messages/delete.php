@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $threaded = get_input('threaded', false);
 $guids = get_input('guids', array());
@@ -34,13 +34,13 @@ if (!empty($guids)) {
 if ($count > 1) {
 	$msg[] = elgg_echo('inbox:delete:success', array($success));
 	if ($notfound > 0) {
-		$msg[] = elgg_echo('hj:approve:error:notfound', array($notfound));
+		$msg[] = elgg_echo('inbox:error:notfound', array($notfound));
 	}
 	if ($persistent > 0) {
-		$msg[] = elgg_echo('hj:approve:error:canedit', array($persistent));
+		$msg[] = elgg_echo('inbox:error:canedit', array($persistent));
 	}
 	if ($error > 0) {
-		$msg[] = elgg_echo('hj:approve:error:unknown', array($error));
+		$msg[] = elgg_echo('inbox:error:unknown', array($error));
 	}
 	$forward = REFERRER;
 } else if ($success) {

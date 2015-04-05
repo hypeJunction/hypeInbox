@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $logged_in = elgg_get_logged_in_user_entity();
 $entity = elgg_extract('entity', $vars);
 $full = elgg_extract('full_view', $vars, false);

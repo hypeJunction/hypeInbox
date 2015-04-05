@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $hash = get_input('hash');
 

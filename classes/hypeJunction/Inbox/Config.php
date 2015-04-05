@@ -2,21 +2,107 @@
 
 namespace hypeJunction\Inbox;
 
-use ElggUser;
-
 class Config {
 
 	private $dbprefix;
+	private $plugin;
+	private $settings;
+	private $config = array(
+		'legacy_mode' => true,
+		'pagehandler_id' => 'messages',
+	);
 	static $messageTypes;
 	static $userTypes;
 	static $userRelationships;
 	static $userGroupRelationships;
 
+	const PLUGIN_ID = 'hypeInbox';
+	const TYPE_NOTIFICATION = '__notification';
+	const TYPE_PRIVATE = '__private';
+
 	/**
 	 * Constructor
+	 * @param ElggPlugin $plugin ElggPlugin
 	 */
-	public function __construct() {
+	public function __construct($plugin = null) {
+		if (!$plugin) {
+			return self::factory();
+		}
+		$this->plugin = $plugin;
 		$this->dbprefix = elgg_get_config('dbprefix');
+	}
+
+	/**
+	 * Config factory
+	 * @return Config
+	 */
+	public static function factory() {
+		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID);
+		return new Config($plugin);
+	}
+
+	/**
+	 * Initializes config values on system init
+	 * @return void
+	 */
+	public function setLegacyConfig() {
+
+		// legacy definitions
+		define('HYPEINBOX', self::PLUGIN_ID);
+		define('HYPEINBOX_NOTIFICATION', self::TYPE_NOTIFICATION);
+		define('HYPEINBOX_PRIVATE', self::TYPE_PRIVATE);
+
+		$message_types = $this->getMessageTypes();
+		elgg_set_config('inbox_message_types', $message_types);
+		elgg_set_config('inbox_user_types', $this->getUserTypes());
+		elgg_set_config('inbox_user_relationships', $this->getUserRelationships());
+		elgg_set_config('inbox_user_group_relationships', $this->getUserGroupRelationships());
+	}
+
+	/**
+	 * Registers label translations
+	 * @return void
+	 */
+	public function registerLabels() {
+		$message_types = $this->getMessageTypes();
+		
+		// Register label translations for custom message types
+		foreach ($message_types as $type => $options) {
+			$ruleset = $this->getRuleset($type);
+			add_translation('en', array(
+				$ruleset->getSingularLabel(false) => $ruleset->getSingularLabel('en'),
+				$ruleset->getPluralLabel(false) => $ruleset->getPluralLabel('en')
+			));
+		}
+	}
+
+	/**
+	 * Returns all plugin settings
+	 * @return array
+	 */
+	public function all() {
+		if (!isset($this->settings)) {
+			$this->settings = array_merge($this->config, $this->plugin->getAllSettings());
+		}
+		return $this->settings;
+	}
+
+	/**
+	 * Returns a plugin setting
+	 *
+	 * @param string $name Setting name
+	 * @return mixed
+	 */
+	public function get($name, $default = null) {
+		return elgg_extract($name, $this->all(), $default);
+	}
+
+	/**
+	 * Returns plugin path
+	 * @return string
+	 */
+	public function getPath() {
+		return $this->plugin->getPath();
 	}
 
 	/**
@@ -72,7 +158,7 @@ class Config {
 		}
 		return self::$userTypes;
 	}
-	
+
 	/**
 	 * Get a list of existing <user>-<user> relationships
 	 * @return array
@@ -131,7 +217,7 @@ class Config {
 	 * @return array
 	 */
 	public function getSetting($name = '') {
-		$value = elgg_get_plugin_setting($name, HYPEINBOX);
+		$value = $this->get($name);
 		return (is_string($value)) ? unserialize($value) : array();
 	}
 

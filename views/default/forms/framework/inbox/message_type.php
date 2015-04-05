@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $name = elgg_extract('name', $vars, '__new');
 
@@ -80,18 +80,18 @@ echo '<div><label>' . elgg_view('input/checkbox', array(
 echo '<br />';
 
 // allowed recipients and senders
-$types = elgg_get_config('inbox_user_types');
+$types = hypeInbox()->config->getUserTypes();
 foreach ($types as $t => $opts) {
 	$user_types_options[$t] = elgg_echo("inbox:user_type:$t");
 }
 
-$relationships = elgg_get_config('inbox_user_relationships');
+$relationships = hypeInbox()->config->getUserRelationships();
 $user_relationships_options = array('all' => '');
 foreach ($relationships as $r) {
 	$user_relationships_options[$r] = $r;
 }
 
-$group_relationships = elgg_get_config('inbox_user_group_relationships');
+$group_relationships = hypeInbox()->config->getUserGroupRelationships();
 $user_group_relationships_options = array('all' => '');
 foreach ($group_relationships as $r) {
 	$user_group_relationships_options[$r] = $r;

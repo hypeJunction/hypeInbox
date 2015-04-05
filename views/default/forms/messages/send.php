@@ -3,8 +3,6 @@
  * Compose message form
  */
 
-namespace hypeJunction\Inbox;
-
 $entity = elgg_extract('entity', $vars, false);
 $message_type = elgg_extract('message_type', $vars);
 $recipient_guids = elgg_extract('recipient_guids', $vars, array());
@@ -33,7 +31,7 @@ if (!$entity) {
 			'name' => 'recipient_guids',
 			'value' => $recipient_guids,
 			'multiple' => $multiple,
-			'callback' => __NAMESPACE__ . '\\recipient_tokeninput_callback',
+			'callback' => 'hypeJunction\\hypeInbox\\Models\\Model::searchRecipients',
 			'query' => array(
 				'message_type' => $message_type,
 			)

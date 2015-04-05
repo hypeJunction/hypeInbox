@@ -1,8 +1,11 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 use ElggEntity;
+use hypeJunction\Filestore\UploadHandler;
+use hypeJunction\Inbox\AccessCollection;
+use hypeJunction\Inbox\Config;
+use hypeJunction\Inbox\Group;
+use hypeJunction\Inbox\Message;
 
 elgg_make_sticky_form('messages');
 
@@ -35,7 +38,7 @@ $attachment_guids = get_input('attachments', array());
 
 if (class_exists('hypeJunction\\Filestore\\UploadHandler')) {
 	// files being uploaded via $_FILES
-	$uploads = \hypeJunction\Filestore\UploadHandler::handle('attachments');
+	$uploads = UploadHandler::handle('attachments');
 	if ($uploads) {
 		foreach ($uploads as $upload) {
 			if ($upload->guid) {
@@ -55,7 +58,7 @@ foreach ($attachments as $attachment) {
 	$attachment->save();
 }
 
-$message = send_message(array(
+$message = hypeInbox()->actions->sendMessage(array(
 	'sender' => $sender_guid,
 	'recipients' => $recipient_guids,
 	'subject' => $subject,
@@ -85,7 +88,7 @@ $type_label = $ruleset->getSingularLabel($language);
 
 $attachments = $message->getAttachments(array('limit' => 0));
 if ($attachments && count($attachments)) {
-	$attachments = array_map(__NAMESPACE__ . '\\get_linked_entity_name', $attachments);
+	$attachments = array_map(array(hypeInbox()->model, 'getLinkTag'), $attachments);
 }
 
 $body = array_filter(array(

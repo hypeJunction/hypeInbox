@@ -4,13 +4,16 @@ namespace hypeJunction\Inbox;
 
 use ElggEntity;
 use ElggObject;
+use ElggSite;
 
 class Message extends ElggObject {
 
+	const CLASSNAME = __CLASS__;
+	
 	const TYPE = 'object';
 	const SUBTYPE = 'messages';
-	const TYPE_NOTIFICATION = '__notification';
-	const TYPE_PRIVATE = '__private';
+	const TYPE_NOTIFICATION = Config::TYPE_NOTIFICATION;
+	const TYPE_PRIVATE = Config::TYPE_PRIVATE;
 
 	/**
 	 * Initialize object attributes
@@ -33,7 +36,7 @@ class Message extends ElggObject {
 	 *   'attachments'  => Entities to attach, or their guids
 	 * @return Message
 	 */
-	public static function construct(array $options = array()) {
+	public static function factory(array $options = array()) {
 
 		$defaults = array(
 			'sender' => 0,
@@ -517,4 +520,14 @@ class Message extends ElggObject {
 		return new Group;
 	}
 
+	/**
+	 * Alias for factory
+	 * 
+	 * @param array $options Options
+	 * @return Message
+	 * @deprecated since version 3.1
+	 */
+	public static function construct(array $options = array()) {
+		return self::factory($options);
+	}
 }

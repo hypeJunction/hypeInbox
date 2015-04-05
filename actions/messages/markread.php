@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $threaded = get_input('threaded', false);
 $guids = get_input('guids', array());

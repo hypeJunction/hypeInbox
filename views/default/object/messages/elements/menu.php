@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $params = array(
 	'handler' => 'messages',
 	'sort_by' => 'priority',

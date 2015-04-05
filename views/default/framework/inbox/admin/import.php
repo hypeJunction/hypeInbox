@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 elgg_require_js('framework/inbox/admin');
 
 $title = elgg_echo('inbox:admin:import');

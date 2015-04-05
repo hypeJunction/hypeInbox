@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $page_owner = elgg_get_page_owner_entity();
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);

@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $entity = elgg_extract('entity', $vars);
 
 echo elgg_view('input/checkbox', array(

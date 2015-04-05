@@ -1,8 +1,3 @@
-<?php
-
-namespace hypeJunction\Inbox;
-?>
-
 <div class="inbox-messages-controls">
 	<div class="inbox-messages-control-group">
 		<?php

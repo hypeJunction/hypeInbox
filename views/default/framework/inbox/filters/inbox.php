@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $message_type = elgg_extract('message_type', $vars, 'all');
 
 $user = elgg_get_page_owner_entity();
@@ -9,7 +7,7 @@ $user = elgg_get_page_owner_entity();
 $i = 100;
 
 $text = elgg_echo('inbox:all');
-$count = count_unread_messages(null, $user);
+$count = hypeInbox()->model->countUnreadMessages(null, $user);
 if ($count) {
 	$text .= ' <span class="inbox-unread-count">' . $count . '</span>';
 }
@@ -23,11 +21,11 @@ $tabs = array(
 //	)
 );
 
-$message_types = get_incoming_message_types($user);
+$message_types = hypeInbox()->model->getIncomingMessageTypes($user);
 if ($message_types) {
 	foreach ($message_types as $type) {
 		$text = elgg_echo("item:object:message:$type:plural");
-		$count = count_unread_messages($type, $user);
+		$count = hypeInbox()->model->countUnreadMessages($type, $user);
 		if ($count) {
 			$text .= ' <span class="inbox-unread-count">' . $count . '</span>';
 		}

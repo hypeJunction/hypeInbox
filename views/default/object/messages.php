@@ -1,12 +1,12 @@
 <?php
 
+use hypeJunction\Inbox\Message;
+
 /**
  * Display a message
  * @uses $vars['entity']   Message
  * @uses $vars['threaded'] Threaded message display
  */
-
-namespace hypeJunction\Inbox;
 
 $entity = elgg_extract('entity', $vars);
 /* @var $entity Message */

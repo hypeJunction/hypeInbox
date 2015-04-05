@@ -1,6 +1,7 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
+use hypeJunction\Inbox\Thread;
 
 $limit = get_input('limit', 5);
 $offset = get_input('offset', null);

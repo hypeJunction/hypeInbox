@@ -1,11 +1,9 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/admin');
 
-$message_types = elgg_get_config('inbox_message_types');
+$message_types = hypeInbox()->config->getMessageTypes();
 
 foreach ($message_types as $type => $options) {
 

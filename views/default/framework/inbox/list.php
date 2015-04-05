@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $list_params = array(
 	'container_class' => 'inbox-messages',
 	'full_view' => false,

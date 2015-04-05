@@ -1,7 +1,5 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 $message_type = elgg_extract('message_type', $vars, 'all');
 
 $user = elgg_get_page_owner_entity();
@@ -17,7 +15,7 @@ $tabs = array(
 //	)
 );
 
-$message_types = get_outgoing_message_types($user);
+$message_types = hypeInbox()->model->getOutgoingMessageTypes($user);
 if ($message_types) {
 	foreach ($message_types as $type) {
 		$text = elgg_echo("item:object:message:$type:plural");

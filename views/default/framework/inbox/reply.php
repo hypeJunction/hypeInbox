@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $entity = elgg_extract('entity', $vars, false);
 if (!$entity instanceof Message) {
@@ -9,7 +9,7 @@ if (!$entity instanceof Message) {
 
 elgg_push_context('inbox-reply');
 echo '<div class="inbox-thread-reply-form" id="reply">';
-$form_vars = prepare_form_vars($entity->getParticipantGuids(), $entity->getMessageType(), $entity);
+$form_vars = hypeInbox()->model->prepareFormValues($entity->getParticipantGuids(), $entity->getMessageType(), $entity);
 $form = elgg_view('framework/inbox/compose', $form_vars);
 echo elgg_view_module('aside', elgg_echo('inbox:reply'), $form);
 echo '</div>';

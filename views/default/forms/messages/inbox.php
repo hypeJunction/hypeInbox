@@ -1,8 +1,7 @@
 <?php
 
-namespace hypeJunction\Inbox;
-
 use ElggUser;
+use hypeJunction\Inbox\Inbox;
 
 $user = elgg_get_page_owner_entity();
 if (!$user instanceof ElggUser) {

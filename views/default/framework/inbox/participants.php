@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $entity = elgg_extract('entity', $vars, false);
 if (!$entity instanceof Message) {

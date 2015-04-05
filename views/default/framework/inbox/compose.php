@@ -1,11 +1,11 @@
 <?php
 
-namespace hypeJunction\Inbox;
+use hypeJunction\Inbox\Message;
 
 $user = elgg_get_logged_in_user_entity();
 
 $message_type = elgg_extract('message_type', $vars, Message::TYPE_PRIVATE);
-$outtypes = get_outgoing_message_types($user);
+$outtypes = hypeInbox()->model->getOutgoingMessageTypes($user);
 
 if (!in_array($message_type, $outtypes)) {
 	//echo elgg_echo('actionunauthorized');
