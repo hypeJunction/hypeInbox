@@ -191,7 +191,7 @@ class Config {
 	 */
 	public function getUserGroupRelationships() {
 
-		if (isset(self::$userGroupRelationships)) {
+		if (!isset(self::$userGroupRelationships)) {
 			$relationships = array();
 
 			$query = "SELECT DISTINCT(er.relationship)
