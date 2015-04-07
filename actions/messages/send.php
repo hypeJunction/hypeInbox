@@ -83,7 +83,6 @@ $message_hash = $message->getHash();
 
 $config = new Config;
 $ruleset = $config->getRuleset($message_type);
-$type_label = $ruleset->getSingularLabel($language);
 
 $attachments = $message->getAttachments(array('limit' => 0));
 if ($attachments && count($attachments)) {
@@ -100,6 +99,8 @@ $notification_body = implode(PHP_EOL, $body);
 
 foreach ($recipient_guids as $recipient_guid) {
 	$recipient = get_entity($recipient_guid);
+
+	$type_label = strtolower($ruleset->getSingularLabel($recipient->language));
 
 	$subject = elgg_echo('inbox:notification:subject', array($type_label), $recipient->language);
 	$notification = elgg_echo('inbox:notification:body', array(
