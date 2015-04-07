@@ -263,8 +263,8 @@ class Policy {
 
 		$guid = sanitize_int($sender->guid);
 
-		$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON ge_rel.guid_one = $guid 
-			AND ge_rel.relationship = '$this->group_relationship'";
+		$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON $alias.guid_one = $guid
+			AND $alias.relationship = '$this->group_relationship'";
 		$clauses['where'] = "$alias.guid_two IN (SELECT guid_two FROM {$this->dbprefix}entity_relationships WHERE guid_one = e.guid 
 			AND relationship = '$this->group_relationship')";
 
