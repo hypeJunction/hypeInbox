@@ -31,7 +31,7 @@ if (!$entity) {
 			'name' => 'recipient_guids',
 			'value' => $recipient_guids,
 			'multiple' => $multiple,
-			'callback' => 'hypeJunction\\hypeInbox\\Models\\Model::searchRecipients',
+			'callback' => 'hypeJunction\\Inbox\\Search\\Recipients::search',
 			'query' => array(
 				'message_type' => $message_type,
 			)

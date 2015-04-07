@@ -1,6 +1,5 @@
 <?php
 
-use ElggEntity;
 use hypeJunction\Filestore\UploadHandler;
 use hypeJunction\Inbox\AccessCollection;
 use hypeJunction\Inbox\Config;

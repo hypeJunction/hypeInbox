@@ -373,10 +373,10 @@ class Model {
 	 * @param string $term Query string
 	 * @return array
 	 */
-	public static function searchRecipients($term) {
+	public function searchRecipients($term) {
 
 		$term = sanitize_string($term);
-
+		
 		// replace mysql vars with escaped strings
 		$q = str_replace(array('_', '%'), array('\_', '\%'), $term);
 

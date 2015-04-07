@@ -9,6 +9,7 @@ use hypeJunction\Inbox\Exceptions\ActionValidationException;
 use hypeJunction\Inbox\Exceptions\Exception;
 use hypeJunction\Inbox\Exceptions\InvalidEntityException;
 use hypeJunction\Inbox\Exceptions\PermissionsException;
+use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Models\Model;
 use hypeJunction\Inbox\Services\Router;
 

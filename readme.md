@@ -47,3 +47,19 @@ Recipient: Any user
 Relationship: --blank--
 Inverse relationship: --blank--
 Group relationship: member
+
+## Upgrades
+
+### Upgrading to 3.1
+
+Focus of 3.1 is improved performance. As such, config values are no longer populated on each page load,
+if you were relying on ```elgg_get_config()``` for any of the following values:
+* inbox_message_types
+* inbox_user_types
+* inbox_user_relationships
+* inbox_user_group_relationships
+replace them correspondingly with:
+* ```hypeInbox()->config->getMessageTypes()```
+* ```hypeInbox()->config->getUserTypes()```
+* ```hypeInbox()->config->getUserRelationships();
+* ```hypeInbox()->config->getUserGroupRelationships()```

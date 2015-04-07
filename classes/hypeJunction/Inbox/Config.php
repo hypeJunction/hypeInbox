@@ -52,11 +52,11 @@ class Config {
 		define('HYPEINBOX_NOTIFICATION', self::TYPE_NOTIFICATION);
 		define('HYPEINBOX_PRIVATE', self::TYPE_PRIVATE);
 
-		$message_types = $this->getMessageTypes();
-		elgg_set_config('inbox_message_types', $message_types);
-		elgg_set_config('inbox_user_types', $this->getUserTypes());
-		elgg_set_config('inbox_user_relationships', $this->getUserRelationships());
-		elgg_set_config('inbox_user_group_relationships', $this->getUserGroupRelationships());
+		//$message_types = $this->getMessageTypes();
+		//elgg_set_config('inbox_message_types', $message_types);
+		//elgg_set_config('inbox_user_types', $this->getUserTypes());
+		//elgg_set_config('inbox_user_relationships', $this->getUserRelationships());
+		//elgg_set_config('inbox_user_group_relationships', $this->getUserGroupRelationships());
 	}
 
 	/**
