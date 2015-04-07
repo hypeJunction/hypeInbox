@@ -1,6 +1,6 @@
 <?php
 
-$english = array(
+return array(
 
 	'admin:inbox' => 'Inbox Settings',
 	'admin:inbox:message_types' => 'Message Types',
@@ -141,5 +141,3 @@ $english = array(
 
 	Please do not reply to this email.",
 );
-
-add_translation("en", $english);
