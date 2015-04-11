@@ -17,7 +17,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		_elgg_services()->setValue('session', new \ElggSession(new \Elgg_Http_MockSessionStorage()));
+		_elgg_services()->setValue('session', new \ElggSession(new \Elgg\Http\MockSessionStorage()));
 		$this->object = new Group;
 	}
 
