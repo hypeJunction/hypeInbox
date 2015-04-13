@@ -68,7 +68,7 @@ class Events {
 	 * Runs upgrade scripts
 	 * @return bool
 	 */
-	protected function upgrade() {
+	public function upgrade() {
 		if (elgg_is_admin_logged_in()) {
 			foreach ($this->upgradeScripts as $script) {
 				$path = $this->plugin->getPath() . $script;
