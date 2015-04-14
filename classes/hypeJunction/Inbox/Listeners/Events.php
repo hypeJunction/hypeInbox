@@ -71,7 +71,7 @@ class Events {
 	public function upgrade() {
 		if (elgg_is_admin_logged_in()) {
 			foreach ($this->upgradeScripts as $script) {
-				$path = $this->plugin->getPath() . $script;
+				$path = $this->config->getPath() . $script;
 				if (file_exists($path)) {
 					require_once $path;
 				}
