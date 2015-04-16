@@ -58,8 +58,9 @@ if you were relying on ```elgg_get_config()``` for any of the following values:
 * inbox_user_types
 * inbox_user_relationships
 * inbox_user_group_relationships
+
 replace them correspondingly with:
 * ```hypeInbox()->config->getMessageTypes()```
 * ```hypeInbox()->config->getUserTypes()```
-* ```hypeInbox()->config->getUserRelationships();
+* ```hypeInbox()->config->getUserRelationships();```
 * ```hypeInbox()->config->getUserGroupRelationships()```
