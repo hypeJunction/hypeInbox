@@ -93,7 +93,7 @@ class Policy {
 	 */
 	public function setSenderType($type) {
 
-		$usertypes = $this->getConfig()->getUserTypes();
+		$usertypes = hypeInbox()->config->getUserTypes();
 
 		$this->sender = new stdClass();
 		$this->sender->type = $type;
@@ -138,7 +138,7 @@ class Policy {
 	 */
 	public function setRecipientType($type) {
 
-		$usertypes = $this->getConfig()->getUserTypes();
+		$usertypes = hypeInbox()->config->getUserTypes();
 
 		$this->recipient = new stdClass();
 		$this->recipient->type = $type;
@@ -167,7 +167,7 @@ class Policy {
 			return true;
 		}
 
-		$validator = $this->sender->validator;
+		$validator = $this->recipient->validator;
 		if (!$validator || !is_callable($validator)) {
 			return false;
 		}
@@ -188,8 +188,8 @@ class Policy {
 		if ($this->getRecipientType() == 'all') {
 			return $clauses;
 		}
-
-		$getter = $this->sender->getter;
+		
+		$getter = $this->recipient->getter;
 		if (!$getter || !is_callable($getter)) {
 			return $clauses;
 		}
@@ -197,14 +197,14 @@ class Policy {
 		$options = call_user_func($getter, $this->getRecipientType());
 		if (isset($options['joins'])) {
 			if (is_array($options['joins'])) {
-				$clauses['join'] = array_merge(' AND ', $options['joins']);
+				$clauses['join'] = implode(' AND ', $options['joins']);
 			} else {
 				$clauses['join'] = $options['joins'];
 			}
 		}
 		if (isset($options['wheres'])) {
 			if (is_array($options['wheres'])) {
-				$clauses['where'] = array_merge(' AND ', $options['wheres']);
+				$clauses['where'] = implode(' AND ', $options['wheres']);
 			} else {
 				$clauses['where'] = $options['wheres'];
 			}
@@ -269,17 +269,6 @@ class Policy {
 			AND relationship = '$this->group_relationship')";
 
 		return $clauses;
-	}
-
-	/**
-	 * Get config object
-	 * @return Config
-	 */
-	public function getConfig() {
-		if (!isset($this->config)) {
-			$this->config = new Config();
-		}
-		return $this->config;
 	}
 
 }

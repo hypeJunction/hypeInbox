@@ -3,6 +3,7 @@
 namespace hypeJunction\Inbox;
 
 use ElggBatch;
+use ElggEntity;
 use InvalidArgumentException;
 
 class Thread {

@@ -226,8 +226,7 @@ class Model {
 
 		$recipient_guids = Group::create($recipient_guids)->guids();
 
-		$policy = new Config();
-		$ruleset = $policy->getRuleset($message_type);
+		$ruleset = hypeInbox()->config->getRuleset($message_type);
 
 		$values = array(
 			'entity' => $entity,

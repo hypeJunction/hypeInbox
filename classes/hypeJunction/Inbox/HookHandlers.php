@@ -1,17 +1,16 @@
 <?php
 
-namespace hypeJunction\Inbox\Listeners;
+namespace hypeJunction\Inbox;
 
 use ElggMenuItem;
 use hypeJunction\Inbox\Config;
 use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Models\Model;
-use hypeJunction\Inbox\Services\Router;
 
 /**
  * Plugin hooks service
  */
-class PluginHooks {
+class HookHandlers {
 
 	private $config;
 	private $router;
@@ -26,29 +25,6 @@ class PluginHooks {
 		$this->config = $config;
 		$this->router = $router;
 		$this->model = $model;
-	}
-
-	/**
-	 * Perform tasks on system init
-	 * @return void
-	 */
-	public function init() {
-		// Third party integrations
-		elgg_register_plugin_hook_handler('config:user_types', 'framework:inbox', array($this, 'filterUserTypes'));
-
-		// Menu
-		elgg_register_plugin_hook_handler('register', 'menu:page', array($this, 'setupPageMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:inbox', array($this, 'setupInboxMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:inbox:thread', array($this, 'setupInboxThreadMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:entity', array($this, 'setupMessageMenu'));
-
-		// Replace user hover menu items
-		elgg_unregister_plugin_hook_handler('register', 'menu:user_hover', 'messages_user_hover_menu');
-		elgg_register_plugin_hook_handler('register', 'menu:user_hover', array($this, 'setupUserHoverMenu'));
-
-		// URLs
-		elgg_register_plugin_hook_handler('entity:url', 'object', array($this, 'handleMessageURL'));
-		elgg_register_plugin_hook_handler('entity:icon:url', 'object', array($this, 'handleMessageIconURL'));
 	}
 
 	/**
@@ -536,12 +512,13 @@ class PluginHooks {
 	public function handleMessageIconURL($hook, $type, $return, $params) {
 
 		$entity = elgg_extract('entity', $params);
-
+		$size = elgg_extract('size', $params);
+		
 		if (!$entity instanceof Message) {
 			return $return;
 		}
 
-		return $entity->getSender()->getIconURL();
+		return $entity->getSender()->getIconURL($size);
 	}
 
 }

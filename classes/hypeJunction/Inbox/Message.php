@@ -301,7 +301,7 @@ class Message extends ElggObject {
 	 * @return bool
 	 */
 	public function isPersistent() {
-		return $this->config()->getRuleset($this->msgType)->isPersistent();
+		return hypeInbox()->config->getRuleset($this->msgType)->isPersistent();
 	}
 
 	/**
@@ -502,14 +502,6 @@ class Message extends ElggObject {
 	 */
 	public function thread() {
 		return new Thread($this);
-	}
-
-	/**
-	 * Construct a new policy
-	 * @return Config
-	 */
-	public function config() {
-		return new Config();
 	}
 
 	/**

@@ -3,19 +3,27 @@
 namespace hypeJunction\Inbox\Actions;
 
 use ElggPlugin;
-use hypeJunction\Inbox\Controllers\Actions\Action;
+use hypeJunction\Controllers\Action;
 
 final class SavePluginSettings extends Action {
 
-	private $params;
 	private $plugin;
-
-	public function validate() {
-		$this->params = get_input('params', array(), false);
-		$this->params['message_types'] = $this->prepareMessageTypes();
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setup() {
 		$this->plugin = elgg_get_plugin_from_id('hypeInbox');
+		$this->params = (array) get_input('params', array());
+		$this->params['message_types'] = $this->prepareMessageTypes();
+	}
 
-		if (!($this->plugin instanceof ElggPlugin)) {
+	/**
+	 * {@inheritdoc}
+	 */
+	public function validate() {
+		
+		if (!$this->plugin instanceof ElggPlugin) {
 			$this->result->addError(elgg_echo('plugins:settings:save:fail', array('hypeInbox')));
 			return false;
 		}
@@ -23,6 +31,9 @@ final class SavePluginSettings extends Action {
 		return true;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function execute() {
 
 		$plugin_name = $this->plugin->getManifest()->getName();
@@ -40,10 +51,6 @@ final class SavePluginSettings extends Action {
 		if ($result) {
 			$this->result->addMessage(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
 		}
-	}
-
-	public function getName() {
-		return get_input('action');
 	}
 
 	protected function prepareMessageTypes() {

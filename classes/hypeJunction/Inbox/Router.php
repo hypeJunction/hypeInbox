@@ -1,6 +1,6 @@
 <?php
 
-namespace hypeJunction\Inbox\Services;
+namespace hypeJunction\Inbox;
 
 use ElggEntity;
 use hypeJunction\Inbox\Config;
@@ -19,15 +19,6 @@ class Router {
 	 */
 	public function __construct(Config $config) {
 		$this->config = $config;
-	}
-
-	/**
-	 * Perform tasks on system init
-	 * @return void
-	 */
-	public function init() {
-		elgg_unregister_page_handler('messages', 'messages_page_handler');
-		elgg_register_page_handler($this->getPageHandlerId(), array($this, 'handlePages'));
 	}
 
 	/**

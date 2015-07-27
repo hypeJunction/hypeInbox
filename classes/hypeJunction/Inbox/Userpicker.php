@@ -78,8 +78,7 @@ class Userpicker {
 	 */
 	public function getRuleset() {
 		if (!isset($this->ruleset)) {
-			$config = new Config;
-			$this->ruleset = $config->getRuleset($this->getMessageType());
+			$this->ruleset = hypeInbox()->config->getRuleset($this->getMessageType());
 		}
 		return $this->ruleset;
 	}

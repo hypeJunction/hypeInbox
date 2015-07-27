@@ -2,43 +2,24 @@
 
 namespace hypeJunction\Inbox;
 
-class Config {
+class Config extends \hypeJunction\Config {
 
-	private $dbprefix;
-	private $plugin;
-	private $settings;
-	private $config = array(
-		'legacy_mode' => true,
-		'pagehandler_id' => 'messages',
-	);
-	static $messageTypes;
-	static $userTypes;
-	static $userRelationships;
-	static $userGroupRelationships;
+	private $messageTypes;
+	private $userTypes;
+	private $userRelationships;
+	private $userGroupRelationships;
 
-	const PLUGIN_ID = 'hypeInbox';
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
 
 	/**
-	 * Constructor
-	 * @param ElggPlugin $plugin ElggPlugin
+	 * {@inheritdoc}
 	 */
-	public function __construct($plugin = null) {
-		if (!$plugin) {
-			return self::factory();
-		}
-		$this->plugin = $plugin;
-		$this->dbprefix = elgg_get_config('dbprefix');
-	}
-
-	/**
-	 * Config factory
-	 * @return Config
-	 */
-	public static function factory() {
-		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID);
-		return new Config($plugin);
+	public function getDefaults() {
+		return array(
+			'dbprefix' => elgg_get_config('dbprefix'),
+			'pagehandler_id' => 'messages',
+		);
 	}
 
 	/**
@@ -48,15 +29,9 @@ class Config {
 	public function setLegacyConfig() {
 
 		// legacy definitions
-		define('HYPEINBOX', self::PLUGIN_ID);
+		define('HYPEINBOX', 'hypeInbox');
 		define('HYPEINBOX_NOTIFICATION', self::TYPE_NOTIFICATION);
 		define('HYPEINBOX_PRIVATE', self::TYPE_PRIVATE);
-
-		//$message_types = $this->getMessageTypes();
-		//elgg_set_config('inbox_message_types', $message_types);
-		//elgg_set_config('inbox_user_types', $this->getUserTypes());
-		//elgg_set_config('inbox_user_relationships', $this->getUserRelationships());
-		//elgg_set_config('inbox_user_group_relationships', $this->getUserGroupRelationships());
 	}
 
 	/**
@@ -65,7 +40,7 @@ class Config {
 	 */
 	public function registerLabels() {
 		$message_types = $this->getMessageTypes();
-		
+
 		// Register label translations for custom message types
 		foreach ($message_types as $type => $options) {
 			$ruleset = $this->getRuleset($type);
@@ -75,47 +50,18 @@ class Config {
 			));
 		}
 	}
-
-	/**
-	 * Returns all plugin settings
-	 * @return array
-	 */
-	public function all() {
-		if (!isset($this->settings)) {
-			$this->settings = array_merge($this->config, $this->plugin->getAllSettings());
-		}
-		return $this->settings;
-	}
-
-	/**
-	 * Returns a plugin setting
-	 *
-	 * @param string $name Setting name
-	 * @return mixed
-	 */
-	public function get($name, $default = null) {
-		return elgg_extract($name, $this->all(), $default);
-	}
-
-	/**
-	 * Returns plugin path
-	 * @return string
-	 */
-	public function getPath() {
-		return $this->plugin->getPath();
-	}
-
+	
 	/**
 	 * Returns an array of predefined and admin defined message types
 	 * @return array
 	 */
 	public function getMessageTypes() {
-		if (!isset(self::$messageTypes)) {
+		if (!isset($this->messageTypes)) {
 			$default_message_types = $this->getSetting('default_message_types');
 			$message_types = $this->getSetting('message_types');
-			self::$messageTypes = array_merge($default_message_types, $message_types);
+			$this->messageTypes = array_merge($default_message_types, $message_types);
 		}
-		return self::$messageTypes;
+		return $this->messageTypes;
 	}
 
 	/**
@@ -145,18 +91,18 @@ class Config {
 	 * @return array
 	 */
 	public function getUserTypes() {
-		if (!isset(self::$userTypes)) {
+		if (!isset($this->userTypes)) {
 			$config = array(
 				'all' => array(),
 				'admin' => array(
-					'validator' => __NAMESPACE__ . '\\is_admin_user',
-					'getter' => __NAMESPACE__ . '\\admin_getter_options'
+					'validator' => array(hypeInbox()->model, 'isAdminUser'),
+					'getter' => array(hypeInbox()->model, 'getAdminQueryOptions'),
 				),
 			);
 
-			self::$userTypes = $this->triggerHook('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = elgg_trigger_plugin_hook('config:user_types', 'framework:inbox', null, $config);
 		}
-		return self::$userTypes;
+		return $this->userTypes;
 	}
 
 	/**
@@ -165,24 +111,23 @@ class Config {
 	 */
 	public function getUserRelationships() {
 
-		if (!isset(self::$userRelationships)) {
+		if (!isset($this->userRelationships)) {
 			$relationships = array();
 
 			$query = "SELECT DISTINCT(er.relationship)
 				FROM {$this->dbprefix}entity_relationships er
 				JOIN {$this->dbprefix}entities e1 ON e1.guid = er.guid_one
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
-				WHERE e1.type = 'user' AND e2.type = 'user'
-				ORDER BY er.relationship ASC";
+				WHERE (e1.type = 'user' AND e2.type = 'user')";
 
-			$data = $this->getData($query);
+			$data = get_data($query);
 			foreach ($data as $rel) {
 				$relationships[] = $rel->relationship;
 			}
 
-			self::$userRelationships = $relationships;
+			$this->userRelationships = $relationships;
 		}
-		return self::$userRelationships;
+		return $this->userRelationships;
 	}
 
 	/**
@@ -191,7 +136,7 @@ class Config {
 	 */
 	public function getUserGroupRelationships() {
 
-		if (!isset(self::$userGroupRelationships)) {
+		if (!isset($this->userGroupRelationships)) {
 			$relationships = array();
 
 			$query = "SELECT DISTINCT(er.relationship)
@@ -200,14 +145,14 @@ class Config {
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
 				WHERE (e1.type = 'user' AND e2.type = 'group')";
 
-			$data = $this->getData($query);
+			$data = get_data($query);
 			foreach ($data as $rel) {
 				$relationships[] = $rel->relationship;
 			}
 
-			self::$userGroupRelationships = $relationships;
+			$this->userGroupRelationships = $relationships;
 		}
-		return self::$userGroupRelationships;
+		return $this->userGroupRelationships;
 	}
 
 	/**
@@ -217,37 +162,8 @@ class Config {
 	 * @return array
 	 */
 	public function getSetting($name = '') {
-		$value = $this->get($name);
+		$value = $this->$name;
 		return (is_string($value)) ? unserialize($value) : array();
-	}
-
-	/**
-	 * Triggers a plugin hooks
-	 * 
-	 * @param string $hook   Hook name
-	 * @param string $type   Hook type
-	 * @param mixed  $params Hook params
-	 * @param mixed  $return Default return value
-	 * @return mixed
-	 */
-	public function triggerHook($hook, $type, $params, $return) {
-		if (is_callable('elgg_trigger_plugin_hook')) {
-			return elgg_trigger_plugin_hook($hook, $type, $params, $return);
-		}
-		return $return;
-	}
-
-	/**
-	 * Returns data rows from mysql tables for a given query
-	 * 
-	 * @param string $query
-	 * @return array
-	 */
-	public function getData($query, $callback = '') {
-		if (is_callable('get_data')) {
-			return get_data($query, $callback);
-		}
-		return array();
 	}
 
 }
