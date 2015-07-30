@@ -21,10 +21,10 @@
 	},
 	"require": {
 		"php": ">=5.4",
-		"composer/installers": "1.*",
-		"hypejunction/hypeapps": "4.*",
-		"hypejunction/elgg_tokeninput": "3.*",
-		"hypejunction/hypelists": "3.*"
+		"composer/installers": "~1.0",
+		"hypejunction/hypeapps": "~4.0",
+		"hypejunction/elgg_tokeninput": "~3.0",
+		"hypejunction/hypelists": "~3.0"
 	},
 	"autoload": {
 		"psr-0": {
