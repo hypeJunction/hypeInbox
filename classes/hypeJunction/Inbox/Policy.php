@@ -97,8 +97,8 @@ class Policy {
 
 		$this->sender = new stdClass();
 		$this->sender->type = $type;
-		$this->sender->validator = $usertypes[$type]['validator'];
-		$this->sender->getter = $usertypes[$type]['getter'];
+		$this->sender->validator = elgg_extract('validator', $usertypes[$type]);
+		$this->sender->getter = elgg_extract('getter', $usertypes[$type]);
 		return $this;
 	}
 
@@ -142,8 +142,8 @@ class Policy {
 
 		$this->recipient = new stdClass();
 		$this->recipient->type = $type;
-		$this->recipient->validator = $usertypes[$type]['validator'];
-		$this->recipient->getter = $usertypes[$type]['getter'];
+		$this->recipient->validator = elgg_extract('validator', $usertypes[$type]);
+		$this->recipient->getter = elgg_extract('getter', $usertypes[$type]);
 		return $this;
 	}
 
