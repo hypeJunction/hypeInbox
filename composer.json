@@ -1,5 +1,6 @@
 {
 	"name": "hypejunction/hypeinbox",
+	"version": "4.0.0",
 	"type": "elgg-plugin",
 	"description": "Enhanced messaging capabilities",
 	"homepage": "http://hypejunction.com",
@@ -10,21 +11,17 @@
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "ismayil.khayredinov@gmail.com"
+			"email": "info@hypejunction.com"
 		}
 	],
 	"extra": {
 		"installer-name": "hypeInbox"
 	},
-	"config": {
-		"vendor-dir": "/vendor/"
-	},
-	"require": {
-		"php": ">=5.4",
-		"composer/installers": "1.*",
-		"hypejunction/hypeapps": ">4.0.0",
-		"hypejunction/elgg_tokeninput": ">3.0.0",
-		"hypejunction/hypelists": ">3.1.0"
+	"require-dev": {
+		"composer/installers": "~1.0",
+		"hypejunction/hypeapps": "~4.0",
+		"hypejunction/elgg_tokeninput": "~3.0",
+		"hypejunction/hypelists": "~3.1"
 	},
 	"autoload": {
 		"psr-0": {

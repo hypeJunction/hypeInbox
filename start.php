@@ -6,11 +6,7 @@
  * @package hypeJunction
  * @subpackage hypeInbox
  *
- * @author Ismayil Khayredinov <ismayil.khayredinov@gmail.com>
+ * @author Ismayil Khayredinov <info@hypejunction.com>
  */
-try {
-	require_once __DIR__ . '/autoloader.php';
-	hypeInbox()->boot();
-} catch (Exception $ex) {
-	register_error($ex->getMessage());
-}
+require_once __DIR__ . '/autoloader.php';
+hypeInbox()->boot();

@@ -1,16 +1,9 @@
 <?PHP
 
-if (!is_callable('hypeApps')) {
-	throw new Exception("hypeInbox requires hypeApps");
+$path = __DIR__;
+if (file_exists("{$path}/vendor/autoload.php")) {
+	require_once "{$path}/vendor/autoload.php";
 }
-
-$path = dirname(dirname(__DIR__));
-
-if (!file_exists("{$path}/vendor/autoload.php")) {
-	throw new Exception('hypeInbox can not resolve composer dependencies. Run composer install');
-}
-
-require_once "{$path}/vendor/autoload.php";
 
 /**
  * Plugin container
