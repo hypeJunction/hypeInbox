@@ -1,11 +1,10 @@
 <?php
 
-use ElggUser;
 use hypeJunction\Inbox\Inbox;
 
 $user = elgg_get_page_owner_entity();
 if (!$user instanceof ElggUser) {
-	return true;
+	return;
 }
 
 $limit = get_input('limit', 20);
