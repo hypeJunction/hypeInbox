@@ -19,6 +19,12 @@
 	</requires>
 	<requires>
 		<type>plugin</type>
+		<name>hypeApps</name>
+		<version>4.3</version>
+	</requires>
+	
+	<requires>
+		<type>plugin</type>
 		<name>elgg_tokeninput</name>
 	</requires>
 	<requires>
