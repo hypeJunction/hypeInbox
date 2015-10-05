@@ -103,6 +103,11 @@ final class Plugin extends \hypeJunction\Plugin {
 		// URLs
 		elgg_register_plugin_hook_handler('entity:url', 'object', array($this->hooks, 'handleMessageURL'));
 		elgg_register_plugin_hook_handler('entity:icon:url', 'object', array($this->hooks, 'handleMessageIconURL'));
+
+		// Export
+		elgg_register_plugin_hook_handler('aliases', 'graph', array($this->hooks, 'getGraphAlias'));
+		elgg_register_plugin_hook_handler('graph:properties', 'object:messages', array($this->hooks, 'getMessageProperties'));
+		// @todo Move graph controller when interface is implemented in hypeApps
 	}
 
 }

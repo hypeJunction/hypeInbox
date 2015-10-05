@@ -522,4 +522,17 @@ class Message extends ElggObject {
 	public static function construct(array $options = array()) {
 		return self::factory($options);
 	}
+
+	public static function getThreadIdProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
+		return $message->getHash();
+	}
+
+	public static function getMessageTypeProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
+		return $message->getMessageType();
+	}
+
+	public static function getAttachmentsProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
+		$options = $message->getAttachmentsFilterOptions(array('limit' => \hypeJunction\Data\Graph::LIMIT_MAX));
+		return new \hypeJunction\Graph\BatchResult('elgg_get_entities_from_relationship', $options);
+	}
 }

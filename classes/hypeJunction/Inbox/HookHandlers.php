@@ -51,7 +51,7 @@ class HookHandlers {
 
 		if (elgg_is_active_plugin('hypeObserver')) {
 			$return['observer'] = array(
-					'validator' => array($this->model, 'hasRole'),
+				'validator' => array($this->model, 'hasRole'),
 				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
 			);
 		}
@@ -60,8 +60,8 @@ class HookHandlers {
 			$roles = roles_get_all_selectable_roles();
 			foreach ($roles as $role) {
 				$return[$role->name] = array(
-						'validator' => array($this->model, 'hasRole'),
-				'getter' => array($this->model, 'getRoleTestQuery'),
+					'validator' => array($this->model, 'hasRole'),
+					'getter' => array($this->model, 'getRoleTestQuery'),
 				);
 			}
 		}
@@ -513,7 +513,7 @@ class HookHandlers {
 
 		$entity = elgg_extract('entity', $params);
 		$size = elgg_extract('size', $params);
-		
+
 		if (!$entity instanceof Message) {
 			return $return;
 		}
@@ -521,4 +521,28 @@ class HookHandlers {
 		return $entity->getSender()->getIconURL($size);
 	}
 
+	public function getGraphAlias($hook, $type, $return, $params) {
+		$return['object']['messages'] = ':message';
+		return $return;
+	}
+	
+	public function getMessageProperties($hook, $type, $return, $params) {
+
+		$return[] = new \hypeJunction\Data\Property('thread_id', array(
+			'getter' => '\hypeJunction\Inbox\Message::getThreadIdProp',
+			'read_only' => true,
+		));
+
+		$return[] = new \hypeJunction\Data\Property('message_type', array(
+			'getter' => '\hypeJunction\Inbox\Message::getMessageTypeProp',
+			'read_only' => true,
+		));
+
+		$return[] = new \hypeJunction\Data\Property('attachments', array(
+			'getter' => '\hypeJunction\Inbox\Message::getAttachmentsProp',
+			'read_only' => true,
+		));
+
+		return $return;
+	}
 }
