@@ -56,3 +56,5 @@
 .inbox-hidden { display: none; }
 
 .inbox-unread-count { color: white; background-color: red; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; position: absolute; text-align: center; top: 2px; left: auto; right: -8px; min-width: 16px; height: 16px; line-height: 16px; font-size: 10px; font-weight: bold; }
+
+.inbox-messages .elgg-pagination { display: none; }

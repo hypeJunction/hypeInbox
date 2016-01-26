@@ -1,4 +1,7 @@
-define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
+define(function (require) {
+
+	var elgg = require('elgg');
+	var $ = require('jquery');
 
 	var inbox = {
 		/**
@@ -9,7 +12,6 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 			if (elgg.config.inboxUser) {
 				return;
 			}
-			$(document).on('click', '.inbox-message[data-href]', inbox.navigateToMessage);
 			$(document).on('click', '#inbox-form-toggle-all', inbox.toggleAll);
 			$(document).on('click', '[data-submit]', inbox.submitBulkForm);
 			$(document).on('click', '.elgg-menu-item-markread > a', inbox.markMessageAsRead);
@@ -20,12 +22,6 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 			$(document).on('change', '.inbox-message [type="checkbox"]', inbox.showControls);
 
 			elgg.config.inboxUser = true;
-		},
-		navigateToMessage: function (e) {
-			if (!$(e.target).parents().andSelf().is('a,input,.elgg-menu')) {
-				e.preventDefault();
-				location.href = $(this).data('href');
-			}
 		},
 		toggleAll: function (e) {
 			var prop = $(this).prop('checked');

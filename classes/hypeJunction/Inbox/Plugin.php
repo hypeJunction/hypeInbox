@@ -114,7 +114,10 @@ final class Plugin extends \hypeJunction\Plugin {
 		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
 		
 		// CSS
-		elgg_extend_view('css/elgg.css', 'framework/inbox.css');
+		elgg_extend_view('elgg.css', 'framework/inbox.css');
+
+		// JS
+		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
 	}
 
 }
