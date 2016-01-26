@@ -1,3 +1,14 @@
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/hypeJunction/hypeInbox/compare/5.0.1...v5.0.2) (2016-01-26)
+
+
+### Bug Fixes
+
+* **composer:** update composer ([5118a0f](https://github.com/hypeJunction/hypeInbox/commit/5118a0f))
+* **messages:** mark senders copy as read ([25c7639](https://github.com/hypeJunction/hypeInbox/commit/25c7639))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/hypeJunction/hypeInbox/compare/5.0.0...v5.0.1) (2016-01-26)
 
