@@ -29,6 +29,11 @@ $params = array(
 	'message_type' => $message_type,
 );
 
+$menu_items = hypeInbox()->hooks->setupInboxThreadMenu(null, null, array(), array('entity' => $message));
+foreach ($menu_items as $item) {
+	elgg_register_menu_item('title', $item);
+}
+
 $thread = elgg_view('framework/inbox/thread', $params);
 
 if (elgg_is_xhr()) {

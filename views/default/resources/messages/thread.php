@@ -23,10 +23,5 @@ if (is_numeric($hash)) {
 
 if ($entity instanceof Message) {
 	set_input('guid', $entity->guid);
-	$menu_items = hypeInbox()->hooks->setupInboxMenu(null, null, array(), array('entity' => $entity));
-	foreach ($menu_items as $item) {
-		elgg_register_menu_item('title', $item);
-	}
-	
 	echo elgg_view('resources/messages/read');
 }
