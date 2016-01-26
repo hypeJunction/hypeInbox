@@ -22,6 +22,7 @@ $list = elgg_view_entity_list($messages, array(
 	'list_class' => 'elgg-list-inbox',
 	'no_results' => elgg_echo('inbox:empty'),
 	'full_view' => false,
+	'size' => 'tiny',
 	'threaded' => false,
 	'pagination' => false,
 		));
