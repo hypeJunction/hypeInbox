@@ -3,6 +3,7 @@
 $logged_in = elgg_get_logged_in_user_entity();
 $entity = elgg_extract('entity', $vars);
 $full = elgg_extract('full_view', $vars, false);
+$threaded = elgg_extract('threaded', $vars, !$full);
 
 $sender = $entity->getSender();
 if ($sender->guid == $logged_in->guid) {
@@ -15,7 +16,7 @@ if ($sender->guid == $logged_in->guid) {
 			), $sender->name);
 }
 
-if (!$full) {
+if (!$full && $threaded) {
 	$recipients = $entity->getRecipients();
 	$count = count($recipients);
 

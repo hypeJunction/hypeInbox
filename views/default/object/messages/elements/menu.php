@@ -1,5 +1,9 @@
 <?php
 
+if (elgg_in_context('widgets')) {
+	return;
+}
+
 $params = array(
 	'handler' => 'messages',
 	'sort_by' => 'priority',
