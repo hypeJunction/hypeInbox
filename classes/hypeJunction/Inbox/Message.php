@@ -430,7 +430,8 @@ class Message extends ElggObject {
 		$this->owner_guid = $owner->guid; // A copy of the message is owned by each of the participants
 		$this->container_guid = $owner->guid;
 		$this->access_id = ACCESS_PRIVATE; // A copy of the message is private to its owner
-
+		$this->readYet = true;
+		
 		$guid = $this->save();
 		if (!$guid) {
 			return false;
