@@ -124,7 +124,7 @@ class Inbox {
 	 */
 	public function setReadStatus($readYet = null) {
 		if (!is_null($readYet)) {
-			$this->readYet = (bool) $readYet;
+			$this->readYet = $readYet ? '1' : '0';
 		}
 		return $this;
 	}
