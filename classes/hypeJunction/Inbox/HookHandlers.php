@@ -224,7 +224,6 @@ class HookHandlers {
 							'name' => "inbox:$type",
 							'text' => elgg_echo("inbox:send", array(strtolower(elgg_echo("item:object:message:$type:singular")))),
 							'href' => elgg_http_add_url_query_elements("messages/compose", array('message_type' => $type, 'send_to' => $recipient->guid)),
-							'section' => 'action'
 				));
 			}
 		}
@@ -264,7 +263,6 @@ class HookHandlers {
 						'text' => $attachments,
 						'href' => false,
 						'priority' => 50,
-						'section' => 'indicators',
 			));
 		}
 
@@ -276,7 +274,6 @@ class HookHandlers {
 							'text' => $unread,
 							'href' => false,
 							'priority' => 75,
-							'section' => 'indicators',
 				));
 			}
 			$return[] = ElggMenuItem::factory(array(
@@ -284,25 +281,22 @@ class HookHandlers {
 						'text' => elgg_view('object/messages/elements/count-indicator', $params),
 						'href' => false,
 						'priority' => 100,
-						'section' => 'indicators',
 			));
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'markread',
 						'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
+						'text' => elgg_view_icon('eye'),
 						'title' => elgg_echo('inbox:markread'),
 						'is_action' => true,
 						'priority' => 100,
-						'section' => 'actions',
 			));
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'markunread',
 						'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
+						'text' => elgg_view_icon('eye-slash'),
 						'title' => elgg_echo('inbox:markunread'),
 						'is_action' => true,
 						'priority' => 110,
-						'section' => 'actions',
 			));
 		}
 
@@ -315,7 +309,6 @@ class HookHandlers {
 						'data-confirm' => ($threaded) ? elgg_echo('inbox:delete:thread:confirm') : elgg_echo('inbox:delete:message:confirm'),
 						'is_action' => true,
 						'priority' => 900,
-						'section' => 'actions',
 			));
 		}
 
@@ -339,75 +332,43 @@ class HookHandlers {
 			$chkbx = elgg_view('input/checkbox', array(
 						'id' => 'inbox-form-toggle-all',
 					)) . elgg_echo('inbox:form:toggle_all');
+
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'toggle',
 						'text' => elgg_format_element('label', array(), $chkbx, array('encode_text' => false)),
-						'title' => elgg_echo('inbox:markread'),
 						'href' => false,
 						'priority' => 50,
-						'section' => '1_toggle',
+						'link_class' => 'elgg-button elgg-button-action',
 			));
 
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'markread',
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
-						'title' => elgg_echo('inbox:markread'),
+						'text' => elgg_echo('inbox:markread'),
 						'href' => 'action/messages/markread',
 						'data-submit' => true,
 						'priority' => 100,
-						'section' => '2_actions',
+						'link_class' => 'elgg-button elgg-button-action',
+						'item_class' => 'inbox-action hidden',
 			));
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'markunread',
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
-						'title' => elgg_echo('inbox:markunread'),
+						'text' => elgg_echo('inbox:markunread'),
 						'href' => 'action/messages/markunread',
+						'link_class' => 'elgg-button elgg-button-action',
 						'data-submit' => true,
 						'priority' => 200,
-						'section' => '2_actions',
+						'item_class' => 'inbox-action hidden',
 			));
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'delete',
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-trash')),
-						'title' => elgg_echo('inbox:delete'),
+						'text' => elgg_echo('inbox:delete'),
 						'href' => 'action/messages/delete',
 						'data-confirm' => elgg_echo('inbox:delete:inbox:confirm'),
 						'data-submit' => true,
 						'priority' => 300,
-						'section' => '2_actions',
+						'link_class' => 'elgg-button elgg-button-delete',
+						'item_class' => 'inbox-action hidden',
 			));
-		}
-
-		$outgoing_message_types = $this->model->getOutgoingMessageTypes();
-		$text = elgg_format_element('span', array('class' => 'inbox-icon-send'));
-		$text .= elgg_format_element('span', array(), elgg_echo('inbox:compose'));
-		if (sizeof($outgoing_message_types) > 0) {
-			$return[] = ElggMenuItem::factory(array(
-						'name' => 'compose',
-						'text' => $text,
-						'title' => elgg_echo('inbox:compose'),
-						'href' => (sizeof($outgoing_message_types) > 1) ? '#' :
-								elgg_http_add_url_query_elements('messages/compose', array(
-									'message_type' => $outgoing_message_types[0]
-								)),
-						'priority' => 800,
-						'section' => '3_compose',
-			));
-		}
-		if (sizeof($outgoing_message_types) > 1) {
-			foreach ($outgoing_message_types as $mt) {
-				$return[] = ElggMenuItem::factory(array(
-							'name' => "compose:$mt",
-							'parent_name' => 'compose',
-							'text' => elgg_echo("item:object:message:$mt:singular"),
-							'title' => elgg_echo('inbox:compose'),
-							'href' => elgg_http_add_url_query_elements('messages/compose', array(
-								'message_type' => $mt,
-								'send_to' => get_input('send_to', null),
-							)),
-							'section' => '3_compose',
-				));
-			}
 		}
 
 		return $return;
@@ -440,41 +401,38 @@ class HookHandlers {
 		$return[] = ElggMenuItem::factory(array(
 					'name' => 'reply',
 					'href' => '#reply',
-					'text' => elgg_format_element('span', array('class' => 'inbox-icon-reply')),
+					'text' => elgg_echo('inbox:reply'),
 					'priority' => 100,
-					'section' => '1_actions',
+					'link_class' => 'elgg-button elgg-button-action',
 		));
 
 		$return[] = ElggMenuItem::factory(array(
 					'name' => 'markread',
 					'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
-					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markread')),
-					'title' => elgg_echo('inbox:markread'),
+					'text' => elgg_echo('inbox:markread'),
 					'is_action' => true,
 					'priority' => 200,
-					'section' => '1_actions',
+					'link_class' => 'elgg-button elgg-button-action',
 		));
 
 		$return[] = ElggMenuItem::factory(array(
 					'name' => 'markunread',
 					'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
-					'text' => elgg_format_element('span', array('class' => 'inbox-icon-markunread')),
-					'title' => elgg_echo('inbox:markunread'),
+					'text' => elgg_echo('inbox:markunread'),
 					'is_action' => true,
 					'priority' => 210,
-					'section' => '1_actions',
+					'link_class' => 'elgg-button elgg-button-action',
 		));
 
 		if (!$entity->isPersistent()) {
 			$return[] = ElggMenuItem::factory(array(
 						'name' => 'delete',
-						'text' => elgg_format_element('span', array('class' => 'inbox-icon-trash')),
-						'title' => elgg_echo('inbox:delete'),
+						'text' => elgg_echo('inbox:delete'),
 						'href' => elgg_http_add_url_query_elements('action/messages/delete', $action_params),
 						'data-confirm' => elgg_echo('inbox:delete:thread:confirm'),
 						'is_action' => true,
 						'priority' => 900,
-						'section' => '1_actions',
+						'link_class' => 'elgg-button elgg-button-delete',
 			));
 		}
 
@@ -504,7 +462,7 @@ class HookHandlers {
 		$text = elgg_view_icon('envelope');
 		$counter = elgg_format_element('span', [
 			'id' => 'inbox-new',
-			'class' => $count ? 'messages-new' : 'messages-new hidden',
+			'class' => $count ? 'inbox-unread-count' : 'inbox-unread-count hidden',
 				], $count);
 
 		$return[] = ElggMenuItem::factory(array(

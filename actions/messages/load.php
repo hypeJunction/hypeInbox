@@ -8,14 +8,13 @@ $user = elgg_get_logged_in_user_entity();
 
 $inbox = new Inbox();
 $inbox->setOwner($user)
-		->setMessageType(false)
-		->setDirection(Inbox::DIRECTION_RECEIVED)
+		->setDirection(Inbox::DIRECTION_ALL)
 		->displayThreaded(false);
 
 
 $count = $inbox->getCount();
 $messages = $inbox->getMessages();
-$unread = Inbox::countUnread($user, '', array('threaded' => false));
+$unread = Inbox::countUnread($user);
 
 elgg_push_context('widgets');
 $list = elgg_view_entity_list($messages, array(

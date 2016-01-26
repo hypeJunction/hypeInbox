@@ -7,7 +7,6 @@ use hypeJunction\Inbox\Message;
  * @uses $vars['entity']   Message
  * @uses $vars['threaded'] Threaded message display
  */
-
 $entity = elgg_extract('entity', $vars);
 /* @var $entity Message */
 
@@ -16,30 +15,33 @@ $threaded = elgg_extract('threaded', $vars, !$full);
 
 $icon = elgg_view('object/messages/elements/sender', $vars);
 $title = elgg_view('object/messages/elements/participants', $vars);
-$subtitle = elgg_view('object/messages/elements/time', $vars);
-$metadata = elgg_view('object/messages/elements/menu', $vars);
+$subtitle = elgg_view('object/messages/elements/subject', $vars);
+$subtitle .= elgg_view('object/messages/elements/time', $vars);
 
-$content = elgg_view('object/messages/elements/subject', $vars);
+$metadata = elgg_view('object/messages/elements/menu', $vars);
 $content .= elgg_view('object/messages/elements/body', $vars);
 $content .= elgg_view('object/messages/elements/attachments', $vars);
 $content .= elgg_view('object/messages/elements/embeds', $vars);
 
 $summary = elgg_view('object/elements/summary', array(
 	'entity' => $entity,
-	'title' => ($title) ?: false,
+	'title' => ($title) ? : false,
 	'subtitle' => $subtitle,
 	'metadata' => $metadata,
 	'content' => $content,
 		));
 
-$body = elgg_view_image_block($icon, $summary, array(
-	'class' => 'inbox-message-image-block',
-));
-
+$checkbox = '';
 if (elgg_in_context('inbox-form')) {
-	$checkbox = elgg_view('object/messages/elements/checkbox', $vars);
-	$body = $checkbox . $body;
+	$checkbox = elgg_format_element('div', [
+		'class' => 'inbox-message-checkbox',
+			], elgg_view('object/messages/elements/checkbox', $vars));
 }
+
+$icon = elgg_format_element('div', ['class' => 'inbox-message-icon'], $icon);
+$summary = elgg_format_element('div', ['class' => 'inbox-message-content'], $summary);
+
+$body = $checkbox . $icon . $summary . $menu;
 
 $attrs = elgg_format_attributes(array(
 	'data-href' => ($full) ? false : $entity->getURL(),

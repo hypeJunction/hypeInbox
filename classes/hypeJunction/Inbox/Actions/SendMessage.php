@@ -146,13 +146,7 @@ class SendMessage extends Action {
 				)),
 					), $recipient->language);
 
-			$summary = elgg_echo('inbox:notification:summary', array($type_label), $recipient->language);
-
-			notify_user($recipient->guid, $sender->guid, $subject, $notification, array(
-				'action' => 'send',
-				'object' => $this->entity,
-				'summary' => $summary,
-			));
+			notify_user($recipient->guid, $sender->guid, $subject, $notification);
 		}
 
 		$this->result->addMessage(elgg_echo('inbox:send:success'));

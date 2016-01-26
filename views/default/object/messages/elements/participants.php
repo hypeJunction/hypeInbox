@@ -7,11 +7,11 @@ $threaded = elgg_extract('threaded', $vars, !$full);
 
 $sender = $entity->getSender();
 if ($sender->guid == $logged_in->guid) {
-	$participants['me'] = elgg_format_element('strong', array(
+	$participants[$sender->guid] = elgg_format_element('span', array(
 		'class' => 'inbox-message-sender',
 			), elgg_echo('inbox:me'));
 } else {
-	$participants['sender'] = elgg_format_element('strong', array(
+	$participants[$sender->guid] = elgg_format_element('span', array(
 		'class' => 'inbox-message-sender',
 			), $sender->name);
 }
@@ -20,12 +20,14 @@ if (!$full && $threaded) {
 	$recipients = $entity->getRecipients();
 	$count = count($recipients);
 
-	foreach ($recipients as $key => $user) {
-		if ($user->guid == elgg_get_logged_in_user_guid()) {
-			$participants['me'] = elgg_echo('inbox:me');
-			$count--;
-		} else if ($cont <= 5) {
-			$participants[] = $user->name;
+	if ($count <= 5) {
+		foreach ($recipients as $key => $user) {
+			if (isset($participants[$user->guid])) {
+				continue;
+			}
+			$participants[$user->guid] = elgg_format_element('span', [
+				'class' => 'inbox-message-participant',
+					], ($logged_in->guid == $user->guid) ? elgg_echo('inbox:me') : $user->name);
 		}
 	}
 

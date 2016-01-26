@@ -19,8 +19,8 @@ if ($full) {
 		'class' => 'inbox-message-body',
 			));
 } else {
-//	$body = elgg_get_excerpt($entity->description);
-//	echo elgg_format_element('span', array(
-//		'class' => 'inbox-message-body-excerpt',
-//			), $body);
+	$body = elgg_get_excerpt($entity->description);
+	echo elgg_format_element('div', array(
+		'class' => 'inbox-message-body-excerpt',
+			), $body);
 }

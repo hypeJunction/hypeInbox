@@ -15,6 +15,19 @@ $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";
 elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username");
 elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
 
+$outgoing_message_types = hypeInbox()->model->getOutgoingMessageTypes();
+foreach ($outgoing_message_types as $mt) {
+	elgg_register_menu_item('title', array(
+		'name' => ($mt == HYPEINBOX_PRIVATE) ? "send" : "compose:$mt",
+		'text' => elgg_echo('inbox:new', array(elgg_echo("item:object:message:$mt:singular"))),
+		'href' => elgg_http_add_url_query_elements('messages/compose', array(
+			'message_type' => $mt,
+			'send_to' => get_input('send_to', null),
+		)),
+		'link_class' => 'elgg-button elgg-button-action',
+	));
+}
+
 $params = array(
 	'message_type' => $message_type
 );

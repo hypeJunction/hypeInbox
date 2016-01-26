@@ -44,15 +44,14 @@
 	&:last-of-type {
 		border-bottom-width: 0;
 	}
-	.elgg-image-block {
+	.inbox-message {
 		padding: 8px;
 		transition: background-color 0.5s ease;
 	}
-	.elgg-image-block.elgg-inbox-unread {
-		background-color: #EDF5FF;
-	}
-	.elgg-image-block:after {
-		content: "";
+
+	.inbox-message-icon {
+		flex: 0 0 30px;
+		text-align: center;
 	}
 
 }
@@ -62,28 +61,4 @@
 	.elgg-icon {
 		font-size: 20px;
 	}
-}
-
-#inbox-new {
-	color: white;
-	background-color: red;
-
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-
-	-webkit-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.50);
-	-moz-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.50);
-	box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.50);
-
-	position: absolute;
-	text-align: center;
-	top: 2px;
-	left: auto;
-	right: -8px;
-	min-width: 16px;
-	height: 16px;
-	line-height: 16px;
-	font-size: 10px;
-	font-weight: bold;
 }

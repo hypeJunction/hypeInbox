@@ -49,6 +49,7 @@ return array(
 	'inbox:inbox' => 'Inbox',
 	'inbox:sent' => 'Sent messages',
 	'inbox:compose' => 'Compose',
+	'inbox:new' => 'New %s',
 	'inbox:compose:message_type' => 'Compose a %s',
 	'inbox:reply' => 'Reply',
 	'inbox:reply:message_type' => 'Reply to a %s',

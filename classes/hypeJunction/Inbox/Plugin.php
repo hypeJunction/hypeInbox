@@ -94,7 +94,6 @@ final class Plugin extends \hypeJunction\Plugin {
 		// Menu
 		elgg_register_plugin_hook_handler('register', 'menu:page', array($this->hooks, 'setupPageMenu'));
 		elgg_register_plugin_hook_handler('register', 'menu:inbox', array($this->hooks, 'setupInboxMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:inbox:thread', array($this->hooks, 'setupInboxThreadMenu'));
 		elgg_register_plugin_hook_handler('register', 'menu:entity', array($this->hooks, 'setupMessageMenu'));
 
 		// Replace user hover menu items

@@ -17,7 +17,8 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 			$(document).on('submit', '.elgg-form-messages-send', inbox.sendMessage);
 			$(document).on('click', '.elgg-menu-inbox li:has(.elgg-child-menu) > a', inbox.toggleChildMenu);
 			$(document).on('click', '.inbox-toggle-attachments-form', inbox.toggleAttachmentsForm);
-			
+			$(document).on('change', '.inbox-message [type="checkbox"]', inbox.showControls);
+
 			elgg.config.inboxUser = true;
 		},
 		navigateToMessage: function (e) {
@@ -29,6 +30,14 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 		toggleAll: function (e) {
 			var prop = $(this).prop('checked');
 			$(this).closest('form').find('[type="checkbox"][name="guids[]"]:visible').prop('checked', prop);
+			inbox.showControls();
+		},
+		showControls: function () {
+			if ($('.elgg-form-messages-inbox [type="checkbox"][name="guids[]"]:checked').length) {
+				$('.elgg-menu-inbox').find('.inbox-action').show();
+			} else {
+				$('.elgg-menu-inbox').find('.inbox-action').hide();
+			}
 		},
 		submitBulkForm: function (e) {
 			var $elem = $(this);
@@ -94,14 +103,6 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 			});
 		},
 		sendMessage: function (e) {
-
-			if (!require.defined('hypeList')) {
-				return true;
-			}
-
-			e.preventDefault();
-			require('hypeList');
-
 			var $form = $(this);
 			elgg.action($form.attr('action'), {
 				data: $form.serialize(),
@@ -118,19 +119,20 @@ define(['jquery', 'elgg', 'jquery.form'], function ($, elgg) {
 						if ($form.closest('#reply').length) {
 							$form.resetForm();
 							$('.elgg-dropzone-preview', $form).remove();
-							$('.inbox-messages').children('.elgg-list').hypeList('fetchNewItems', null, true);
+							$('.inbox-messages').children('.elgg-list').trigger('fetchNewItems', [null, true]);
 						} else {
 							document.location.href = data.forward_url;
 						}
 					}
 				}
 			});
+			return false;
 		},
-		toggleChildMenu: function(e) {
+		toggleChildMenu: function (e) {
 			e.preventDefault();
 			$(this).parent().toggleClass('elgg-state-active');
 		},
-		toggleAttachmentsForm: function(e) {
+		toggleAttachmentsForm: function (e) {
 			e.preventDefault();
 			$(this).closest('form').find('.inbox-attachments-form').show();
 			$(this).parent().remove();
