@@ -126,7 +126,7 @@ class SendMessage extends Action {
 
 		foreach ($this->recipient_guids as $recipient_guid) {
 			$recipient = get_entity($recipient_guid);
-			if (!$recipient) {
+			if (!$recipient || $recipient->guid = $this->sender_guid) {
 				continue;
 			}
 
