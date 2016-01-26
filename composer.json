@@ -17,11 +17,11 @@
 	"extra": {
 		"installer-name": "hypeInbox"
 	},
-	"require-dev": {
+	"require": {
 		"composer/installers": "~1.0",
-		"hypejunction/hypeapps": "~4.0",
+		"hypejunction/hypeapps": "~5.0",
 		"hypejunction/elgg_tokeninput": "~3.0",
-		"hypejunction/hypelists": "~3.1"
+		"hypejunction/hypelists": "~3.5"
 	},
 	"autoload": {
 		"psr-0": {
