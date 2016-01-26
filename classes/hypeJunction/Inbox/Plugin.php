@@ -73,8 +73,6 @@ final class Plugin extends \hypeJunction\Plugin {
 			'section' => 'configure'
 		));
 
-		elgg_register_css('inbox.base.css', elgg_get_simplecache_url('css', 'framework/inbox/stylesheet.css'));
-
 		elgg_unregister_page_handler('messages', 'messages_page_handler');
 		elgg_register_page_handler($this->config->pagehandler_id, array($this->router, 'handlePages'));
 
@@ -114,7 +112,9 @@ final class Plugin extends \hypeJunction\Plugin {
 		elgg_register_plugin_hook_handler('register', 'menu:topbar', array($this->hooks, 'setupTopbarMenu'));
 		elgg_register_plugin_hook_handler('output', 'ajax', array($this->hooks, 'ajaxOutput'));
 		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
-		elgg_extend_view('elgg.css', 'framework/inbox/popup.css');
+		
+		// CSS
+		elgg_extend_view('css/elgg.css', 'framework/inbox.css');
 	}
 
 }

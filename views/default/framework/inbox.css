@@ -1,3 +1,18 @@
+/* Style the popup module */
+#inbox-popup { padding: 0; background: white; width: 345px; max-width: 100%; position: absolute; font-size: 14px; line-height: normal; }
+#inbox-popup .elgg-no-results, #inbox-popup .elgg-ajax-loader { margin: 0; padding: 8px; }
+#inbox-popup .elgg-list-inbox { max-height: 300px; overflow-y: auto; margin: 0; }
+#inbox-popup .elgg-foot { border-top: 1px solid #cccccc; }
+#inbox-popup .elgg-foot a { text-align: center; font-size: 12px; min-width: 30px; padding: 4px; display: inline-block; width: 100%; text-align: center; }
+
+.elgg-list-inbox > li { padding: 0; border: none; box-shadow: none; border-bottom: 1px solid #DCDCDC; margin: 0; }
+.elgg-list-inbox > li:last-of-type { border-bottom-width: 0; }
+.elgg-list-inbox > li .inbox-message { padding: 8px; transition: background-color 0.5s ease; }
+.elgg-list-inbox > li .inbox-message-icon { flex: 0 0 30px; text-align: center; }
+
+.elgg-menu-item-inbox > a { position: relative; }
+.elgg-menu-item-inbox > a .elgg-icon { font-size: 20px; }
+
 .inbox-message { z-index: 1; padding: 10px; position: relative; display: flex; align-items: flex-start; justify-content: space-between; }
 .inbox-message > * { flex: 1 0 auto; padding: 0 5px; }
 .inbox-message .inbox-message-checkbox { flex: 0 0 20px; text-align: center; align-self: center; }
