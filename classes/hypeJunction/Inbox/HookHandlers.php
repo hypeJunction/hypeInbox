@@ -3,6 +3,7 @@
 namespace hypeJunction\Inbox;
 
 use ElggMenuItem;
+use hypeJunction\Data\Property;
 use hypeJunction\Inbox\Config;
 use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Models\Model;
@@ -481,6 +482,45 @@ class HookHandlers {
 	}
 
 	/**
+	 * Setup topbar menu
+	 *
+	 * @param string         $hook   "register"
+	 * @param string         $type   "menu:topbar"
+	 * @param ElggMenuItem[] $return  Menu
+	 * @param array          $params  Hook params
+	 * @return ElggMenuItem[]
+	 */
+	public function setupTopbarMenu($hook, $type, $return, $params) {
+
+		if (!elgg_is_logged_in()) {
+			return;
+		}
+
+		$count = $this->model->countUnreadMessages();
+		if ($count > 99) {
+			$count = '99+';
+		}
+
+		$text = elgg_view_icon('envelope');
+		$counter = elgg_format_element('span', [
+			'id' => 'inbox-new',
+			'class' => $count ? 'messages-new' : 'messages-new hidden',
+				], $count);
+
+		$return[] = ElggMenuItem::factory(array(
+					'name' => 'inbox',
+					'href' => '#inbox-popup',
+					'text' => $text . $counter,
+					'priority' => 600,
+					'tooltip' => elgg_echo('inbox:thread:unread', array($count)),
+					'rel' => 'popup',
+					'id' => 'inbox-popup-link'
+		));
+
+		return $return;
+	}
+
+	/**
 	 * Pretty URL for message objects
 	 *
 	 * @param string $hook   "entity:url"
@@ -525,24 +565,39 @@ class HookHandlers {
 		$return['object']['messages'] = ':message';
 		return $return;
 	}
-	
+
 	public function getMessageProperties($hook, $type, $return, $params) {
 
-		$return[] = new \hypeJunction\Data\Property('thread_id', array(
+		$return[] = new Property('thread_id', array(
 			'getter' => '\hypeJunction\Inbox\Message::getThreadIdProp',
 			'read_only' => true,
 		));
 
-		$return[] = new \hypeJunction\Data\Property('message_type', array(
+		$return[] = new Property('message_type', array(
 			'getter' => '\hypeJunction\Inbox\Message::getMessageTypeProp',
 			'read_only' => true,
 		));
 
-		$return[] = new \hypeJunction\Data\Property('attachments', array(
+		$return[] = new Property('attachments', array(
 			'getter' => '\hypeJunction\Inbox\Message::getAttachmentsProp',
 			'read_only' => true,
 		));
 
 		return $return;
 	}
+
+	/**
+	 * Add unread notifications count to the ajax responses
+	 *
+	 * @param string $hook   "output"
+	 * @param string $type   "ajax"
+	 * @param array  $return Ajax output
+	 * @param array  $params Hook params
+	 * @return array
+	 */
+	public function ajaxOutput($hook, $type, $return, $params) {
+		$return['inbox']['unread'] = (int) $this->model->countUnreadMessages();
+		return $return;
+	}
+
 }

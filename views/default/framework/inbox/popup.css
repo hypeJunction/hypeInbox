@@ -1,0 +1,17 @@
+/* Style the popup module */
+#inbox-popup { padding: 0; background: white; width: 345px; max-width: 100%; position: absolute; font-size: 14px; line-height: normal; }
+#inbox-popup .elgg-no-results, #inbox-popup .elgg-ajax-loader { margin: 0; padding: 8px; }
+#inbox-popup .elgg-list-inbox { max-height: 300px; overflow-y: auto; margin: 0; }
+#inbox-popup .elgg-foot { border-top: 1px solid #cccccc; }
+#inbox-popup .elgg-foot a { text-align: center; font-size: 12px; min-width: 30px; padding: 4px; display: inline-block; width: 100%; text-align: center; }
+
+.elgg-list-inbox > li { padding: 0; border: none; box-shadow: none; border-bottom: 1px solid #DCDCDC; margin: 0; }
+.elgg-list-inbox > li:last-of-type { border-bottom-width: 0; }
+.elgg-list-inbox > li .elgg-image-block { padding: 8px; transition: background-color 0.5s ease; }
+.elgg-list-inbox > li .elgg-image-block.elgg-inbox-unread { background-color: #EDF5FF; }
+.elgg-list-inbox > li .elgg-image-block:after { content: ""; }
+
+.elgg-menu-item-inbox > a { position: relative; }
+.elgg-menu-item-inbox > a .elgg-icon { font-size: 20px; }
+
+#inbox-new { color: white; background-color: red; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5); -moz-box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5); box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5); position: absolute; text-align: center; top: 2px; left: auto; right: -8px; min-width: 16px; height: 16px; line-height: 16px; font-size: 10px; font-weight: bold; }

@@ -140,4 +140,7 @@ return array(
 	%s
 
 	Please do not reply to this email.",
+
+	'inbox:empty' => 'Your inbox is empty',
+	
 );

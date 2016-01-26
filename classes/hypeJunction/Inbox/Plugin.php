@@ -86,6 +86,7 @@ final class Plugin extends \hypeJunction\Plugin {
 		elgg_register_action('messages/delete', $action_path . 'messages/delete.php');
 		elgg_register_action('messages/markread', $action_path . 'messages/markread.php');
 		elgg_register_action('messages/markunread', $action_path . 'messages/markunread.php');
+		elgg_register_action('messages/load', $action_path . 'messages/load.php');
 
 		// Third party integrations
 		elgg_register_plugin_hook_handler('config:user_types', 'framework:inbox', array($this->hooks, 'filterUserTypes'));
@@ -108,6 +109,13 @@ final class Plugin extends \hypeJunction\Plugin {
 		elgg_register_plugin_hook_handler('aliases', 'graph', array($this->hooks, 'getGraphAlias'));
 		elgg_register_plugin_hook_handler('graph:properties', 'object:messages', array($this->hooks, 'getMessageProperties'));
 		// @todo Move graph controller when interface is implemented in hypeApps
+
+		// Top bar
+		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
+		elgg_register_plugin_hook_handler('register', 'menu:topbar', array($this->hooks, 'setupTopbarMenu'));
+		elgg_register_plugin_hook_handler('output', 'ajax', array($this->hooks, 'ajaxOutput'));
+		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
+		elgg_extend_view('elgg.css', 'framework/inbox/popup.css');
 	}
 
 }
