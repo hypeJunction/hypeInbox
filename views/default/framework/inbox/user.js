@@ -4,7 +4,7 @@ define(function (require) {
 	var $ = require('jquery');
 	var spinner = require('elgg/spinner');
 	require('jquery.form');
-	
+
 	var inbox = {
 		/**
 		 * Bind events
@@ -22,6 +22,7 @@ define(function (require) {
 			$(document).on('click', '.elgg-menu-inbox li:has(.elgg-child-menu) > a', inbox.toggleChildMenu);
 			$(document).on('click', '.inbox-toggle-attachments-form', inbox.toggleAttachmentsForm);
 			$(document).on('change', '.inbox-message [type="checkbox"]', inbox.showControls);
+			$(document).on('click', '.elgg-menu-item-reply', inbox.focusReply);
 
 			elgg.config.inboxUser = true;
 		},
@@ -126,6 +127,13 @@ define(function (require) {
 			e.preventDefault();
 			$(this).closest('form').find('.inbox-attachments-form').show();
 			$(this).parent().remove();
+		},
+		focusReply: function (e) {
+			var $form = $('.elgg-form-messages-send');
+			if ($form.length) {
+				$form.find('textarea').focus();
+				e.preventDefault();
+			}
 		}
 	};
 
