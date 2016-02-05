@@ -3,7 +3,7 @@
 use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Thread;
 
-$limit = get_input('limit', 5);
+$limit = get_input('limit', 100);
 $offset = get_input('offset', null);
 
 $user = elgg_get_page_owner_entity();
