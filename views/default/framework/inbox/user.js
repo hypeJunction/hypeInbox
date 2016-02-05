@@ -2,7 +2,9 @@ define(function (require) {
 
 	var elgg = require('elgg');
 	var $ = require('jquery');
-
+	var spinner = require('elgg/spinner');
+	require('jquery.form');
+	
 	var inbox = {
 		/**
 		 * Bind events
@@ -60,12 +62,8 @@ define(function (require) {
 			var $elem = $(this);
 
 			elgg.action($elem.attr('href'), {
-				beforeSend: function () {
-					$('body').addClass('elgg-state-loading');
-				},
-				complete: function () {
-					$('body').removeClass('elgg-state-loading');
-				},
+				beforeSend: spinner.start,
+				complete: spinner.stop,
 				success: function (data) {
 					var $msg = $elem.closest('.inbox-message');
 					$msg.addClass('inbox-message-read').removeClass('inbox-message-unread');
@@ -84,12 +82,8 @@ define(function (require) {
 			var $elem = $(this);
 
 			elgg.action($elem.attr('href'), {
-				beforeSend: function () {
-					$('body').addClass('elgg-state-loading');
-				},
-				complete: function () {
-					$('body').removeClass('elgg-state-loading');
-				},
+				beforeSend: spinner.start,
+				complete: spinner.stop,
 				success: function (data) {
 					var $msg = $elem.closest('.inbox-message');
 					$elem.closest('.inbox-message').addClass('inbox-message-unread').removeClass('inbox-message-read');
@@ -104,11 +98,11 @@ define(function (require) {
 				data: $form.serialize(),
 				beforeSend: function () {
 					$form.find('[type="submit"]').prop('disabled', true).addClass('elgg-state-disabled');
-					$('body').addClass('elgg-state-loading');
+					spinner.start();
 				},
 				complete: function () {
 					$form.find('[type="submit"]').prop('disabled', false).removeClass('elgg-state-disabled');
-					$('body').removeClass('elgg-state-loading');
+					spinner.stop();
 				},
 				success: function (data) {
 					if (data.status >= 0) {
