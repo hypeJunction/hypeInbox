@@ -4,7 +4,7 @@
  * Create an empty popup module to be populated on demand via XHR request.
  */
 
-if (!elgg_is_logged_in) {
+if (!elgg_is_logged_in()) {
 	return;
 }
 
