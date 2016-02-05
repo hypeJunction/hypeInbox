@@ -1,3 +1,23 @@
+<a name="5.1.0"></a>
+# [5.1.0](https://github.com/hypeJunction/hypeInbox/compare/5.0.2...v5.1.0) (2016-02-05)
+
+
+### Bug Fixes
+
+* **forms:** wrap reply form in info module instead of aside ([fc19f7e](https://github.com/hypeJunction/hypeInbox/commit/fc19f7e))
+* **inbox:** weirdness in class name resolution ([f7c65bc](https://github.com/hypeJunction/hypeInbox/commit/f7c65bc)), closes [#20](https://github.com/hypeJunction/hypeInbox/issues/20)
+* **js:** switch to elgg spinner and require jquery form ([077b017](https://github.com/hypeJunction/hypeInbox/commit/077b017))
+* **notifications:** make sure the sender is not notified by email ([b8c1a84](https://github.com/hypeJunction/hypeInbox/commit/b8c1a84))
+* **views:** fix typo in function name ([76b9cbf](https://github.com/hypeJunction/hypeInbox/commit/76b9cbf))
+
+### Features
+
+* **notifications:** integration with notifications templates ([80de728](https://github.com/hypeJunction/hypeInbox/commit/80de728))
+* **thread:** increate messages shown per thread to 100 ([a8b3057](https://github.com/hypeJunction/hypeInbox/commit/a8b3057))
+* **ux:** focus reply form when reply button is clicked ([5bfdd18](https://github.com/hypeJunction/hypeInbox/commit/5bfdd18))
+
+
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/hypeJunction/hypeInbox/compare/5.0.1...v5.0.2) (2016-01-26)
 
