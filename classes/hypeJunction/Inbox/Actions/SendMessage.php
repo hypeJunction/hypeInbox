@@ -124,9 +124,10 @@ class SendMessage extends Action {
 
 		$notification_body = implode(PHP_EOL, $body);
 
-		foreach ($this->recipient_guids as $recipient_guid) {
-			$recipient = get_entity($recipient_guid);
-			if (!$recipient || $recipient->guid = $this->sender_guid) {
+		$recipients = $this->entity->getRecipients();
+		$attachments = $this->entity->getAttachments(array('limit' => 0));
+		foreach ($recipients as $recipient) {
+			if ($recipient->guid == $sender->guid) {
 				continue;
 			}
 
@@ -146,7 +147,14 @@ class SendMessage extends Action {
 				)),
 					), $recipient->language);
 
-			notify_user($recipient->guid, $sender->guid, $subject, $notification);
+			notify_user($recipient->guid, $sender->guid, $subject, $notification, array(
+				'attachments' => $attachments,
+				'template' => 'messages_send',
+				'action' => 'send',
+				'object' => $this->entity,
+				'recipients' => $recipients,
+			));
+			
 		}
 
 		$this->result->addMessage(elgg_echo('inbox:send:success'));

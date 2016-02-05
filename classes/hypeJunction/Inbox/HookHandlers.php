@@ -558,4 +558,19 @@ class HookHandlers {
 		return $return;
 	}
 
+	/**
+	 * Register custom template
+	 *
+	 * @param string $hook   "get_templates"
+	 * @param string $type   "notifications"
+	 * @param string $return Template names
+	 * @param array  $params Hook params
+	 * @return array
+	 */
+	function addCustomTemplate($hook, $type, $return, $params) {
+
+		$return[] = "messages_send";
+		return $return;
+	}
+
 }

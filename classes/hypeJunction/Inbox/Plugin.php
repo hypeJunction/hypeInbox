@@ -111,6 +111,7 @@ final class Plugin extends \hypeJunction\Plugin {
 		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
 		elgg_register_plugin_hook_handler('register', 'menu:topbar', array($this->hooks, 'setupTopbarMenu'));
 		elgg_register_plugin_hook_handler('output', 'ajax', array($this->hooks, 'ajaxOutput'));
+
 		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
 		
 		// CSS
@@ -118,6 +119,9 @@ final class Plugin extends \hypeJunction\Plugin {
 
 		// JS
 		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
+
+		// Notification Templates
+		elgg_register_plugin_hook_handler('get_templates', 'notifications', array($this->hooks, 'addCustomTemplate'));
 	}
 
 }
