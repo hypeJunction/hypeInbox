@@ -449,6 +449,7 @@ class Message extends ElggObject {
 			$copy = clone $this;
 			$copy->owner_guid = $recipient->guid;
 			$copy->container_guid = $recipient->guid;
+			$copy->readYet = false;
 			if ($copy->save()) {
 				$copy->attach();
 			}

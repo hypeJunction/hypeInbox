@@ -2,9 +2,6 @@
 
 namespace hypeJunction\Inbox\Models;
 
-use ElggBatch;
-use ElggObject;
-use ElggUser;
 use hypeJunction\Inbox\Config;
 use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Inbox;
@@ -39,7 +36,7 @@ class Model {
 	 * Get userpicker tokeninput options based on the current message type config
 	 *
 	 * @param string   $message_type Current message type
-	 * @param ElggUser $user         Sender
+	 * @param \ElggUser $user         Sender
 	 * @return array An array of options
 	 */
 	public function getUserQueryOptions($message_type = null, $user = null) {
@@ -50,7 +47,7 @@ class Model {
 	/**
 	 * Check if the user is an admin
 	 *
-	 * @param ElggUser $user User
+	 * @param \ElggUser $user User
 	 * @return boolean
 	 */
 	public function isAdminUser($user) {
@@ -76,7 +73,7 @@ class Model {
 	/**
 	 * Get message types the user can receive
 	 *
-	 * @param ElggUser $user User
+	 * @param \ElggUser $user User
 	 * @return array An array of message types
 	 */
 	public function getIncomingMessageTypes($user = null) {
@@ -136,7 +133,7 @@ class Model {
 	/**
 	 * Get message types the user can send
 	 *
-	 * @param ElggUser $user User
+	 * @param \ElggUser $user User
 	 * @return array An array of message types
 	 */
 	public function getOutgoingMessageTypes($user = null) {
@@ -197,14 +194,14 @@ class Model {
 	 * Count unread messages of a given type received by a given user
 	 *
 	 * @param string   $message_type Message type
-	 * @param ElggUser $user         User
+	 * @param \ElggUser $user         User
 	 * @return int Count of unread messages
 	 */
 	public function countUnreadMessages($message_type = null, $user = null) {
 		if (is_null($user)) {
 			$user = elgg_get_logged_in_user_entity();
 		}
-		if (!$user instanceof ElggUser) {
+		if (!$user instanceof \ElggUser) {
 			return 0;
 		}
 		return Inbox::countUnread($user, $message_type);
@@ -215,7 +212,7 @@ class Model {
 	 *
 	 * @param integer    $recipient_guids GUIDs of recipients if any
 	 * @param string     $message_type    Type of the message being composed
-	 * @param ElggObject $entity          Message to which the reply is to be sent
+	 * @param \ElggObject $entity          Message to which the reply is to be sent
 	 * @return array An array of form variables
 	 */
 	public function prepareFormValues($recipient_guids = null, $message_type = null, $entity = null) {
@@ -256,7 +253,7 @@ class Model {
 	/**
 	 * Validate that user has a role
 	 *
-	 * @param ElggUser $user      User
+	 * @param \ElggUser $user      User
 	 * @param string   $role_name Role
 	 * @return boolean
 	 */
@@ -344,7 +341,7 @@ class Model {
 	 * Get messages that have not been assigned a hash
 	 *
 	 * @param array $options Getter options
-	 * @return ElggBatch
+	 * @return \ElggBatch
 	 */
 	public function getUnhashedMessages(array $options = array()) {
 
@@ -386,7 +383,7 @@ class Model {
 		$list->setSearchQuery(array('user' => $q));
 
 		$batch = $list->getItems();
-		/* @var \ElggBatch $batch */
+		/* @var \\ElggBatch $batch */
 
 		$results = array();
 		foreach ($batch as $b) {
@@ -417,7 +414,7 @@ class Model {
 	 * @param array    $options  ege* options
 	 * @param bool     $as_guids Only return guids
 	 * @param callable $ege      ege* callable
-	 * @return ElggBatch|array
+	 * @return \ElggBatch|array
 	 */
 	protected function getEntities(array $options = array(), $as_guids = false, callable $ege = null) {
 
@@ -437,7 +434,7 @@ class Model {
 			$options['callback'] = array($this, 'rowToGUID');
 		}
 
-		return new ElggBatch($ege, $options);
+		return new \ElggBatch($ege, $options);
 	}
 
 	/**
