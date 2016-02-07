@@ -1,3 +1,9 @@
+<a name="5.1.2"></a>
+## [5.1.2](https://github.com/hypeJunction/hypeInbox/compare/5.1.1...v5.1.2) (2016-02-07)
+
+
+
+
 <a name="5.1.1"></a>
 ## [5.1.1](https://github.com/hypeJunction/hypeInbox/compare/5.1.0...v5.1.1) (2016-02-07)
 
