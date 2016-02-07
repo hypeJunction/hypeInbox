@@ -20,7 +20,7 @@
 	"require": {
 		"composer/installers": "~1.0",
 		"hypejunction/hypeapps": "~5.0",
-		"hypejunction/elgg_tokeninput": "~3.0",
+		"hypejunction/elgg_tokeninput": "~4.0",
 		"hypejunction/hypelists": "~3.5"
 	},
 	"autoload": {
