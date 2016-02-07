@@ -1,3 +1,13 @@
+<a name="5.1.1"></a>
+## [5.1.1](https://github.com/hypeJunction/hypeInbox/compare/5.1.0...v5.1.1) (2016-02-07)
+
+
+### Bug Fixes
+
+* **deps:** fix required version of tokeninput ([df4595a](https://github.com/hypeJunction/hypeInbox/commit/df4595a))
+
+
+
 <a name="5.1.0"></a>
 # [5.1.0](https://github.com/hypeJunction/hypeInbox/compare/5.0.2...v5.1.0) (2016-02-05)
 
