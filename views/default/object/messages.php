@@ -59,4 +59,7 @@ echo "<article $attrs>$body</article>";
 
 if ($full && !$entity->isRead()) {
 	$entity->markRead();
+	echo elgg_view('notifier/view_listener', array(
+		'entity' => $entity,
+	));
 }
