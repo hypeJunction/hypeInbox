@@ -1,3 +1,13 @@
+<a name="5.1.5"></a>
+## [5.1.5](https://github.com/hypeJunction/hypeInbox/compare/5.1.4...v5.1.5) (2016-02-09)
+
+
+### Bug Fixes
+
+* **notifications:** make sure notifier marks message as read ([59b771a](https://github.com/hypeJunction/hypeInbox/commit/59b771a))
+
+
+
 <a name="5.1.4"></a>
 ## [5.1.4](https://github.com/hypeJunction/hypeInbox/compare/5.1.3...v5.1.4) (2016-02-07)
 
