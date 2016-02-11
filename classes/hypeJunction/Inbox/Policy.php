@@ -78,7 +78,7 @@ class Policy {
 			'sender' => 'all',
 			'recipient' => 'all',
 			'relationship' => false,
-			'inverse_relationhship' => false,
+			'inverse_relationship' => false,
 			'group_relationship' => false,
 		);
 
