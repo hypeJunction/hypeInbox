@@ -1,3 +1,14 @@
+<a name="5.1.6"></a>
+## [5.1.6](https://github.com/hypeJunction/hypeInbox/compare/5.1.5...v5.1.6) (2016-02-23)
+
+
+### Bug Fixes
+
+* **deps:** update hypeLists version ([4cf202b](https://github.com/hypeJunction/hypeInbox/commit/4cf202b))
+* **logs:** fix warnings in logs ([0928610](https://github.com/hypeJunction/hypeInbox/commit/0928610))
+
+
+
 <a name="5.1.5"></a>
 ## [5.1.5](https://github.com/hypeJunction/hypeInbox/compare/5.1.4...v5.1.5) (2016-02-09)
 
