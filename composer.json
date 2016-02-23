@@ -21,7 +21,7 @@
 		"composer/installers": "~1.0",
 		"hypejunction/hypeapps": "~5.0",
 		"hypejunction/elgg_tokeninput": "~4.0",
-		"hypejunction/hypelists": "~3.5"
+		"hypejunction/hypelists": "~4.0"
 	},
 	"autoload": {
 		"psr-0": {
