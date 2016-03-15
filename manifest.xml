@@ -15,23 +15,24 @@
 	
 	<requires>
 		<type>elgg_release</type>
-		<version>2.0</version>
+		<version>2.1</version>
 	</requires>
 
 	<requires>
 		<type>plugin</type>
 		<name>hypeApps</name>
-		<version>4.3</version>
 	</requires>
 	
 	<requires>
 		<type>plugin</type>
 		<name>elgg_tokeninput</name>
 	</requires>
+
 	<requires>
 		<type>plugin</type>
 		<name>hypeLists</name>
 	</requires>
+
 	<requires>
 		<type>priority</type>
 		<plugin>messages</plugin>
