@@ -150,7 +150,7 @@ class Model {
 		if (isset($this->outgoingMessageTypes[$user->guid])) {
 			return $this->outgoingMessageTypes[$user->guid];
 		}
-		
+
 		$message_types = $this->config->getMessageTypes();
 		$user_types = $this->config->getUserTypes();
 
@@ -372,22 +372,28 @@ class Model {
 	public function searchRecipients($term) {
 
 		$term = sanitize_string($term);
-		
+
 		// replace mysql vars with escaped strings
 		$q = str_replace(array('_', '%'), array('\_', '\%'), $term);
 
 		$message_type = get_input('message_type', Message::TYPE_PRIVATE);
 		$options = $this->getUserQueryOptions($message_type);
 
-		$list = new ElggList($options);
-		$list->setSearchQuery(array('user' => $q));
+		if (\hypeJunction\Integration::isElggVersionAbove('2.1')) {
+			$options['query'] = $q;
+			$search_results = (array) elgg_trigger_plugin_hook('search', 'user', $options, []);
+			$results = elgg_extract('entities', $search_results, []);
+		} else {
+			$list = new ElggList($options);
+			$list->setSearchQuery(array('user' => $q));
 
-		$batch = $list->getItems();
-		/* @var \\ElggBatch $batch */
+			$batch = $list->getItems();
+			/* @var \\ElggBatch $batch */
 
-		$results = array();
-		foreach ($batch as $b) {
-			$results[] = $b;
+			$results = array();
+			foreach ($batch as $b) {
+				$results[] = $b;
+			}
 		}
 
 		return $results;
