@@ -1,3 +1,13 @@
+<a name="5.1.7"></a>
+## [5.1.7](https://github.com/hypeJunction/hypeInbox/compare/5.1.6...v5.1.7) (2016-07-08)
+
+
+### Bug Fixes
+
+* **autocomplete:** rely on core search where possible ([8525bdf](https://github.com/hypeJunction/hypeInbox/commit/8525bdf))
+
+
+
 <a name="5.1.6"></a>
 ## [5.1.6](https://github.com/hypeJunction/hypeInbox/compare/5.1.5...v5.1.6) (2016-02-23)
 
