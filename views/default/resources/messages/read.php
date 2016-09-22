@@ -12,6 +12,10 @@ if (!$message instanceof Message) {
 elgg_require_js('framework/inbox/user');
 
 $page_owner = elgg_get_page_owner_entity();
+if (!$page_owner || !$page_owner->canEdit()) {
+	forward('', '404');
+}
+
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 $subject = $message->getDisplayName();
 

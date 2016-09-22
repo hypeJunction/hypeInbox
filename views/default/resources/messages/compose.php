@@ -6,6 +6,9 @@ elgg_require_js('framework/inbox/user');
 
 $guid = get_input('guid');
 $page_owner = elgg_get_page_owner_entity();
+if (!$page_owner || !$page_owner->canEdit()) {
+	forward('', '404');
+}
 
 $message = get_entity($guid);
 

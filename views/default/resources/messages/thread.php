@@ -2,6 +2,11 @@
 
 use hypeJunction\Inbox\Message;
 
+$page_owner = elgg_get_page_owner_entity();
+if (!$page_owner || !$page_owner->canEdit()) {
+	forward('', '404');
+}
+
 $hash = get_input('hash');
 
 if (is_numeric($hash)) {
