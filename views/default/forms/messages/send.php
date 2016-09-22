@@ -27,7 +27,7 @@ if (!$entity) {
 			?></label>
 		<?php
 		echo elgg_view('input/tokeninput', array(
-			'name' => 'recipient_guids',
+			'name' => 'recipients',
 			'value' => $recipient_guids,
 			'multiple' => $multiple,
 			'callback' => 'hypeJunction\\Inbox\\Search\\Recipients::search',
@@ -41,7 +41,7 @@ if (!$entity) {
 } else {
 	foreach ($recipient_guids as $guid) {
 		echo elgg_view('input/hidden', array(
-			'name' => 'recipient_guids[]',
+			'name' => 'recipients[]',
 			'value' => $guid,
 		));
 	}

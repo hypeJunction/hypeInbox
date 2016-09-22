@@ -243,10 +243,10 @@ class Model {
 		if (elgg_is_sticky_form('messages')) {
 			$sticky = elgg_get_sticky_values('messages');
 			foreach ($sticky as $field => $value) {
-				if ($field == 'recipient_guids' && is_string($value)) {
+				if ($field == 'recipients' && is_string($value)) {
 					$value = string_to_tag_array($value);
+					$values['recipient_guids'] = $value;
 				}
-				$values[$field] = $value;
 			}
 		}
 

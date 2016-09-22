@@ -8,7 +8,7 @@ $guid = get_input('guid');
 $entity = get_entity($guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
-$recipient_guids = EntitySet::create(get_input('recipient_guids', []))->guids();
+$recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
 
 $subect = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
