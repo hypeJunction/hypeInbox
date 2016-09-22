@@ -1,6 +1,6 @@
 <?php
 
-$entity = elgg_extract('entity', $params);
+$entity = elgg_extract('entity', $vars);
 
 $ha = access_get_show_hidden_status();
 access_show_hidden_entities(true);
