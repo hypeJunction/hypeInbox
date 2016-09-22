@@ -2,7 +2,7 @@
 
 $full = elgg_extract('full_view', $vars, false);
 if ($full) {
-	return true;
+	return;
 }
 
 $entity = elgg_extract('entity', $vars);

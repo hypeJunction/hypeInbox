@@ -15,9 +15,11 @@ $full = elgg_extract('full_view', $vars, false);
 $threaded = elgg_extract('threaded', $vars, !$full);
 
 $icon = elgg_view('object/messages/elements/sender', $vars);
-$title = elgg_view('object/messages/elements/participants', $vars);
-$subtitle = elgg_view('object/messages/elements/subject', $vars);
-$subtitle .= elgg_view('object/messages/elements/time', $vars);
+$title = elgg_view('object/messages/elements/subject', $vars);
+
+$subtitle = [];
+$subtitle[] = elgg_view('object/messages/elements/byline', $vars);
+$subtitle[] = elgg_view('object/messages/elements/time', $vars);
 
 $metadata = elgg_view('object/messages/elements/menu', $vars);
 $content .= elgg_view('object/messages/elements/body', $vars);
@@ -26,8 +28,8 @@ $content .= elgg_view('object/messages/elements/embeds', $vars);
 
 $summary = elgg_view('object/elements/summary', array(
 	'entity' => $entity,
-	'title' => ($title && $full) ? $title : false,
-	'subtitle' => $subtitle,
+	'title' => $title ? : false,
+	'subtitle' => implode(' ', $subtitle),
 	'metadata' => $metadata,
 	'content' => $content,
 ));

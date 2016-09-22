@@ -1,0 +1,25 @@
+@mixin image-block($size: 30px, $padding: 5px) {
+	padding: 0;
+	@include display-flex;
+	@include align-items(flex-start);
+	& > .elgg-image {
+		@include order(1);
+		@include flex(0 0 $size);
+		margin-right: $padding;
+	}
+	& > .elgg-image-alt {
+		@include order(3);
+		@include flex(0 0 auto);
+		margin-left: $padding;
+	}
+	& > .elgg-body {
+		@include order(2);
+		@include flex(1 1 auto);
+	}
+}
+
+@mixin clearfix {
+	*zoom:1;
+	&:before, &:after { content: " "; display: table; }
+	&:after { clear: both; }
+}

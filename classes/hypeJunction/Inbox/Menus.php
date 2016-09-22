@@ -219,50 +219,6 @@ class Menus {
 
 		$return = array();
 
-		$attachments = elgg_view('object/messages/elements/attachments-indicator', $params);
-		if ($attachments) {
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'attachments',
-				'text' => $attachments,
-				'href' => false,
-				'priority' => 50,
-			));
-		}
-
-		if ($threaded) {
-			$unread = elgg_view('object/messages/elements/unread-indicator', $params);
-			if ($unread) {
-				$return[] = ElggMenuItem::factory(array(
-					'name' => 'unread',
-					'text' => $unread,
-					'href' => false,
-					'priority' => 75,
-				));
-			}
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'count',
-				'text' => elgg_view('object/messages/elements/count-indicator', $params),
-				'href' => false,
-				'priority' => 100,
-			));
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'markread',
-				'href' => elgg_http_add_url_query_elements('action/messages/markread', $action_params),
-				'text' => elgg_view_icon('eye'),
-				'title' => elgg_echo('inbox:markread'),
-				'is_action' => true,
-				'priority' => 100,
-			));
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'markunread',
-				'href' => elgg_http_add_url_query_elements('action/messages/markunread', $action_params),
-				'text' => elgg_view_icon('eye-slash'),
-				'title' => elgg_echo('inbox:markunread'),
-				'is_action' => true,
-				'priority' => 110,
-			));
-		}
-
 		if (!$entity->isPersistent()) {
 			$return[] = ElggMenuItem::factory(array(
 				'name' => 'delete',

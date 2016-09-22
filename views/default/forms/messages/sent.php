@@ -39,6 +39,6 @@ elgg_push_context('inbox-form');
 echo elgg_view('framework/inbox/list', $params);
 echo elgg_view('framework/inbox/controls/inbox', $params);
 echo elgg_view('input/submit', array(
-	'class' => 'inbox-hidden',
+	'class' => 'hidden',
 ));
 elgg_pop_context();

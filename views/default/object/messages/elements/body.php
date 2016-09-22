@@ -19,7 +19,7 @@ if ($full) {
 		'class' => 'inbox-message-body',
 			));
 } else {
-	$body = elgg_get_excerpt($entity->description);
+	$body = elgg_get_excerpt($entity->description, 100);
 	echo elgg_format_element('div', array(
 		'class' => 'inbox-message-body-excerpt',
 			), $body);

@@ -1,6 +1,6 @@
-@import "compass/css3"; // compass css3 helpers
-@import "../../../../sass/global/variables";
+@import "compass/css3";
 @import "variables";
+@import "mixins";
 
 /* Style the popup module */
 #inbox-popup {
@@ -9,8 +9,6 @@
     width: 345px;
 	max-width: 100%;
     position: absolute;
-    font-size: 14px;
-    line-height: normal;
 	.elgg-no-results,
 	.elgg-ajax-loader {
 		margin: 0;
@@ -37,9 +35,6 @@
 
 .elgg-list-inbox > li {
     padding: 0;
-    border: none;
-    box-shadow: none;
-    border-bottom: 1px solid #DCDCDC;
     margin: 0;
 
 	&:last-of-type {
@@ -47,14 +42,8 @@
 	}
 	.inbox-message {
 		padding: 8px;
-		transition: background-color 0.5s ease;
+		@include transition(background-color 0.5s ease);
 	}
-
-	.inbox-message-icon {
-		flex: 0 0 30px;
-		text-align: center;
-	}
-
 }
 
 .elgg-menu-item-inbox > a {
@@ -68,46 +57,40 @@
 	z-index: 1;
 	padding: 10px;
 	position: relative;
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
+	@include display-flex;
+	@include align-items(flex-start);
+	@include justify-content(space-between);
+
 	& > * {
-		flex: 1 0 auto;
+		@include flex(1 0 auto);
 		padding: 0 5px;
 	}
 	.inbox-message-checkbox {
-		flex: 0 0 20px;
+		@include flex(0 0 20px);
+		@include align-self(center);
 		text-align: center;
-		align-self: center;
 	}
+
 	.inbox-message-icon {
-		flex: 0 0 50px;
+		@include flex(0 0 40px);
 		text-align: center;
 	}
 	.inbox-message-content {
-		flex: 1 1 auto;
+		@include flex(1 1 auto);
 		overflow: hidden;
 	}
 	.inbox-message-subject {
 		margin-right: 10px;
 	}
 	.inbox-message-body, .inbox-message-body-excerpt {
-		font-size: 90%;
 		margin: 5px auto;
 	}
 	&[data-href] {
 		cursor: pointer;
 	}
 	h3, p, a, .elgg-content, .elgg-output {
-		font-size: 14px;
 		line-height: normal;
 		margin: 0;
-	}
-	h3 {
-		font-weight: normal;
-		.inbox-message-sender {
-			font-weight: bold;
-		}
 	}
 	&.inbox-message-unread {
 		background-color: $unread-bg-color;
@@ -124,38 +107,14 @@
 	}
 }
 
-.inbox-menu {
-	& > li {
-		.inbox-message-count-indicator,
-		.inbox-message-unread-indicator {
-			&, &:hover {
-				color: white;
-				background: $border-color;
-				padding: 2px 4px;
-				font-size: 11px;
-				font-weight: bold;
-				line-height: 16px;
-				height: 20px;
-				min-width: 20px;
-				text-align: center;
-				@include border-radius(1000px);
-				@include box-sizing(border-box);
-			}
-		}
-		.inbox-message-unread-indicator {
-			&, &:hover {
-				background: $primary-color;
-			}
-		}
-	}
-}
-
 .inbox-messages-control-group {
     padding: 0 10px;
 }
-.elgg-menu-inbox, .elgg-menu-inbox-thread {
-	display: flex;
-	align-items: center;
+
+.elgg-menu-inbox,
+.elgg-menu-inbox-thread {
+	@include display-flex;
+	@include align-items(center);
 	& > li {
 		padding: 0 5px;
 		&.elgg-menu-item-toggle {
@@ -164,60 +123,9 @@
 	}
 }
 
-.inbox-message-image-attachments {
-	@include clearfix;
-	& > div {
-		@include box-sizing(border-box);
-		@media #{$medium} {
-			float: left;
-			width: 33.33333%;
-			padding: 5px;
-			margin: 0;
-			&:nth-of-type(1n) {clear: none;}
-			&:nth-of-type(3n+1) { clear:both; }
-		}
-	}
-}
-
-.inbox-message-attachments {
-	display: table;
-	width: 100%;
-	margin: 5px 0;
-	border-top: 1px solid $border-color;
-	border-bottom: 1px solid $border-color;
-	& > div {
-		padding: 3px;
-		& > div {
-			padding: 2px;
-			font-size: 90%;
-		}
-		img, img:hover {
-			border: none;
-			padding: 0;
-			margin: 0;
-			max-width: 25px;
-			box-shadow: none;
-		}
-		&:nth-child(even) {
-			background: $light-bg-color;
-		}
-		&:nth-child(odd) {
-			background: $lighter-bg-color;
-		}
-	}
-}
-
-.inbox-hidden {
-	display: none;
-}
-
 .inbox-unread-count {
 	color: white;
 	background-color: red;
-
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
 
 	position: absolute;
 	text-align: center;
@@ -229,7 +137,10 @@
 	line-height: 16px;
 	font-size: 10px;
 	font-weight: bold;
+
+	@include border-radius(10px);
 }
+
 
 .inbox-messages .elgg-pagination {
 	display: none;

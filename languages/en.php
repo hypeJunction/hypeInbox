@@ -146,4 +146,7 @@ return array(
 
 	'inbox:settings:enable_html' => 'Enable HTML in messages',
 	'inbox:settings:enable_html:help' => 'HTML messages should only be enabled if your site supports outgoing HTML emails',
+
+	'inbox:byline' => 'By %s',
+	'inbox:byline:thread' => 'Last message by %s',
 );
