@@ -2,6 +2,8 @@
 
 namespace hypeJunction\Inbox;
 
+use hypeJunction\Data\Property;
+
 class Graph {
 
 	/**

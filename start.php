@@ -54,8 +54,10 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_register_plugin_hook_handler('register', 'menu:user_hover', [Menus::class, 'setupUserHoverMenu']);
 
 	// Export
-	elgg_register_plugin_hook_handler('aliases', 'graph', [Graph::class, 'getGraphAlias']);
-	elgg_register_plugin_hook_handler('graph:properties', 'object:messages', [Graph::class, 'getMessageProperties']);
+	if (elgg_is_active_plugin('hypeApps')) {
+		elgg_register_plugin_hook_handler('aliases', 'graph', [Graph::class, 'getGraphAlias']);
+		elgg_register_plugin_hook_handler('graph:properties', 'object:messages', [Graph::class, 'getMessageProperties']);
+	}
 	
 	// Top bar
 	elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
