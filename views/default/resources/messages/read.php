@@ -9,8 +9,6 @@ if (!$message instanceof Message) {
 	return true;
 }
 
-elgg_load_css('fonts.font-awesome');
-elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/user');
 
 $page_owner = elgg_get_page_owner_entity();

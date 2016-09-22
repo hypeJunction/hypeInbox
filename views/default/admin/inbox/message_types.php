@@ -1,6 +1,5 @@
 <?php
 
-elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/admin');
 
 $message_types = hypeInbox()->config->getMessageTypes();

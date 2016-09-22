@@ -2,8 +2,6 @@
 
 use hypeJunction\Inbox\Message;
 
-elgg_load_css('fonts.font-awesome');
-elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/user');
 
 $guid = get_input('guid');

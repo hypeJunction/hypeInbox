@@ -5,8 +5,6 @@ use hypeJunction\Inbox\Message;
 $page_owner = elgg_get_page_owner_entity();
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 
-elgg_load_css('fonts.font-awesome');
-elgg_load_css('inbox.base.css');
 elgg_require_js('framework/inbox/user');
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
