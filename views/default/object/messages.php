@@ -1,12 +1,13 @@
 <?php
 
-use hypeJunction\Inbox\Message;
-
 /**
  * Display a message
+ * 
  * @uses $vars['entity']   Message
  * @uses $vars['threaded'] Threaded message display
  */
+use hypeJunction\Inbox\Message;
+
 $entity = elgg_extract('entity', $vars);
 /* @var $entity Message */
 
@@ -25,17 +26,17 @@ $content .= elgg_view('object/messages/elements/embeds', $vars);
 
 $summary = elgg_view('object/elements/summary', array(
 	'entity' => $entity,
-	'title' => ($title) ? : false,
+	'title' => ($title && $full) ? $title : false,
 	'subtitle' => $subtitle,
 	'metadata' => $metadata,
 	'content' => $content,
-		));
+));
 
 $checkbox = '';
 if (elgg_in_context('inbox-form')) {
 	$checkbox = elgg_format_element('div', [
 		'class' => 'inbox-message-checkbox',
-			], elgg_view('object/messages/elements/checkbox', $vars));
+	], elgg_view('object/messages/elements/checkbox', $vars));
 }
 
 $icon = elgg_format_element('div', ['class' => 'inbox-message-icon'], $icon);
@@ -53,7 +54,7 @@ $attrs = elgg_format_attributes(array(
 		($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
 		(elgg_in_context('inbox-form')) ? 'inbox-message-form-row' : '',
 	))),
-		));
+));
 
 echo "<article $attrs>$body</article>";
 

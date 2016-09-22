@@ -36,6 +36,11 @@
 
 	<suggests>
 		<type>plugin</type>
+		<name>hypeAttachments</name>
+	</suggests>
+
+	<suggests>
+		<type>plugin</type>
 		<name>hypeScraper</name>
 	</suggests>
 

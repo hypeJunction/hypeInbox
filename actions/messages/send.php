@@ -2,7 +2,6 @@
 
 use hypeJunction\Access\Collection;
 use hypeJunction\Access\EntitySet;
-use hypeJunction\Filestore\UploadHandler;
 use hypeJunction\Inbox\Message;
 
 $guid = get_input('guid');
@@ -10,8 +9,6 @@ $entity = get_entity($guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
 $recipient_guids = EntitySet::create(get_input('recipient_guids', []))->guids();
-
-$attachment_guids = EntitySet::create(get_input('attachments', []))->guids();
 
 $subect = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
@@ -35,26 +32,14 @@ if ($entity instanceof Message) {
 	}
 }
 
+$access_id = Collection::create(array($sender_guid, $recipient_guids))->getCollectionId();
+
 $attachments = [];
-if (elgg_is_active_plugin('hypeApps')) {
-	// files being uploaded via $_FILES
-	$uploads = UploadHandler::handle('attachments');
-	if ($uploads) {
-		foreach ($uploads as $upload) {
-			if ($upload instanceof ElggFile) {
-				$attachment_guids[] = $upload->guid;
-			}
-		}
-	}
-
-	$attachments = EntitySet::create($attachment_guids)->entities();
-
-	$access_id = Collection::create(array($sender_guid, $recipient_guids))->getCollectionId();
-	foreach ($attachments as $attachment) {
-		$attachment->origin = 'messages';
-		$attachment->access_id = $access_id;
-		$attachment->save();
-	}
+if (elgg_is_active_plugin('hypeAttachments')) {
+	$attachments = hypeapps_attach_uploaded_files($entity, 'attachments', [
+		'access_id' => $access_id,
+		'origin' => 'messages',
+	]);
 }
 
 $guid = Message::factory(array(
@@ -84,18 +69,18 @@ $message_hash = $entity->getHash();
 
 $ruleset = hypeInbox()->config->getRuleset($message_type);
 
-$attachments = array_map(array(hypeInbox()->model, 'getLinkTag'), $attachments);
+$attachment_urls = array_map(array(hypeInbox()->model, 'getLinkTag'), $attachments);
 
 $body = array_filter(array(
 	($ruleset->hasSubject()) ? $entity->subject : '',
 	$entity->getBody(),
-	implode(', ', array_filter($attachments))
+	implode(', ', array_filter($attachment_urls))
 ));
 
 $notification_body = implode(PHP_EOL, $body);
 
 $recipients = $entity->getRecipients();
-$attachments = $entity->getAttachments(array('limit' => 0));
+
 foreach ($recipients as $recipient) {
 	if ($recipient->guid == $sender->guid) {
 		continue;

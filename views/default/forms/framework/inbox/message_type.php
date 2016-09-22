@@ -59,7 +59,7 @@ if ($name == Message::TYPE_NOTIFICATION) {
 	return;
 }
 
-if (elgg_is_active_plugin('file')) {
+if (elgg_is_active_plugin('hypeAttachments')) {
 	echo '<div><label>' . elgg_view('input/checkbox', array(
 		'name' => "message_types[$name][attachments]",
 		'checked' => elgg_extract('attachments', $vars, false),

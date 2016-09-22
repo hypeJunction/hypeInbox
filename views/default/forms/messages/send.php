@@ -2,7 +2,6 @@
 /**
  * Compose message form
  */
-
 $entity = elgg_extract('entity', $vars, false);
 $message_type = elgg_extract('message_type', $vars);
 $recipient_guids = elgg_extract('recipient_guids', $vars, array());
@@ -80,29 +79,16 @@ if ($has_subject) {
 	?>
 </div>
 <?php
-if ($allows_attachments && elgg_view_exists('input/dropzone')) {
-	$footer_controls[] = elgg_view('output/url', array(
-		'class' => 'inbox-toggle-attachments-form',
-		'text' => elgg_echo('inbox:message:attachments:add'),
-		'href' => 'javascript:void(0);'
-			));
-	?>
-	<div class="inbox-form-row inbox-attachments-form hidden">
-		<label><?php echo elgg_echo('inbox:message:attachments') ?></label>
-		<?php
-		echo elgg_view('input/dropzone', array(
-			'name' => 'attachments',
-			'max' => 25,
-			'multiple' => true,
-		));
-		?>
-	</div>
-	<?php
+if ($allows_attachments) {
+	echo elgg_view_input('attachments', [
+		'name' => 'attachments',
+		'expand' => false,
+	]);
 }
 
 $footer_controls[] = elgg_view('input/submit', array(
 	'value' => elgg_echo('inbox:message:send')
-		));
+));
 ?>
 <div class="inbox-form-row elgg-foot text-right">
 	<?php
@@ -120,6 +106,6 @@ $footer_controls[] = elgg_view('input/submit', array(
 	}
 	echo elgg_format_element('ul', array(
 		'class' => 'inbox-footer-controls',
-			), $controls);
+	), $controls);
 	?>
 </div>
