@@ -14,3 +14,15 @@ if ($messages) {
 		'count' => $messages
 	));
 }
+
+echo elgg_view_input('select', [
+	'name' => 'params[enable_html]',
+	'value' => $entity->enable_html,
+	'options_values' => [
+		0 => elgg_echo('option:no'),
+		1 => elgg_echo('option:yes'),
+	],
+	'label' => elgg_echo('inbox:settings:enable_html'),
+	'help' => elgg_echo('inbox:settings:enable_html:help'),
+]);
+

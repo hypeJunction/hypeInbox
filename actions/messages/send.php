@@ -1,11 +1,10 @@
 <?php
 
-use hypeJunction\Access\Collection;
 use hypeJunction\Access\EntitySet;
 use hypeJunction\Inbox\Message;
 
-$guid = get_input('guid');
-$entity = get_entity($guid);
+$original_msg_guid = get_input('original_guid');
+$original_message = get_entity($original_msg_guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
 $recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
@@ -18,54 +17,47 @@ if (empty($recipient_guids)) {
 	forward(REFERRER);
 }
 
-if (empty($body)) {
+if (empty(elgg_strip_tags($body))) {
 	register_error(elgg_echo('inbox:send:error:no_body'));
 	forward(REFERRER);
 }
 
-if ($entity instanceof Message) {
-	$message_hash = $entity->getHash();
-	$message_type = $entity->getMessageType();
-} else {
-	if (!$message_type) {
-		$message_type = Message::TYPE_PRIVATE;
-	}
+$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
+if (!$enable_html) {
+	$body = elgg_strip_tags($body);
 }
 
-$access_id = Collection::create(array($sender_guid, $recipient_guids))->getCollectionId();
+$message_hash = '';
+$message_type = get_input('message_type', Message::TYPE_PRIVATE);
+if ($original_message instanceof Message) {
+	$message_hash = $original_message->getHash();
+	$message_type = $original_message->getMessageType();
+}
 
-$guid = Message::factory(array(
+$message = Message::factory(array(
 	'sender' => $sender_guid,
 	'recipients' => $recipient_guids,
 	'subject' => $subject,
 	'body' => $body,
 	'message_hash' => $message_hash,
-))->send();
+));
 
-$entity = ($guid) ? get_entity($guid) : false;
+$guid = $message->send();
 
-if (!$entity) {
+if (!$guid) {
 	register_error(elgg_echo('inbox:send:error:generic'));
 	forward(REFERRER);
 }
 
-$sender = $entity->getSender();
-$message_type = $entity->getMessageType();
-$message_hash = $entity->getHash();
+$new_message = get_entity($guid);
+
+$sender = $new_message->getSender();
+$message_type = $new_message->getMessageType();
+$message_hash = $new_message->getHash();
 
 $ruleset = hypeInbox()->config->getRuleset($message_type);
 
-$attachment_urls = array_map(array(hypeInbox()->model, 'getLinkTag'), $entity->getAttachments(['limit' => 0]));
-
-$body = array_filter(array(
-	($ruleset->hasSubject()) ? $entity->subject : '',
-	$entity->getBody(),
-	implode(', ', array_filter($attachment_urls))
-));
-
-$notification_body = implode(PHP_EOL, $body);
-
-$recipients = $entity->getRecipients();
+$recipients = $new_message->getRecipients();
 
 foreach ($recipients as $recipient) {
 	if ($recipient->guid == $sender->guid) {
@@ -78,24 +70,24 @@ foreach ($recipients as $recipient) {
 	$notification = elgg_echo('inbox:notification:body', array(
 		$type_label,
 		$sender->name,
-		$notification_body,
+		$body,
 		elgg_view('output/url', array(
-			'href' => $entity->getURL(),
+			'href' => $new_message->getURL(),
 		)),
 		$sender->name,
 		elgg_view('output/url', array(
 			'href' => elgg_normalize_url("messages/thread/$message_hash#reply")
 		)),
 	), $recipient->language);
-
+	
 	notify_user($recipient->guid, $sender->guid, $subject, $notification, array(
 		'attachments' => $attachments,
 		'template' => 'messages_send',
 		'action' => 'send',
-		'object' => $entity,
+		'object' => $new_message,
 		'recipients' => $recipients,
 	));
 }
 
 system_message(elgg_echo('inbox:send:success'));
-forward($entity->getURL());
+forward($new_message->getURL());

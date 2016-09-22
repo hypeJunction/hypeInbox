@@ -143,5 +143,7 @@ return array(
 	Please do not reply to this email.",
 
 	'inbox:empty' => 'Your inbox is empty',
-	
+
+	'inbox:settings:enable_html' => 'Enable HTML in messages',
+	'inbox:settings:enable_html:help' => 'HTML messages should only be enabled if your site supports outgoing HTML emails',
 );

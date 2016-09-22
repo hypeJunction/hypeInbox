@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Compose message form
  */
-$entity = elgg_extract('entity', $vars, false);
+$original_message = elgg_extract('entity', $vars, false);
 $message_type = elgg_extract('message_type', $vars);
 $recipient_guids = elgg_extract('recipient_guids', $vars, array());
 $subject = elgg_extract('subject', $vars, '');
@@ -11,36 +12,29 @@ $multiple = elgg_extract('multiple', $vars, false);
 $has_subject = elgg_extract('has_subject', $vars, true);
 $allows_attachments = elgg_extract('allows_attachments', $vars, false);
 
-$footer_controls = array();
-?>
+echo elgg_view_input('hidden', array(
+	'name' => 'message_type',
+	'value' => $message_type,
+));
+echo elgg_view_input('hidden', array(
+	'name' => 'original_guid',
+	'value' => $original_message->guid,
+));
 
-<?php
-if (!$entity) {
-	?>
-	<div class="inbox-form-row">
-		<label><?php
-			if ($multiple) {
-				echo elgg_echo('inbox:message:recipients');
-			} else {
-				echo elgg_echo('inbox:message:recipient');
-			}
-			?></label>
-		<?php
-		echo elgg_view('input/tokeninput', array(
-			'name' => 'recipients',
-			'value' => $recipient_guids,
-			'multiple' => $multiple,
-			'callback' => 'hypeJunction\\Inbox\\Search\\Recipients::search',
-			'query' => array(
-				'message_type' => $message_type,
-			)
-		));
-		?>
-	</div>
-	<?php
+if (!$original_message) {
+	echo elgg_view_input('tokeninput', array(
+		'name' => 'recipients',
+		'value' => $recipient_guids,
+		'multiple' => $multiple,
+		'callback' => 'hypeJunction\\Inbox\\Search\\Recipients::search',
+		'query' => array(
+			'message_type' => $message_type,
+		),
+		'label' => ($multiple) ? elgg_echo('inbox:message:recipients') : elgg_echo('inbox:message:recipient'),
+	));
 } else {
 	foreach ($recipient_guids as $guid) {
-		echo elgg_view('input/hidden', array(
+		echo elgg_view_input('hidden', array(
 			'name' => 'recipients[]',
 			'value' => $guid,
 		));
@@ -48,64 +42,40 @@ if (!$entity) {
 }
 
 if ($has_subject) {
-	if (!$entity) {
-		?>
-		<div class="inbox-form-row">
-			<label><?php echo elgg_echo('inbox:message:subject') ?></label>
-			<?php
-			echo elgg_view('input/text', array(
-				'name' => 'subject',
-				'value' => $subject
-			));
-			?>
-		</div>
-		<?php
-	} else {
-		echo elgg_view('input/hidden', array(
+	if (!$original_message) {
+		echo elgg_view_input('text', array(
 			'name' => 'subject',
-			'value' => $entity->getReplySubject(),
+			'value' => $subject,
+			'label' => elgg_echo('inbox:message:subject'),
+		));
+	} else {
+		echo elgg_view_input('hidden', array(
+			'name' => 'subject',
+			'value' => $original_message->getReplySubject(),
 		));
 	}
 }
-?>
-<div class="inbox-form-row">
-	<label><?php echo elgg_echo('inbox:message:body') ?></label>
-	<?php
-	echo elgg_view('input/plaintext', array(
-		'name' => 'body',
-		'value' => $message,
-		'rows' => 5,
-	));
-	?>
-</div>
-<?php
+
+$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
+$body_input = $enable_html ? 'longtext' : 'plaintext';
+echo elgg_view_input($body_input, array(
+	'name' => 'body',
+	'value' => $message,
+	'rows' => 5,
+	'label' => elgg_echo('inbox:message:body'),
+));
+
+echo elgg_view('forms/messages/send/extend', $vars);
+
 if ($allows_attachments) {
 	echo elgg_view_input('attachments', [
 		'name' => 'message_attachments',
 		'expand' => false,
+		'field_class' => 'clearfix',
 	]);
 }
 
-$footer_controls[] = elgg_view('input/submit', array(
-	'value' => elgg_echo('inbox:message:send')
+echo elgg_view_input('submit', array(
+	'value' => elgg_echo('inbox:message:send'),
+	'field_class' => 'elgg-foot',
 ));
-?>
-<div class="inbox-form-row elgg-foot text-right">
-	<?php
-	echo elgg_view('input/hidden', array(
-		'name' => 'message_type',
-		'value' => $message_type,
-	));
-	echo elgg_view('input/hidden', array(
-		'name' => 'guid',
-		'value' => $entity->guid,
-	));
-
-	foreach ($footer_controls as $footer_control) {
-		$controls .= elgg_format_element('li', array(), $footer_control);
-	}
-	echo elgg_format_element('ul', array(
-		'class' => 'inbox-footer-controls',
-	), $controls);
-	?>
-</div>
