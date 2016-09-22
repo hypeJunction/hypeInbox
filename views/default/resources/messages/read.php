@@ -10,7 +10,7 @@ $message = get_entity($guid);
 
 elgg_require_js('framework/inbox/user');
 
-$message_type = get_input('message_type', Message::TYPE_PRIVATE);
+$message_type = $message->msgType;
 $subject = $message->getDisplayName();
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
