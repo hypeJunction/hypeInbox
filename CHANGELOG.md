@@ -1,3 +1,48 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/hypeJunction/hypeInbox/compare/5.1.7...v6.0.0) (2016-09-22)
+
+
+### Bug Fixes
+
+* **forms:** input name for recipients now matches core messages ([b6e3fff](https://github.com/hypeJunction/hypeInbox/commit/b6e3fff))
+* **perms:** gatekeep resource pages ([aa57c6b](https://github.com/hypeJunction/hypeInbox/commit/aa57c6b))
+* **ui:** display inbox control above the list, add missing threaded input ([b3fa686](https://github.com/hypeJunction/hypeInbox/commit/b3fa686))
+
+### Features
+
+* **attachments:** outsource attachments to hypeAttachments ([d2822fa](https://github.com/hypeJunction/hypeInbox/commit/d2822fa))
+* **core:** update requirements ([3075568](https://github.com/hypeJunction/hypeInbox/commit/3075568))
+* **deps:** access collection management is now handled by acl_builder_api ([84d82e5](https://github.com/hypeJunction/hypeInbox/commit/84d82e5))
+* **deps:** no longer depends on hypeApps ([4f3eba5](https://github.com/hypeJunction/hypeInbox/commit/4f3eba5))
+* **forms:** update send message form and action ([cd3b8f7](https://github.com/hypeJunction/hypeInbox/commit/cd3b8f7))
+* **inbox:** improve inbox layout and queries ([5edee82](https://github.com/hypeJunction/hypeInbox/commit/5edee82))
+* **inbox:** retire notifications as a message type ([038c85a](https://github.com/hypeJunction/hypeInbox/commit/038c85a))
+* **listing:** simplify listings and menus ([ef1a52a](https://github.com/hypeJunction/hypeInbox/commit/ef1a52a))
+* **releases:** now requires Elgg 2.2 ([5057cd7](https://github.com/hypeJunction/hypeInbox/commit/5057cd7))
+* **search:** adds a inbox search functionality ([9d75d75](https://github.com/hypeJunction/hypeInbox/commit/9d75d75))
+* **threads:** improve threading UX ([f93bef1](https://github.com/hypeJunction/hypeInbox/commit/f93bef1))
+
+
+### BREAKING CHANGES
+
+* listing: Removes most of the custom styling
+Simplifies message menu
+* releases: Now requires Elgg 2.2
+* forms: Original message guid input name has been changed from guid to original_guid
+to match core messages plugin.
+Enables HTML support in messages
+* forms: If you were listening to recipients_guids input in your events,
+update the input name to recipients
+* attachments: Attachments are now handled by hypeAttachments
+* deps: The plugin no longer depends on hypeApps, subsequently any APIs
+or instance checks relating to hypeApps will fail.
+Action handling is now done in action files - there are no
+longer hypeApps dependant action classes.
+hypeInbox() was made private and will be phased out.
+* core: Now requires Elgg 2.1
+
+
+
 <a name="5.1.7"></a>
 ## [5.1.7](https://github.com/hypeJunction/hypeInbox/compare/5.1.6...v5.1.7) (2016-07-08)
 
