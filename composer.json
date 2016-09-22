@@ -19,7 +19,6 @@
 	},
 	"require": {
 		"composer/installers": "~1.0",
-		"hypejunction/hypeapps": "*",
 		"hypejunction/elgg_tokeninput": "*",
 		"hypejunction/hypelists": "*",
 		"hypejunction/acl_builder_api": "*"
