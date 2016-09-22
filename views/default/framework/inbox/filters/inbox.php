@@ -1,24 +1,16 @@
 <?php
 
-$message_type = elgg_extract('message_type', $vars, 'all');
+$message_type = elgg_extract('message_type', $vars, hypeJunction\Inbox\Message::TYPE_PRIVATE);
+$filter_context = elgg_extract('filter_context', $vars, $message_type);
 
 $user = elgg_get_page_owner_entity();
 
-$i = 100;
-
-$text = elgg_echo('inbox:all');
-$count = hypeInbox()->model->countUnreadMessages(null, $user);
-if ($count) {
-	$text .= ' <span class="inbox-unread-count">' . $count . '</span>';
-}
-
 $tabs = array(
-//	'all' => array(
-//		'text' => $text,
-//		'href' => "messages/inbox/$user->username?message_type=all",
-//		'priority' => $i++,
-//		'class' => 'inbox-load'
-//	)
+	'sent' => array(
+		'text' => elgg_echo('inbox:sent'),
+		'href' => "messages/sent/$user->username",
+		'priority' => 900,
+	),
 );
 
 $message_types = hypeInbox()->model->getIncomingMessageTypes($user);
@@ -33,18 +25,18 @@ if ($message_types) {
 		$tabs[$type] = array(
 			'text' => $text,
 			'href' => "messages/inbox/$user->username?message_type=$type",
-			'priority' => $i++,
-			'link_class' => 'inbox-load'
+			'priority' => 500,
 		);
 	}
 }
 
 foreach ($tabs as $name => $tab) {
-	if ($tab) {
-		$tab['name'] = $name;
-		$tab['selected'] = ($message_type == $name);
-		elgg_register_menu_item('filter', $tab);
-	}
+	$tab['name'] = $name;
+	$tab['selected'] = ($filter_context == $name);
+	elgg_register_menu_item('filter', $tab);
 }
 
-echo elgg_view_menu('filter', array('sort_by' => 'priority', 'class' => 'elgg-menu-hz'));
+echo elgg_view_menu('filter', [
+	'sort_by' => 'priority',
+	'class' => 'elgg-menu-hz',
+]);

@@ -11,7 +11,6 @@ $inbox->setOwner($user)
 		->setDirection(Inbox::DIRECTION_ALL)
 		->displayThreaded(false);
 
-
 $count = $inbox->getCount();
 $messages = $inbox->getMessages();
 $unread = Inbox::countUnread($user);

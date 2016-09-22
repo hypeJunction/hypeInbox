@@ -118,6 +118,8 @@ class Router {
 			case 'incoming' :
 			case 'outbox' :
 			case 'outgoing' :
+			case 'sent' :
+			case 'received' :
 				$username = array_shift($segments);
 				if ($username) {
 					$user = get_user_by_username($username);

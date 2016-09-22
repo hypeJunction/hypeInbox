@@ -9,9 +9,10 @@ use InvalidArgumentException;
 class Thread {
 
 	protected $message;
+	private $dbprefix;
 
 	const LIMIT = 10;
-	
+
 	/**
 	 * Construct a magic thread
 	 * @param Message $message Message entity
@@ -21,6 +22,7 @@ class Thread {
 			throw new InvalidArgumentException(get_class() . ' expects an instance of ' . get_class(new Message));
 		}
 		$this->message = $message;
+		$this->dbprefix = elgg_get_config('dbprefix');
 	}
 
 	/**
@@ -33,13 +35,27 @@ class Thread {
 		$options['types'] = Message::TYPE;
 		$options['subtypes'] = Message::SUBTYPE;
 		$options['owner_guids'] = $this->message->owner_guid;
-		$options['metadata_name_value_pairs'][] = array(
-			'name' => 'msgHash',
-			'value' => $this->message->getHash(),
-		);
+
 		if (!isset($options['order_by'])) {
 			$options['order_by'] = 'e.guid ASC';
 		}
+
+		$hash = $this->message->getHash();
+
+		$map = elgg_get_metastring_map([
+			'msgHash',
+			$hash,
+		]);
+
+		$options['joins']['md_msgHash'] = "
+			JOIN {$this->dbprefix}metadata md_msgHash
+			ON e.guid = md_msgHash.entity_guid
+		";
+		$options['wheres'][] = "
+			md_msgHash.name_id = {$map['msgHash']}
+			AND md_msgHash.value_id = {$map[$hash]}
+		";
+
 		return $options;
 	}
 
@@ -64,7 +80,8 @@ class Thread {
 	 * @return Message[]|false
 	 */
 	public function getMessages(array $options = array()) {
-		return elgg_get_entities_from_metadata($this->getFilterOptions($options));
+		$options = $this->getFilterOptions($options);
+		return elgg_get_entities_from_attributes($options);
 	}
 
 	/**
@@ -74,10 +91,34 @@ class Thread {
 	 * @return Message[]
 	 */
 	public function getUnreadMessages(array $options = array()) {
-		$options['metadata_name_value_pairs'][] = array(
-			'name' => 'readYet',
-			'value' => false,
-		);
+
+		$map = elgg_get_metastring_map([
+			'readYet',
+			0,
+			'fromId',
+			$this->message->owner_guid,
+		]);
+
+		// Check if message was read
+		$options['joins']['md_readYet'] = "
+			JOIN {$this->dbprefix}metadata md_readYet
+			ON e.guid = md_readYet.entity_guid
+		";
+		$options['wheres'][] = "
+			md_readYet.name_id = {$map['readYet']}
+			AND md_readYet.value_id = {$map[0]}
+		";
+
+		// Exclude messages sent by the viewer
+		$options['joins']['md_fromId'] = "
+			JOIN {$this->dbprefix}metadata md_fromId
+			ON e.guid = md_fromId.entity_guid
+		";
+		$options['wheres'][] = "
+			md_fromId.name_id = {$map['fromId']}
+			AND md_fromId.value_id != {$map[$this->message->owner_guid]}
+		";
+
 		return $this->getMessages($options);
 	}
 
@@ -159,7 +200,7 @@ class Thread {
 	 * @param array  $options Getter options
 	 * @return ElggBatch
 	 */
-	public function getAll($getter = 'elgg_get_entities_from_metadata', $options = array()) {
+	public function getAll($getter = 'elgg_get_entities_from_attributes', $options = array()) {
 		$options['limit'] = 0;
 		$options = $this->getFilterOptions($options);
 		return new ElggBatch($getter, $options);
@@ -174,7 +215,7 @@ class Thread {
 	public function getMessagesBefore(array $options = array()) {
 		$options['wheres'][] = "e.guid < {$this->message->guid}";
 		$options['order_by'] = 'e.guid DESC';
-		$messages = elgg_get_entities_from_metadata($this->getFilterOptions($options));
+		$messages = elgg_get_entities_from_attributes($this->getFilterOptions($options));
 		if (is_array($messages)) {
 			return array_reverse($messages);
 		}
@@ -189,7 +230,7 @@ class Thread {
 	 */
 	public function getMessagesAfter(array $options = array()) {
 		$options['wheres'][] = "e.guid > {$this->message->guid}";
-		return elgg_get_entities_from_metadata($this->getFilterOptions($options));
+		return elgg_get_entities_from_attributes($this->getFilterOptions($options));
 	}
 
 	/**
@@ -200,16 +241,27 @@ class Thread {
 	 */
 	public function getAttachmentsFilterOptions(array $options = array()) {
 
-		$dbprefix = elgg_get_config('dbprefix');
+		$hash = $this->message->getHash();
+		$map = elgg_get_metastring_map([
+			'msgHash',
+			$hash,
+		]);
 
-		$msn = elgg_get_metastring_id('msgHash');
-		$msv = elgg_get_metastring_id($this->message->getHash());
+		$options['joins']['md_msgHash'] = "
+			JOIN {$this->dbprefix}metadata md_msgHash
+				ON e.guid = md_msgHash.entity_guid
+			";
+		$options['wheres'][] = "
+			md_msgHash.name_id = {$map['msgHash']}
+				AND md_msgHash.value_id = {$map[$hash]}
+				";
 
-		$options['joins'][] = "JOIN {$dbprefix}entity_relationships er ON er.guid_two = e.guid";
-		$options['joins'][] = "JOIN {$dbprefix}metadata md ON er.guid_one = md.entity_guid";
-		$options['wheres'][] = "er.relationship = 'attached'";
-		$options['wheres'][] = "md.name_id = $msn AND md.value_id = $msv";
+		$options['joins']['er_attached'] = "
+			JOIN {$this->dbprefix}entity_relationships er_attached
+			ON er_attached.guid_two = e.guid
+			";
 
+		$options['joins'][] = "er_attached.relationship = 'attached'";
 		return $options;
 	}
 

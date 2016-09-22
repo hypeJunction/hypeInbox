@@ -123,10 +123,9 @@
 	}
 }
 
-.inbox-unread-count {
+.elgg-menu-topbar .inbox-unread-count {
 	color: white;
 	background-color: red;
-
 	position: absolute;
 	text-align: center;
 	top: 2px;
@@ -137,10 +136,19 @@
 	line-height: 16px;
 	font-size: 10px;
 	font-weight: bold;
-
 	@include border-radius(10px);
 }
 
+.elgg-menu-filter .inbox-unread-count {
+    padding: 2px 4px;
+    background: #999;
+    margin-left: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    vertical-align: middle;
+	@include border-radius(3px);
+}
 
 .inbox-messages .elgg-pagination {
 	display: none;

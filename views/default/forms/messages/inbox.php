@@ -21,7 +21,6 @@ $inbox->setOwner($user)
 		//->setDirection(Inbox::DIRECTION_RECEIVED)
 		->displayThreaded($threaded);
 
-
 $count = $inbox->getCount();
 $messages = $inbox->getMessages(array(
 	'limit' => $limit,
