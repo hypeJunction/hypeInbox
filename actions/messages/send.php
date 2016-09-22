@@ -40,6 +40,7 @@ $message = Message::factory(array(
 	'subject' => $subject,
 	'body' => $body,
 	'hash' => $message_hash,
+	'message_type' => $message_type,
 ));
 
 $guid = $message->send();

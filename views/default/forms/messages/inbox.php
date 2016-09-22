@@ -7,7 +7,7 @@ if (!$user instanceof ElggUser) {
 	return;
 }
 
-$limit = get_input('limit', 20);
+$limit = get_input('limit', elgg_get_config('default_limit'));
 $offset = get_input('offset', 0);
 
 $message_type = elgg_extract('message_type', $vars);

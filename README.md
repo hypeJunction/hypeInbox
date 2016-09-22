@@ -16,7 +16,9 @@ Enhanced messaging for Elgg
 
 ## Screenshots
 
-![alt text](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/compose.png "Compose")
+![Compose a message interface](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/compose.png "Compose")
+![Inbox view](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/inbox.png "Inbox")
+![Popup view](https://raw.github.com/hypeJunction/hypeInbox/master/screenshots/popup.png "Popup")
 
 ## Acknowledgements
 

@@ -57,6 +57,7 @@ class Router {
 			case 'compose' :
 			case 'add' :
 				$guid = array_shift($segments);
+				set_input('guid', $guid);
 				echo elgg_view_resource('messages/compose', [
 					'guid' => $guid,
 				]);

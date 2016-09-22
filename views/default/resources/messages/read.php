@@ -2,14 +2,11 @@
 
 use hypeJunction\Inbox\Message;
 
-elgg_gatekeeper();
+$guid = elgg_extract('guid', $vars);
 
-$guid = get_input('guid');
+elgg_entity_gatekeeper($guid);
+
 $message = get_entity($guid);
-
-if (!$message instanceof Message) {
-	return true;
-}
 
 elgg_require_js('framework/inbox/user');
 

@@ -7,8 +7,14 @@ $threaded = elgg_extract('threaded', $vars, !$full);
 
 $sender = $entity->getSender();
 
-if ($threaded) {
-	echo elgg_echo('inbox:byline:thread', [$sender->getDisplayName()]);
+if ($sender->guid == elgg_get_logged_in_user_guid()) {
+	$by = elgg_echo('inbox:me');
 } else {
-	echo elgg_echo('inbox:byline', [$sender->getDisplayName()]);
+	$by = $sender->getDisplayName();
+}
+
+if ($threaded) {
+	echo elgg_echo('inbox:byline:thread', [$by]);
+} else {
+	echo elgg_echo('inbox:byline', [$by]);
 }

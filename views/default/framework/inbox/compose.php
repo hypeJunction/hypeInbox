@@ -8,8 +8,7 @@ $message_type = elgg_extract('message_type', $vars, Message::TYPE_PRIVATE);
 $outtypes = hypeInbox()->model->getOutgoingMessageTypes($user);
 
 if (!in_array($message_type, $outtypes)) {
-	//echo elgg_echo('actionunauthorized');
-	return;
+	$message_type = Message::TYPE_PRIVATE;
 }
 
 $action = "messages/send/$message_type";
