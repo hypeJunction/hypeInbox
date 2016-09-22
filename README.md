@@ -13,6 +13,7 @@ Enhanced messaging for Elgg
 * Real-time updates
 * Message attachments (requires hypeAttachments)
 * Integration with hypeApprove and ArckInteractive's roles (extendable via hooks)
+* Message search
 
 ## Screenshots
 

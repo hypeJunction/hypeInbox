@@ -62,6 +62,11 @@ class Router {
 					'guid' => $guid,
 				]);
 				return true;
+
+			case 'search' :
+				echo elgg_view_resource('messages/search');
+				return true;
+
 		}
 
 		return false;
@@ -121,6 +126,7 @@ class Router {
 			case 'sent' :
 			case 'received' :
 			case 'compose' :
+			case 'search' :
 				$username = array_shift($segments);
 				if ($username) {
 					$user = get_user_by_username($username);

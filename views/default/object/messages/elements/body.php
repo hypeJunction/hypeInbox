@@ -19,7 +19,18 @@ if ($full) {
 		'class' => 'inbox-message-body',
 			));
 } else {
-	$body = elgg_get_excerpt($entity->description, 100);
+
+	if (elgg_is_active_plugin('search') && get_input('query')) {
+
+		if ($entity->getVolatileData('search_matched_description')) {
+			$body = $entity->getVolatileData('search_matched_description');
+		} else {
+			$body = search_get_highlighted_relevant_substrings($entity->description, get_input('query'), 5, 5000);
+		}
+	} else {
+		$body = elgg_get_excerpt($entity->description);
+	}
+	
 	echo elgg_format_element('div', array(
 		'class' => 'inbox-message-body-excerpt',
 			), $body);

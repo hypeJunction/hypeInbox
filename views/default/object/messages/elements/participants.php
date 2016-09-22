@@ -37,3 +37,5 @@ if ($count <= 5) {
 if ($count > 5) {
 	$participants[] = elgg_echo('inbox:recipients:others', array($count));
 }
+
+echo implode(', ', array_filter($participants));

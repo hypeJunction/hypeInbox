@@ -11,6 +11,11 @@ $tabs = array(
 		'href' => "messages/sent/$user->username",
 		'priority' => 900,
 	),
+	'search' => array(
+		'text' => elgg_echo('inbox:search'),
+		'href' => "messages/search/$user->username",
+		'priority' => 950,
+	),
 );
 
 $message_types = hypeInbox()->model->getIncomingMessageTypes($user);

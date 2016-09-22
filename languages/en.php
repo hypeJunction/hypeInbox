@@ -119,8 +119,11 @@ $translations = array(
 	'inbox:empty' => 'Your inbox is empty',
 	'inbox:settings:enable_html' => 'Enable HTML in messages',
 	'inbox:settings:enable_html:help' => 'HTML messages should only be enabled if your site supports outgoing HTML emails',
-	'inbox:byline' => 'By %s',
-	'inbox:byline:thread' => 'Last message by %s',
+	'inbox:byline' => 'From %s',
+	'inbox:to' => 'To %s',
+	'inbox:byline:thread' => 'Last message from %s',
+	'inbox:search' => 'Search',
+	
 );
 
 $message_types = hypeInbox()->config->getMessageTypes();
