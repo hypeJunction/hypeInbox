@@ -2,126 +2,58 @@
 
 namespace hypeJunction\Inbox;
 
+use Elgg\Di\DiContainer;
+use ElggPlugin;
+use hypeJunction\Inbox\Models\Model;
+
 /**
  * Inbox service provider
  *
- * @property-read \ElggPlugin                      $plugin
- * @property-read \hypeJunction\Inbox\Config       $config
- * @property-read \hypeJunction\Inbox\HookHandlers $hooks
- * @property-read \hypeJunction\Inbox\Router	   $router
- * @property-read \hypeJunction\Inbox\Models\Model $model
+ * @property-read ElggPlugin   $plugin
+ * @property-read Config       $config
+ * @property-read HookHandlers $hooks
+ * @property-read Router	   $router
+ * @property-read Model        $model
  */
-final class Plugin extends \hypeJunction\Plugin {
+final class Plugin extends DiContainer {
 
 	/**
-	 * {@inheritdoc}
+	 * Constructor
+	 *
+	 * @param ElggPlugin $plugin Plugin object
 	 */
-	static $instance;
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __construct(\ElggPlugin $plugin) {
+	public function __construct(ElggPlugin $plugin) {
 
 		$this->setValue('plugin', $plugin);
-		$this->setFactory('config', function (\hypeJunction\Inbox\Plugin $p) {
-			return new \hypeJunction\Inbox\Config($p->plugin);
+
+		$this->setFactory('config', function (Plugin $p) {
+			return new Config($p->plugin);
 		});
-		$this->setFactory('hooks', function (\hypeJunction\Inbox\Plugin $p) {
-			return new \hypeJunction\Inbox\HookHandlers($p->config, $p->router, $p->model);
-		});
-		$this->setFactory('router', function (\hypeJunction\Inbox\Plugin $p) {
-			return new \hypeJunction\Inbox\Router($p->config);
-		});
-		$this->setFactory('model', function (\hypeJunction\Inbox\Plugin $c) {
-			return new \hypeJunction\Inbox\Models\Model($c->config);
+
+		$this->setClassName('hooks', HookHandlers::class);
+		
+		$this->setClassName('router', Router::class);
+
+		$this->setFactory('model', function (Plugin $c) {
+			return new Model($c->config);
 		});
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @deprecated 6.0
 	 */
 	public static function factory() {
-		if (null === self::$instance) {
-			$plugin = elgg_get_plugin_from_id('hypeInbox');
-			self::$instance = new self($plugin);
-		}
-		return self::$instance;
+		return hypeInbox();
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @deprecated 6.0
 	 */
-	public function boot() {
-		elgg_register_event_handler('init', 'system', array($this, 'init'));
-	}
+	public function boot() {}
 
 	/**
-	 * System init callback
-	 * @return void
+	 * @deprecated 6.0
 	 */
-	public function init() {
-
-		hypeInbox()->config->registerLabels();
-
-		elgg_register_menu_item('page', array(
-			'name' => 'message_types',
-			'text' => elgg_echo('admin:inbox:message_types'),
-			'href' => 'admin/inbox/message_types',
-			'priority' => 500,
-			'contexts' => array('admin'),
-			'section' => 'configure'
-		));
-
-		elgg_unregister_page_handler('messages', 'messages_page_handler');
-		elgg_register_page_handler($this->config->pagehandler_id, array($this->router, 'handlePages'));
-
-		$action_path = $this->plugin->getPath() . '/actions/';
-		elgg_register_action("hypeInbox/settings/save", $action_path . 'settings/save.php', 'admin');
-		elgg_register_action('inbox/admin/import', $action_path . 'admin/import.php', 'admin');
-
-		elgg_register_action('messages/send', $action_path . 'messages/send.php');
-		elgg_register_action('messages/delete', $action_path . 'messages/delete.php');
-		elgg_register_action('messages/markread', $action_path . 'messages/markread.php');
-		elgg_register_action('messages/markunread', $action_path . 'messages/markunread.php');
-		elgg_register_action('messages/load', $action_path . 'messages/load.php');
-
-		// Third party integrations
-		elgg_register_plugin_hook_handler('config:user_types', 'framework:inbox', array($this->hooks, 'filterUserTypes'));
-
-		// Menu
-		elgg_register_plugin_hook_handler('register', 'menu:page', array($this->hooks, 'setupPageMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:inbox', array($this->hooks, 'setupInboxMenu'));
-		elgg_register_plugin_hook_handler('register', 'menu:entity', array($this->hooks, 'setupMessageMenu'));
-
-		// Replace user hover menu items
-		elgg_unregister_plugin_hook_handler('register', 'menu:user_hover', 'messages_user_hover_menu');
-		elgg_register_plugin_hook_handler('register', 'menu:user_hover', array($this->hooks, 'setupUserHoverMenu'));
-
-		// URLs
-		elgg_register_plugin_hook_handler('entity:url', 'object', array($this->hooks, 'handleMessageURL'));
-		elgg_register_plugin_hook_handler('entity:icon:url', 'object', array($this->hooks, 'handleMessageIconURL'));
-
-		// Export
-		elgg_register_plugin_hook_handler('aliases', 'graph', array($this->hooks, 'getGraphAlias'));
-		elgg_register_plugin_hook_handler('graph:properties', 'object:messages', array($this->hooks, 'getMessageProperties'));
-		// @todo Move graph controller when interface is implemented in hypeApps
-
-		// Top bar
-		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
-		elgg_register_plugin_hook_handler('register', 'menu:topbar', array($this->hooks, 'setupTopbarMenu'));
-		elgg_register_plugin_hook_handler('output', 'ajax', array($this->hooks, 'ajaxOutput'));
-
-		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
-		
-		// CSS
-		elgg_extend_view('elgg.css', 'framework/inbox.css');
-
-		// JS
-		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
-
-		// Notification Templates
-		elgg_register_plugin_hook_handler('get_templates', 'notifications', array($this->hooks, 'addCustomTemplate'));
-	}
+	public function init() {}
 
 }

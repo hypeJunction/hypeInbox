@@ -3,23 +3,9 @@
 namespace hypeJunction\Inbox;
 
 use ElggEntity;
-use hypeJunction\Inbox\Config;
 use hypeJunction\Inbox\Message;
 
-/**
- * Routing and page handling service
- */
 class Router {
-
-	protected $config;
-
-	/**
-	 * Constructor
-	 * @param Config $config
-	 */
-	public function __construct(Config $config) {
-		$this->config = $config;
-	}
 
 	/**
 	 * Messages page handler
@@ -32,61 +18,183 @@ class Router {
 	 * @param array $segments An array of URL segments
 	 * @return boolean Outputs a page or returns false on failure
 	 */
-	function handlePages($segments) {
+	public static function handleMessages($segments) {
 
-		gatekeeper();
+		$page = array_shift($segments);
 
-		$page_owner = $this->getPageOwner($segments);
-		if (!$page_owner || !$page_owner->canEdit()) {
-			forward('', '403');
-		}
-
-		elgg_set_page_owner_guid($page_owner->guid);
-
-		switch ($segments[0]) {
+		switch ($page) {
 
 			default :
 			case 'inbox' :
 			case 'incoming' :
-				$page = elgg_view('resources/messages/inbox');
-				break;
+				echo elgg_view_resource('messages/inbox');
+				return true;
 
 			case 'outbox' :
 			case 'outgoing' :
 			case 'sent' :
-				$page = elgg_view('resources/messages/sent');
-				break;
+				echo elgg_view_resource('messages/sent');
+				return true;
 
 			case 'read' :
 			case 'view' :
 			case 'reply' :
-				set_input('guid', $segments[1]);
-				$page = elgg_view('resources/messages/read');
-				break;
+				$guid = array_shift($segments);
+				set_input('guid', $guid);
+				echo elgg_view_resource('messages/read', [
+					'guid' => $guid,
+				]);
+				return true;
 
 			case 'thread' :
-				set_input('hash', $segments[1]);
-				$page = elgg_view('resources/messages/thread');
-				break;
+				$hash = array_shift($segments);
+				set_input('hash', $hash);
+				echo elgg_view_resource('messages/thread', [
+					'hash' => $hash,
+				]);
+				return true;
 
 			case 'compose' :
 			case 'add' :
-				set_input('guid', $segments[1]);
-				$page = elgg_view('resources/messages/compose');
-				break;
+				$guid = array_shift($segments);
+				set_input('guid', $guid);
+				echo elgg_view_resource('messages/compose', [
+					'guid' => $guid,
+				]);
+				return true;
 		}
 
-		if (!$page) {
-			return false;
+		return false;
+	}
+
+	/**
+	 * Helper handler to correctly resolve page owners
+	 *
+	 * @see default_page_owner_handler()
+	 *
+	 * @param string $hook   "page_owner"
+	 * @param string $type   "system"
+	 * @param int    $return Page owner guid
+	 * @param array  $params Hook params
+	 * @return int|void
+	 */
+	public static function resolvePageOwner($hook, $type, $return, $params) {
+
+		if ($return) {
+			return;
 		}
 
-		echo $page;
-		return true;
+		$segments = _elgg_services()->request->getUrlSegments();
+		$identifier = array_shift($segments);
+
+		if ($identifier !== 'messages') {
+			return;
+		}
+
+		$page = array_shift($segments);
+
+		switch ($page) {
+
+			case 'read' :
+			case 'view' :
+			case 'reply' :
+			case 'compose' :
+			case 'add' :
+				$guid = array_shift($segments);
+				if (!$guid) {
+					return;
+				}
+				$entity = get_entity($guid);
+				if (!$entity) {
+					return;
+				}
+				$container = $entity->getContainerEntity();
+				if (!$container) {
+					return;
+				}
+				return $container->guid;
+
+			case 'inbox' :
+			case 'incoming' :
+			case 'outbox' :
+			case 'outgoing' :
+				$username = array_shift($segments);
+				if ($username) {
+					$user = get_user_by_username($username);
+				} else {
+					$user = elgg_get_logged_in_user_entity();
+				}
+				if (!$user) {
+					return;
+				}
+				return $user->guid;
+		}
+	}
+
+	/**
+	 * Pretty URL for message objects
+	 *
+	 * @param string $hook   "entity:url"
+	 * @param string $type   "object"
+	 * @param string $return Icon URL
+	 * @param array  $params Hook params
+	 * @return string Filtered URL
+	 */
+	public static function messageUrlHandler($hook, $type, $return, $params) {
+
+		$entity = elgg_extract('entity', $params);
+
+		if (!$entity instanceof Message) {
+			return $return;
+		}
+
+		return elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
+	}
+
+	/**
+	 * Replace message icon with a sender icon
+	 *
+	 * @param string $hook   "entity:icon:url"
+	 * @param string $type   "object"
+	 * @param string $return Icon URL
+	 * @param array  $params Hook params
+	 * @return string Filtered URL
+	 */
+	public static function messageIconUrlHandler($hook, $type, $return, $params) {
+
+		$entity = elgg_extract('entity', $params);
+		$size = elgg_extract('size', $params);
+
+		if (!$entity instanceof Message) {
+			return $return;
+		}
+
+		$sender = $entity->getSender();
+		if ($sender) {
+			return $sender->getIconURL($size);
+		}
+	}
+
+	/**
+	 * Messages page handler
+	 *   /messages/inbox/<username>?message_type=<message_type>
+	 *   /messages/sent/<username>?message_type=<message_type>
+	 *   /messages/read/<guid>
+	 *   /messages/thread/<hash>
+	 *   /messages/compose?send_to=<guid>
+	 *
+	 * @param array $segments An array of URL segments
+	 * @return boolean Outputs a page or returns false on failure
+	 * @deprecated 6.0
+	 */
+	public function handlePages($segments) {
+		return Router::handleMessages($segments);
 	}
 
 	/**
 	 * Returns page handler ID
 	 * @return string
+	 * @deprecated 6.0
 	 */
 	public function getPageHandlerId() {
 		return hypeInbox()->config->get('pagehandler_id', 'messages');
@@ -97,6 +205,7 @@ class Router {
 	 * 
 	 * @param Message $entity Message
 	 * @return string
+	 * @deprecated 6.0
 	 */
 	public function getMessageURL(Message $entity) {
 		$friendly = elgg_get_friendly_title($entity->getDisplayName());
@@ -109,6 +218,7 @@ class Router {
 	 * @param mixed $url   URL as string or array of segments
 	 * @param array $query Query params to add to the URL
 	 * @return string
+	 * @deprecated 6.0
 	 */
 	public function normalize($url = '', $query = array()) {
 
@@ -131,6 +241,7 @@ class Router {
 	 *
 	 * @param array $segments URL segments
 	 * @return ElggEntity
+	 * @deprecated 6.0
 	 */
 	public function getPageOwner($segments = array()) {
 

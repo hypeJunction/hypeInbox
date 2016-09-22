@@ -10,3 +10,4 @@ robots.txt
 /mod/
 composer.lock
 Gemfile.lock
+coverage.clover

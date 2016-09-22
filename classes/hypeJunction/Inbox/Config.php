@@ -2,7 +2,7 @@
 
 namespace hypeJunction\Inbox;
 
-class Config extends \hypeJunction\Config {
+class Config {
 
 	private $messageTypes;
 	private $userTypes;
@@ -11,6 +11,64 @@ class Config extends \hypeJunction\Config {
 
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
+
+	private $plugin;
+	private $settings;
+
+	/**
+	 * Constructor
+	 * @param \ElggPlugin $plugin ElggPlugin
+	 */
+	public function __construct(\ElggPlugin $plugin) {
+		$this->plugin = $plugin;
+	}
+
+	/**
+	 * Returns config value
+	 *
+	 * @param string $name Config parameter name
+	 * @return mixed
+	 */
+	public function __get($name) {
+		return $this->get($name);
+	}
+
+	/**
+	 * Returns all plugin settings
+	 * @return array
+	 */
+	public function all() {
+		if (!isset($this->settings)) {
+			$this->settings = array_merge($this->getDefaults(), $this->plugin->getAllSettings());
+		}
+		return $this->settings;
+	}
+
+	/**
+	 * Returns a plugin setting
+	 *
+	 * @param string $name Setting name
+	 * @return mixed
+	 */
+	public function get($name, $default = null) {
+		return elgg_extract($name, $this->all(), $default);
+	}
+
+	/**
+	 * Returns plugin path
+	 * @return string
+	 */
+	public function getPath() {
+		return $this->plugin->getPath();
+	}
+
+	/**
+	 * Returns plugin ID
+	 * @return string
+	 */
+	public function getID() {
+		return $this->plugin->getID();
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -50,7 +108,7 @@ class Config extends \hypeJunction\Config {
 			));
 		}
 	}
-	
+
 	/**
 	 * Returns an array of predefined and admin defined message types
 	 * @return array
@@ -166,4 +224,45 @@ class Config extends \hypeJunction\Config {
 		return (is_string($value)) ? unserialize($value) : array();
 	}
 
+	/**
+	 * Add third party user types/roles to the config array
+	 *
+	 * @param string $hook   "config:user_types"
+	 * @param string $type   "framework:inbox"
+	 * @param array  $return User types config array
+	 * @param array  $params Hook params
+	 * @return array
+	 */
+	public static function filterUserTypes($hook, $type, $return, $params) {
+
+		if (elgg_is_active_plugin('hypeApprove')) {
+			$return['editor'] = array(
+				'validator' => array($this->model, 'hasRole'),
+				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+			);
+			$return['supervisor'] = array(
+				'validator' => array($this->model, 'hasRole'),
+				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+			);
+		}
+
+		if (elgg_is_active_plugin('hypeObserver')) {
+			$return['observer'] = array(
+				'validator' => array($this->model, 'hasRole'),
+				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+			);
+		}
+
+		if (elgg_is_active_plugin('roles')) {
+			$roles = roles_get_all_selectable_roles();
+			foreach ($roles as $role) {
+				$return[$role->name] = array(
+					'validator' => array($this->model, 'hasRole'),
+					'getter' => array($this->model, 'getRoleTestQuery'),
+				);
+			}
+		}
+
+		return $return;
+	}
 }
