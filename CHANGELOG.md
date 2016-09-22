@@ -1,3 +1,9 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/hypeJunction/hypeInbox/compare/6.0.0...v6.0.1) (2016-09-22)
+
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/hypeJunction/hypeInbox/compare/5.1.7...v6.0.0) (2016-09-22)
 
