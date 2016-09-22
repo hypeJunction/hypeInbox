@@ -1,17 +1,17 @@
 <?php
 
+use hypeJunction\Access\Collection;
+use hypeJunction\Access\EntitySet;
 use hypeJunction\Filestore\UploadHandler;
-use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Message;
-use hypeJunction\Inbox\AccessCollection;
 
 $guid = get_input('guid');
 $entity = get_entity($guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
-$recipient_guids = Group::create(get_input('recipient_guids', []))->guids();
+$recipient_guids = EntitySet::create(get_input('recipient_guids', []))->guids();
 
-$attachment_guids = Group::create(get_input('attachments', []))->guids();
+$attachment_guids = EntitySet::create(get_input('attachments', []))->guids();
 
 $subect = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
@@ -47,9 +47,9 @@ if (elgg_is_active_plugin('hypeApps')) {
 		}
 	}
 
-	$attachments = Group::create($attachment_guids)->entities();
+	$attachments = EntitySet::create($attachment_guids)->entities();
 
-	$access_id = AccessCollection::create(array($sender_guid, $recipient_guids))->getCollectionId();
+	$access_id = Collection::create(array($sender_guid, $recipient_guids))->getCollectionId();
 	foreach ($attachments as $attachment) {
 		$attachment->origin = 'messages';
 		$attachment->access_id = $access_id;
