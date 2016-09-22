@@ -91,7 +91,7 @@ class Router {
 			return;
 		}
 
-		$page = array_shift($segments);
+		$page = array_shift($segments) ? : 'inbox';
 
 		switch ($page) {
 
