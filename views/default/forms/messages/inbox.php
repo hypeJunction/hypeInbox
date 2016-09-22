@@ -30,7 +30,7 @@ $messages = $inbox->getMessages(array(
 
 if ($threaded && $messages) {
 	$latest_messages = array();
-// Fix for 'GROUP_BY' statememtn returning wrong order
+	// Fix for 'GROUP_BY' statememtn returning wrong order
 	foreach ($messages as $msg) {
 		$lastMsg = $msg->getVolatileData('select:lastMsg');
 		if ($lastMsg && $lastMsg != $msg->guid) {
@@ -51,9 +51,13 @@ $params = array(
 );
 
 elgg_push_context('inbox-form');
-echo elgg_view('framework/inbox/list', $params);
 echo elgg_view('framework/inbox/controls/inbox', $params);
+echo elgg_view('framework/inbox/list', $params);
+echo elgg_view('input/hidden', [
+	'name' => 'threaded',
+	'value' => $threaded,
+]);
 echo elgg_view('input/submit', array(
-	'class' => 'inbox-hidden',
+	'class' => 'hidden',
 ));
 elgg_pop_context();
