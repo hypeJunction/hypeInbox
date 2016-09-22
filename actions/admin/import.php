@@ -33,12 +33,7 @@ foreach ($messages as $msg) {
 	
 	$msg->msgHash = $msg->calcHash();
 
-	if ($msg->fromId == $site->guid) {
-		// if sent by site, qualify as a notification
-		$msg->msgType = Message::TYPE_NOTIFICATION;
-	} else {
-		$msg->msgType = Message::TYPE_PRIVATE;
-	}
+	$msg->msgType = Message::TYPE_PRIVATE;
 
 	elgg_log("Updated message $msg->guid (hash : $msg->msgHash; type : $msg->msgType");
 

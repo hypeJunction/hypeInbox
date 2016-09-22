@@ -14,7 +14,7 @@
 
 .inbox-message { z-index: 1; padding: 10px; position: relative; display: -webkit-flex; display: flex; -webkit-align-items: flex-start; align-items: flex-start; -webkit-justify-content: space-between; justify-content: space-between; }
 .inbox-message > * { -webkit-flex: 1 0 auto; flex: 1 0 auto; padding: 0 5px; }
-.inbox-message .inbox-message-checkbox { -webkit-flex: 0 0 20px; flex: 0 0 20px; -webkit-align-self: center; align-self: center; text-align: center; }
+.inbox-message .inbox-message-checkbox { -webkit-flex: 0 0 20px; flex: 0 0 20px; padding-top: 10px; }
 .inbox-message .inbox-message-icon { -webkit-flex: 0 0 40px; flex: 0 0 40px; text-align: center; }
 .inbox-message .inbox-message-content { -webkit-flex: 1 1 auto; flex: 1 1 auto; overflow: hidden; }
 .inbox-message .inbox-message-subject { margin-right: 10px; }
@@ -32,6 +32,8 @@
 .elgg-menu-inbox > li, .elgg-menu-inbox-thread > li { padding: 0 5px; }
 .elgg-menu-inbox > li.elgg-menu-item-toggle, .elgg-menu-inbox-thread > li.elgg-menu-item-toggle { line-height: 34px; }
 
-.inbox-unread-count { color: white; background-color: red; position: absolute; text-align: center; top: 2px; left: auto; right: -8px; min-width: 16px; height: 16px; line-height: 16px; font-size: 10px; font-weight: bold; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+.elgg-menu-topbar .inbox-unread-count { color: white; background-color: red; position: absolute; text-align: center; top: 2px; left: auto; right: -8px; min-width: 16px; height: 16px; line-height: 16px; font-size: 10px; font-weight: bold; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+
+.elgg-menu-filter .inbox-unread-count { padding: 2px 4px; background: #999; margin-left: 5px; color: #fff; font-weight: bold; font-size: 12px; vertical-align: middle; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 
 .inbox-messages .elgg-pagination { display: none; }

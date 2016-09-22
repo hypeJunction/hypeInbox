@@ -67,8 +67,7 @@
 	}
 	.inbox-message-checkbox {
 		@include flex(0 0 20px);
-		@include align-self(center);
-		text-align: center;
+		padding-top: 10px;
 	}
 
 	.inbox-message-icon {

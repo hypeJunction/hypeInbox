@@ -21,13 +21,6 @@ $message_types = array(
 			)
 		),
 	),
-	'__notification' => array(
-		'labels' => array(
-			'singular' => 'Site Message',
-			'plural' => 'Site Messages',
-		),
-		'persistent' => false,
-	),
 );
 
 if (is_null(elgg_get_plugin_setting('default_message_types', 'hypeInbox'))) {

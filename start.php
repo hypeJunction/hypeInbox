@@ -19,8 +19,6 @@ elgg_register_event_handler('init', 'system', function() {
 	elgg_extend_view('elgg.css', 'framework/inbox.css');
 	elgg_extend_view('elgg.js', 'framework/inbox/message.js');
 
-	hypeInbox()->config->registerLabels();
-
 	// URL and page handling
 	elgg_register_page_handler('messages', [Router::class, 'handleMessages']);
 	elgg_register_plugin_hook_handler('page_owner', 'system', [Router::class, 'resolvePageOwner']);
@@ -67,4 +65,13 @@ elgg_register_event_handler('init', 'system', function() {
 
 	// Notification Templates
 	elgg_register_plugin_hook_handler('get_templates', 'notifications', [Notifications::class, 'registerCustomTemplates']);
+});
+
+elgg_register_event_handler('upgrade', 'system', function() {
+	if (!elgg_is_admin_logged_in()) {
+		return;
+	}
+
+	require_once __DIR__ . '/lib/upgrades.php';
+	run_function_once('inbox_upgrade_20162209');
 });

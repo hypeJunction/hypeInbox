@@ -95,6 +95,7 @@ class Config {
 	/**
 	 * Registers label translations
 	 * @return void
+	 * @deprecated 6.0
 	 */
 	public function registerLabels() {
 		$message_types = $this->getMessageTypes();

@@ -386,7 +386,7 @@ class Menus {
 
 		$return[] = ElggMenuItem::factory(array(
 			'name' => 'inbox',
-			'href' => '#inbox-popup',
+			'href' => 'messages#inbox-popup',
 			'text' => $text . $counter,
 			'priority' => 600,
 			'tooltip' => elgg_echo('inbox:thread:unread', array($count)),

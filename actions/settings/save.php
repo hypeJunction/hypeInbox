@@ -70,3 +70,5 @@ foreach ($params as $k => $v) {
 if ($result) {
 	system_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
 }
+
+elgg_flush_caches();

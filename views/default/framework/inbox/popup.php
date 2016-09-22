@@ -15,7 +15,7 @@ $list = elgg_format_element('div', [
 		]);
 
 $footer = elgg_view('output/url', array(
-	'href' => hypeInbox()->router->normalize('incoming'),
+	'href' => elgg_normalize_url('messages/inbox'),
 	'text' => elgg_echo('inbox:inbox'),
 	'is_trusted' => true,
 		));
