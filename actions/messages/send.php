@@ -10,7 +10,7 @@ $entity = get_entity($guid);
 $sender_guid = elgg_get_logged_in_user_guid();
 $recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
 
-$subect = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
+$subject = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
 
 if (empty($recipient_guids)) {
@@ -34,31 +34,17 @@ if ($entity instanceof Message) {
 
 $access_id = Collection::create(array($sender_guid, $recipient_guids))->getCollectionId();
 
-$attachments = [];
-if (elgg_is_active_plugin('hypeAttachments')) {
-	$attachments = hypeapps_attach_uploaded_files($entity, 'attachments', [
-		'access_id' => $access_id,
-		'origin' => 'messages',
-	]);
-}
-
 $guid = Message::factory(array(
 	'sender' => $sender_guid,
 	'recipients' => $recipient_guids,
 	'subject' => $subject,
 	'body' => $body,
 	'message_hash' => $message_hash,
-	'attachments' => $attachments,
 ))->send();
 
 $entity = ($guid) ? get_entity($guid) : false;
 
 if (!$entity) {
-	// delete attachment if message failed to send
-	foreach ($attachments as $attachment) {
-		$attachment->delete();
-	}
-
 	register_error(elgg_echo('inbox:send:error:generic'));
 	forward(REFERRER);
 }
@@ -69,7 +55,7 @@ $message_hash = $entity->getHash();
 
 $ruleset = hypeInbox()->config->getRuleset($message_type);
 
-$attachment_urls = array_map(array(hypeInbox()->model, 'getLinkTag'), $attachments);
+$attachment_urls = array_map(array(hypeInbox()->model, 'getLinkTag'), $entity->getAttachments(['limit' => 0]));
 
 $body = array_filter(array(
 	($ruleset->hasSubject()) ? $entity->subject : '',

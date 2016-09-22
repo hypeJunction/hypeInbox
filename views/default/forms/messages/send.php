@@ -81,7 +81,7 @@ if ($has_subject) {
 <?php
 if ($allows_attachments) {
 	echo elgg_view_input('attachments', [
-		'name' => 'attachments',
+		'name' => 'message_attachments',
 		'expand' => false,
 	]);
 }
