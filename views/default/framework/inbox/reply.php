@@ -8,9 +8,22 @@ if (!$entity instanceof Message) {
 }
 
 elgg_push_context('inbox-reply');
-echo '<div class="inbox-thread-reply-form" id="reply">';
+
 $form_vars = hypeInbox()->model->prepareFormValues($entity->getParticipantGuids(), $entity->getMessageType(), $entity);
+
 $form = elgg_view('framework/inbox/compose', $form_vars);
-echo elgg_view_module('info', elgg_echo('inbox:reply'), $form);
-echo '</div>';
+
+$user = elgg_get_logged_in_user_entity();
+$icon = elgg_view_entity_icon($entity, $size, array(
+	'use_hover' => elgg_extract('full_view', $vars, false),
+));
+
+$content = elgg_format_element('div', ['class' => 'inbox-message-icon'], $icon);
+$content .= elgg_format_element('div', ['class' => 'inbox-message-content'], $form);
+
+echo elgg_format_element('div', [
+	'class' => 'inbox-thread-reply-form inbox-message',
+	'id' => 'reply',
+], $content);
+
 elgg_pop_context();

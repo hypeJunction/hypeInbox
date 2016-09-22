@@ -1,4 +1,4 @@
-require(['jquery'], function ($) {
+require(['jquery', 'elgg/ready'], function ($) {
 	$(document).on('click', '.inbox-message[data-href]', function (e) {
 		if (!$(e.target).parents().andSelf().is('a,input,.elgg-menu')) {
 			e.preventDefault();

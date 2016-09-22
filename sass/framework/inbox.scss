@@ -54,6 +54,7 @@
 }
 
 .inbox-message {
+	@include box-sizing(border-box);
 	z-index: 1;
 	padding: 10px;
 	position: relative;
@@ -86,10 +87,6 @@
 	}
 	&[data-href] {
 		cursor: pointer;
-	}
-	h3, p, a, .elgg-content, .elgg-output {
-		line-height: normal;
-		margin: 0;
 	}
 	&.inbox-message-unread {
 		background-color: $unread-bg-color;
@@ -151,4 +148,29 @@
 
 .inbox-messages .elgg-pagination {
 	display: none;
+}
+
+.inbox-message-block {
+    border: 1px solid $border-color;
+    @include border-radius($global-radius);
+	
+	.elgg-pagination-infinite {
+		margin: 0 auto;
+		padding: 10px;
+		border-bottom: 1px solid $light-border-color;
+		.elgg-before, .elgg-after {
+			border: none;
+			padding: 0;
+			&:after, &:before {
+				content: none;
+			}
+		}
+	}
+}
+
+.inbox-thread-participants {
+    padding: 10px;
+    border-bottom: 1px solid $border-color;
+	background-color: $lighter-bg-color;
+    @include border-radius($global-radius $global-radius 0 0);
 }

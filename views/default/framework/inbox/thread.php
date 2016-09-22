@@ -38,10 +38,11 @@ echo elgg_view('framework/inbox/list', array(
 	'pagination' => true,
 	'position' => 'both',
 	'pagination_type' => 'infinite',
-	'auto_refresh' => 3,
+	'auto_refresh' => 30,
 	'reversed' => true,
 	'data-key-text-before' => 'inbox:load:before',
 	'data-key-text-after' => 'inbox:load:after',
 ));
+
 elgg_pop_context();
 

@@ -12,7 +12,7 @@
 .elgg-menu-item-inbox > a { position: relative; }
 .elgg-menu-item-inbox > a .elgg-icon { font-size: 20px; }
 
-.inbox-message { z-index: 1; padding: 10px; position: relative; display: -webkit-flex; display: flex; -webkit-align-items: flex-start; align-items: flex-start; -webkit-justify-content: space-between; justify-content: space-between; }
+.inbox-message { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; z-index: 1; padding: 10px; position: relative; display: -webkit-flex; display: flex; -webkit-align-items: flex-start; align-items: flex-start; -webkit-justify-content: space-between; justify-content: space-between; }
 .inbox-message > * { -webkit-flex: 1 0 auto; flex: 1 0 auto; padding: 0 5px; }
 .inbox-message .inbox-message-checkbox { -webkit-flex: 0 0 20px; flex: 0 0 20px; padding-top: 10px; }
 .inbox-message .inbox-message-icon { -webkit-flex: 0 0 40px; flex: 0 0 40px; text-align: center; }
@@ -20,7 +20,6 @@
 .inbox-message .inbox-message-subject { margin-right: 10px; }
 .inbox-message .inbox-message-body, .inbox-message .inbox-message-body-excerpt { margin: 5px auto; }
 .inbox-message[data-href] { cursor: pointer; }
-.inbox-message h3, .inbox-message p, .inbox-message a, .inbox-message .elgg-content, .inbox-message .elgg-output { line-height: normal; margin: 0; }
 .inbox-message.inbox-message-unread { background-color: #ecf0f7; }
 .inbox-message.inbox-message-unread .elgg-menu-item-markunread { display: none; }
 .inbox-message.inbox-message-read { background-color: #ffffff; }
@@ -37,3 +36,10 @@
 .elgg-menu-filter .inbox-unread-count { padding: 2px 4px; background: #999; margin-left: 5px; color: #fff; font-weight: bold; font-size: 12px; vertical-align: middle; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 
 .inbox-messages .elgg-pagination { display: none; }
+
+.inbox-message-block { border: 1px solid #dddddd; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.inbox-message-block .elgg-pagination-infinite { margin: 0 auto; padding: 10px; border-bottom: 1px solid #dddddd; }
+.inbox-message-block .elgg-pagination-infinite .elgg-before, .inbox-message-block .elgg-pagination-infinite .elgg-after { border: none; padding: 0; }
+.inbox-message-block .elgg-pagination-infinite .elgg-before:after, .inbox-message-block .elgg-pagination-infinite .elgg-before:before, .inbox-message-block .elgg-pagination-infinite .elgg-after:after, .inbox-message-block .elgg-pagination-infinite .elgg-after:before { content: none; }
+
+.inbox-thread-participants { padding: 10px; border-bottom: 1px solid #dddddd; background-color: #fafafa; -moz-border-radius: 3px 3px 0 0; -webkit-border-radius: 3px; border-radius: 3px 3px 0 0; }

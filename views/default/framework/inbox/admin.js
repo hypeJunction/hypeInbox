@@ -1,4 +1,4 @@
-define(['jquery', 'elgg'], function ($, elgg) {
+define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 
 	var inbox = {
 		/**

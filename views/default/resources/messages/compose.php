@@ -2,14 +2,11 @@
 
 use hypeJunction\Inbox\Message;
 
+elgg_gatekeeper();
+
 elgg_require_js('framework/inbox/user');
 
 $guid = get_input('guid');
-$page_owner = elgg_get_page_owner_entity();
-if (!$page_owner || !$page_owner->canEdit()) {
-	forward('', '404');
-}
-
 $message = get_entity($guid);
 
 if ($message instanceof Message) {
@@ -20,7 +17,6 @@ if ($message instanceof Message) {
 	$recipients = get_input('send_to');
 	$message_type = get_input('message_type', Message::TYPE_PRIVATE);
 	$action = 'compose';
-
 }
 
 $params = hypeInbox()->model->prepareFormValues($recipients, $message_type, $entity);

@@ -57,7 +57,6 @@ class Router {
 			case 'compose' :
 			case 'add' :
 				$guid = array_shift($segments);
-				set_input('guid', $guid);
 				echo elgg_view_resource('messages/compose', [
 					'guid' => $guid,
 				]);
@@ -120,6 +119,7 @@ class Router {
 			case 'outgoing' :
 			case 'sent' :
 			case 'received' :
+			case 'compose' :
 				$username = array_shift($segments);
 				if ($username) {
 					$user = get_user_by_username($username);

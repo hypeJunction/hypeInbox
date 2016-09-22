@@ -16,7 +16,9 @@ $threaded = elgg_extract('threaded', $vars, !$full);
 
 $icon = elgg_view('object/messages/elements/sender', $vars);
 $title = elgg_view('object/messages/elements/subject', $vars);
-
+if (!$title) {
+	$title = elgg_view('object/messages/elements/participants', $vars);
+}
 $subtitle = [];
 $subtitle[] = elgg_view('object/messages/elements/byline', $vars);
 $subtitle[] = elgg_view('object/messages/elements/time', $vars);

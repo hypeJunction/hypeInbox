@@ -9,7 +9,7 @@ $original_message = get_entity($original_msg_guid);
 $sender_guid = elgg_get_logged_in_user_guid();
 $recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
 
-$subject = htmlspecialchars(get_input('subect', ''), ENT_QUOTES, 'UTF-8');
+$subject = htmlspecialchars(get_input('subject', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
 
 if (empty($recipient_guids)) {
@@ -39,7 +39,7 @@ $message = Message::factory(array(
 	'recipients' => $recipient_guids,
 	'subject' => $subject,
 	'body' => $body,
-	'message_hash' => $message_hash,
+	'hash' => $message_hash,
 ));
 
 $guid = $message->send();

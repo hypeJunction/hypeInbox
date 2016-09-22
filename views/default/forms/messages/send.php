@@ -49,20 +49,19 @@ if ($has_subject) {
 			'label' => elgg_echo('inbox:message:subject'),
 		));
 	} else {
+		$subject = $original_message->getReplySubject();
 		echo elgg_view_input('hidden', array(
 			'name' => 'subject',
-			'value' => $original_message->getReplySubject(),
+			'value' => $subject,
 		));
 	}
 }
 
-$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
-$body_input = $enable_html ? 'longtext' : 'plaintext';
-echo elgg_view_input($body_input, array(
+echo elgg_view_input('inbox/message', array(
 	'name' => 'body',
 	'value' => $message,
 	'rows' => 5,
-	'label' => elgg_echo('inbox:message:body'),
+	'label' => ($original_message) ? '' : elgg_echo('inbox:message:body'),
 ));
 
 echo elgg_view('forms/messages/send/extend', $vars);

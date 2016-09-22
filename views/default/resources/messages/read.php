@@ -2,6 +2,8 @@
 
 use hypeJunction\Inbox\Message;
 
+elgg_gatekeeper();
+
 $guid = get_input('guid');
 $message = get_entity($guid);
 
@@ -10,11 +12,6 @@ if (!$message instanceof Message) {
 }
 
 elgg_require_js('framework/inbox/user');
-
-$page_owner = elgg_get_page_owner_entity();
-if (!$page_owner || !$page_owner->canEdit()) {
-	forward('', '404');
-}
 
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 $subject = $message->getDisplayName();
@@ -46,6 +43,10 @@ if (elgg_is_xhr()) {
 	$content .= $thread;
 	$content .= elgg_view('framework/inbox/reply', $params);
 
+	$content = elgg_format_element('div', [
+		'class' => 'inbox-message-block',
+	], $content);
+	
 	$layout = elgg_view_layout('content', array(
 		'title' => $subject,
 		'filter' => false,

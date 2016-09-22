@@ -4,6 +4,7 @@ define(function (require) {
 	var $ = require('jquery');
 	var spinner = require('elgg/spinner');
 	require('jquery.form');
+	require('elgg/ready');
 
 	var inbox = {
 		/**
@@ -11,9 +12,6 @@ define(function (require) {
 		 * @returns {void}
 		 */
 		init: function () {
-			if (elgg.config.inboxUser) {
-				return;
-			}
 			$(document).on('click', '#inbox-form-toggle-all', inbox.toggleAll);
 			$(document).on('click', '[data-submit]', inbox.submitBulkForm);
 			$(document).on('click', '.elgg-menu-item-markread > a', inbox.markMessageAsRead);
@@ -24,7 +22,7 @@ define(function (require) {
 			$(document).on('change', '.inbox-message [type="checkbox"]', inbox.showControls);
 			$(document).on('click', '.elgg-menu-item-reply', inbox.focusReply);
 
-			elgg.config.inboxUser = true;
+			inbox.init = elgg.nullFunction;
 		},
 		toggleAll: function (e) {
 			var prop = $(this).prop('checked');
@@ -131,8 +129,7 @@ define(function (require) {
 		focusReply: function (e) {
 			var $form = $('.elgg-form-messages-send');
 			if ($form.length) {
-				$form.find('textarea').focus();
-				e.preventDefault();
+				$form.find('textarea').focus().trigger('focus');
 			}
 		}
 	};

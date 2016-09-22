@@ -154,8 +154,7 @@ class Message extends ElggObject {
 	 * @return string
 	 */
 	public function getReplySubject() {
-		$prefix = elgg_echo('inbox:reply:prefix');
-		return $prefix . ' ' . trim(str_replace(strtolower($prefix), '', strtolower($this->getSubject())));
+		return preg_replace('/^re\s*(.*)/i', 'Re: $1', trim($this->getSubject()));
 	}
 
 	/**
@@ -475,6 +474,7 @@ class Message extends ElggObject {
 			'hiddenTo' => false, // legacy flag
 			'msg' => true, // legacy flag
 		);
+		
 		foreach ($defaults as $key => $value) {
 			if (!isset($this->$key)) {
 				$this->$key = $value;
@@ -534,7 +534,7 @@ class Message extends ElggObject {
 	}
 
 	public static function getAttachmentsProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
-		$options = $message->getAttachmentsFilterOptions(array('limit' => \hypeJunction\Data\Graph::LIMIT_MAX));
+		$options = $message->getAttachmentsFilterOptions(array('limit' => 0));
 		return new \hypeJunction\Graph\BatchResult('elgg_get_entities_from_relationship', $options);
 	}
 }
