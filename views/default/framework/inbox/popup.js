@@ -29,7 +29,7 @@ define(function (require) {
 
 		options.my = 'left top';
 		options.at = 'left bottom';
-		options.collision = 'fit none';
+		options.collision = 'fit fit';
 		return options;
 	}
 
@@ -58,11 +58,6 @@ define(function (require) {
 				$('#inbox-messages').html(response.output.list);
 
 				updateUnreadCount(response.output.unread);
-
-				if (typeof elgg.ui.lightbox !== 'undefined') {
-					// Bind lightbox to the new links
-					elgg.ui.lightbox.bind(".elgg-lightbox");
-				}
 			}
 		});
 	}
@@ -76,10 +71,8 @@ define(function (require) {
 	function updateUnreadCount(unread) {
 		// Toggle the "Dismiss all" icon
 		if (unread > 0) {
-			$('#inbox-dismiss-all').removeClass('hidden');
 			$('#inbox-new').text(unread).removeClass('hidden');
 		} else {
-			$('#inbox-dismiss-all').addClass('hidden');
 			$('#inbox-new').text(unread).addClass('hidden');
 		}
 	}
