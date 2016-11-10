@@ -187,6 +187,7 @@ class Menus {
 					'name' => "inbox:$type",
 					'text' => elgg_echo("inbox:send", array(strtolower(elgg_echo("item:object:message:$type:singular")))),
 					'href' => elgg_http_add_url_query_elements("messages/compose", array('message_type' => $type, 'send_to' => $recipient->guid)),
+					'section' => 'action',
 				));
 			}
 		}
