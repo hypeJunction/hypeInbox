@@ -1,3 +1,15 @@
+<a name="6.0.5"></a>
+## [6.0.5](https://github.com/hypeJunction/hypeInbox/compare/6.0.4...v6.0.5) (2016-11-10)
+
+
+### Bug Fixes
+
+* **forms:** use correct user icon in the reply form ([5668217](https://github.com/hypeJunction/hypeInbox/commit/5668217))
+* **js:** remove redundant bindings ([d79bf13](https://github.com/hypeJunction/hypeInbox/commit/d79bf13))
+* **menus:** move user hover menu items to actions section ([52abb59](https://github.com/hypeJunction/hypeInbox/commit/52abb59))
+
+
+
 <a name="6.0.4"></a>
 ## [6.0.4](https://github.com/hypeJunction/hypeInbox/compare/6.0.3...v6.0.4) (2016-09-22)
 
