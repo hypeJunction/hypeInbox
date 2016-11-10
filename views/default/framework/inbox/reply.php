@@ -14,7 +14,8 @@ $form_vars = hypeInbox()->model->prepareFormValues($entity->getParticipantGuids(
 $form = elgg_view('framework/inbox/compose', $form_vars);
 
 $user = elgg_get_logged_in_user_entity();
-$icon = elgg_view_entity_icon($entity, $size, array(
+$size = elgg_extract('size', $vars, 'small');
+$icon = elgg_view_entity_icon($user, $size, array(
 	'use_hover' => elgg_extract('full_view', $vars, false),
 ));
 
