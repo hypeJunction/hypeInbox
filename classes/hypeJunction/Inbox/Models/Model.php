@@ -10,7 +10,6 @@ use hypeJunction\Inbox\Config;
 use hypeJunction\Inbox\Inbox;
 use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Userpicker;
-use hypeJunction\Integration;
 use hypeJunction\Lists\ElggList;
 use stdClass;
 
@@ -383,22 +382,9 @@ class Model {
 		$message_type = get_input('message_type', Message::TYPE_PRIVATE);
 		$options = $this->getUserQueryOptions($message_type);
 
-		if (Integration::isElggVersionAbove('2.1')) {
-			$options['query'] = $q;
-			$search_results = (array) elgg_trigger_plugin_hook('search', 'user', $options, []);
-			$results = elgg_extract('entities', $search_results, []);
-		} else {
-			$list = new ElggList($options);
-			$list->setSearchQuery(array('user' => $q));
-
-			$batch = $list->getItems();
-			/* @var \\ElggBatch $batch */
-
-			$results = array();
-			foreach ($batch as $b) {
-				$results[] = $b;
-			}
-		}
+		$options['query'] = $q;
+		$search_results = (array) elgg_trigger_plugin_hook('search', 'user', $options, []);
+		$results = elgg_extract('entities', $search_results, []);
 
 		return $results;
 	}
