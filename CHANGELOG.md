@@ -1,3 +1,13 @@
+<a name="6.0.6"></a>
+## [6.0.6](https://github.com/hypeJunction/hypeInbox/compare/6.0.5...v6.0.6) (2017-01-07)
+
+
+### Bug Fixes
+
+* **search:** remove redundant API call that fatals ([f737f0e](https://github.com/hypeJunction/hypeInbox/commit/f737f0e))
+
+
+
 <a name="6.0.5"></a>
 ## [6.0.5](https://github.com/hypeJunction/hypeInbox/compare/6.0.4...v6.0.5) (2016-11-10)
 
