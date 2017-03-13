@@ -44,6 +44,7 @@ $translations = array(
 	'inbox:compose' => 'Compose',
 	'inbox:new' => 'New %s',
 	'inbox:compose:message_type' => 'Compose a %s',
+	'inbox:compose:forward' => 'Forward a %s',
 	'inbox:reply' => 'Reply',
 	'inbox:reply:message_type' => 'Reply to a %s',
 	'inbox:reply:prefix' => 'Re:',

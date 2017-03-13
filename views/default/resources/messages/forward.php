@@ -41,7 +41,7 @@ if ($enable_html) {
 	$params['body'] .= implode(PHP_EOL, $lines);
 }
 
-$title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:message:$message_type:singular")));
+$title = elgg_echo("inbox:$action:forward", array(elgg_echo("item:object:message:$message_type:singular")));
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";
