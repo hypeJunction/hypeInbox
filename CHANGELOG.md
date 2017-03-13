@@ -1,3 +1,17 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/hypeJunction/hypeInbox/compare/6.0.5...v6.1.0) (2017-03-13)
+
+
+### Bug Fixes
+
+* **search:** remove redundant API call that fatals ([f737f0e](https://github.com/hypeJunction/hypeInbox/commit/f737f0e))
+
+### Features
+
+* **inbox:** adds an option to forward a message ([6076885](https://github.com/hypeJunction/hypeInbox/commit/6076885))
+
+
+
 <a name="6.0.6"></a>
 ## [6.0.6](https://github.com/hypeJunction/hypeInbox/compare/6.0.5...v6.0.6) (2017-01-07)
 
