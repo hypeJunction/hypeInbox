@@ -13,6 +13,7 @@ if ($message instanceof Message) {
 	$recipients = $message->getParticipantGuids();
 	$message_type = $message->getMessageType();
 	$action = 'reply';
+	$entity = $message;
 } else {
 	$recipients = get_input('send_to');
 	$message_type = get_input('message_type', Message::TYPE_PRIVATE);

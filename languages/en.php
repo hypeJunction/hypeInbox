@@ -70,6 +70,7 @@ $translations = array(
 	'inbox:load:before' => 'Load earlier messages',
 	'inbox:load:after' => 'Load newer messages',
 	'inbox:delete' => 'Delete',
+	'inbox:forward' => 'Forward',
 	'inbox:markread' => 'Mark as read',
 	'inbox:markunread' => 'Mark as unread',
 	'inbox:delete:success' => '%s messages were successfully deleted',
@@ -123,6 +124,8 @@ $translations = array(
 	'inbox:to' => 'To %s',
 	'inbox:byline:thread' => 'Last message from %s',
 	'inbox:search' => 'Search',
+
+	'messages:forward:byline' => 'Forwarded message from %s (originally sent on %s)',
 	
 );
 

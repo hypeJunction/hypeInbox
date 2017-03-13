@@ -46,6 +46,14 @@ class Router {
 				]);
 				return true;
 
+			case 'forward' :
+				$guid = array_shift($segments);
+				set_input('guid', $guid);
+				echo elgg_view_resource('messages/forward', [
+					'guid' => $guid,
+				]);
+				return true;
+
 			case 'thread' :
 				$hash = array_shift($segments);
 				set_input('hash', $hash);

@@ -220,6 +220,13 @@ class Menus {
 
 		$return = array();
 
+		$return[] = ElggMenuItem::factory(array(
+			'name' => 'forward',
+			'text' => elgg_view_icon('mail-forward'),
+			'title' => elgg_echo('inbox:forward'),
+			'href' => "messages/forward/$entity->guid/",
+		));
+		
 		if (!$entity->isPersistent()) {
 			$return[] = ElggMenuItem::factory(array(
 				'name' => 'delete',
