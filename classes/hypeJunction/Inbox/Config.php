@@ -238,19 +238,19 @@ class Config {
 
 		if (elgg_is_active_plugin('hypeApprove')) {
 			$return['editor'] = array(
-				'validator' => array($this->model, 'hasRole'),
-				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+				'validator' => array(hypeInbox()->model, 'hasRole'),
+				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
 			);
 			$return['supervisor'] = array(
-				'validator' => array($this->model, 'hasRole'),
-				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+				'validator' => array(hypeInbox()->model, 'hasRole'),
+				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
 			);
 		}
 
 		if (elgg_is_active_plugin('hypeObserver')) {
 			$return['observer'] = array(
-				'validator' => array($this->model, 'hasRole'),
-				'getter' => array($this->model, 'getDirectRelationshipTestQuery'),
+				'validator' => array(hypeInbox()->model, 'hasRole'),
+				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
 			);
 		}
 
@@ -258,8 +258,8 @@ class Config {
 			$roles = roles_get_all_selectable_roles();
 			foreach ($roles as $role) {
 				$return[$role->name] = array(
-					'validator' => array($this->model, 'hasRole'),
-					'getter' => array($this->model, 'getRoleTestQuery'),
+					'validator' => array(hypeInbox()->model, 'hasRole'),
+					'getter' => array(hypeInbox()->model, 'getRoleTestQuery'),
 				);
 			}
 		}
