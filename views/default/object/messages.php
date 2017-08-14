@@ -23,7 +23,11 @@ $subtitle = [];
 $subtitle[] = elgg_view('object/messages/elements/byline', $vars);
 $subtitle[] = elgg_view('object/messages/elements/time', $vars);
 
-$metadata = elgg_view('object/messages/elements/menu', $vars);
+if (elgg_is_active_plugin('hypeUI')) {
+	$metadata = null;
+} else {
+	$metadata = elgg_view('object/messages/elements/menu', $vars);
+}
 $content .= elgg_view('object/messages/elements/body', $vars);
 $content .= elgg_view('object/messages/elements/attachments', $vars);
 $content .= elgg_view('object/messages/elements/embeds', $vars);
@@ -34,6 +38,7 @@ $summary = elgg_view('object/elements/summary', array(
 	'subtitle' => implode(' ', $subtitle),
 	'metadata' => $metadata,
 	'content' => $content,
+	'icon' => $icon,
 ));
 
 $checkbox = '';
@@ -46,7 +51,7 @@ if (elgg_in_context('inbox-form')) {
 $icon = elgg_format_element('div', ['class' => 'inbox-message-icon'], $icon);
 $summary = elgg_format_element('div', ['class' => 'inbox-message-content'], $summary);
 
-$body = $checkbox . $icon . $summary . $menu;
+$body = $checkbox . $summary;
 
 $attrs = elgg_format_attributes(array(
 	'data-href' => ($full) ? false : $entity->getURL(),

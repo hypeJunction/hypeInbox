@@ -1,5 +1,5 @@
 /* Style the popup module */
-#inbox-popup { padding: 0; background: white; width: 345px; max-width: 100%; position: absolute; }
+#inbox-popup { padding: 0; background: white; width: 400px; max-width: 100%; position: absolute; }
 #inbox-popup .elgg-no-results, #inbox-popup .elgg-ajax-loader { margin: 0; padding: 8px; }
 #inbox-popup .elgg-list-inbox { max-height: 300px; overflow-y: auto; margin: 0; }
 #inbox-popup .elgg-foot { border-top: 1px solid #dddddd; }

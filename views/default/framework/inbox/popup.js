@@ -18,7 +18,7 @@ define(function (require) {
             }
             if (unread > 0) {
                 $('#inbox-new').text(unread_str).removeClass('hidden');
-                $('#inbox-popup-link .elgg-badge').text(unred_str);
+                $('#inbox-popup-link .elgg-badge').text(unread_str);
             } else {
                 $('#inbox-new').text(unread_str).addClass('hidden');
                 $('#inbox-popup-link .elgg-badge').text('');
@@ -31,11 +31,7 @@ define(function (require) {
         $('#inbox-messages').html($loader);
 
         var ajax = new Ajax(false);
-        ajax.path('messages/load', {
-            data: {
-                view: 'json'
-            }
-        }).done(function (output) {
+        ajax.action('messages/load').done(function (output) {
             $('#inbox-messages').html(output.list);
             popup.setNewBadge(output.unread);
         });

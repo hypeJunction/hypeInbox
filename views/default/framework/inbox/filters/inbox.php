@@ -38,10 +38,11 @@ if ($message_types) {
 foreach ($tabs as $name => $tab) {
 	$tab['name'] = $name;
 	$tab['selected'] = ($filter_context == $name);
-	elgg_register_menu_item('filter', $tab);
+	$tabs[$name] = $tab;
 }
 
 echo elgg_view_menu('filter', [
+	'items' => $tabs,
 	'sort_by' => 'priority',
 	'class' => 'elgg-menu-hz',
 ]);

@@ -3,7 +3,7 @@
 		<?php
 		$params = $vars;
 		$params['sort_by'] = 'priority';
-		$params['class'] = 'inbox-menu';
+		$params['class'] = 'inbox-menu elgg-menu-hz';
 		echo elgg_view_menu('inbox', $params);
 		?>
 	</div>

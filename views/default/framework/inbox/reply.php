@@ -17,6 +17,8 @@ $user = elgg_get_logged_in_user_entity();
 $size = elgg_extract('size', $vars, 'small');
 $icon = elgg_view_entity_icon($user, $size, array(
 	'use_hover' => elgg_extract('full_view', $vars, false),
+	'use_link' => false,
+	'href' => false,
 ));
 
 $content = elgg_format_element('div', ['class' => 'inbox-message-icon'], $icon);

@@ -8,11 +8,13 @@ if (!$entity instanceof Message) {
 }
 
 echo '<div class="inbox-thread-participants">';
-echo '<label>' . elgg_echo('inbox:thread:participants') . '</label>';
-echo elgg_view('page/components/gallery', array(
-	'items' => $entity->getParticipants(),
+echo '<h5 class="title is-5">' . elgg_echo('inbox:thread:participants') . '</h5>';
+echo elgg_view_entity_list($entity->getParticipants(), [
+	'list_type' => 'gallery',
+	'full_view' => false,
 	'gallery_class' => 'elgg-gallery-users',
 	'size' => 'small',
 	'limit' => 0,
-));
+	'pagination' => false,
+]);
 echo '</div>';
