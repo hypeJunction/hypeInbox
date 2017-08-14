@@ -1,3 +1,25 @@
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/hypeJunction/hypeInbox/compare/6.1.0...v7.0.0) (2017-08-14)
+
+
+### Bug Fixes
+
+* **api:** fix instance when calling static function ([2977904](https://github.com/hypeJunction/hypeInbox/commit/2977904))
+
+### Features
+
+* **js:** rewrite popup js ([20dc4b7](https://github.com/hypeJunction/hypeInbox/commit/20dc4b7))
+* **menus:** integration with hypeUI ([a3af424](https://github.com/hypeJunction/hypeInbox/commit/a3af424))
+* **releases:** upgrade for Elgg 2.3 ([370bf5f](https://github.com/hypeJunction/hypeInbox/commit/370bf5f))
+* **ui:** integrate with hypeUI ([bc3dd7f](https://github.com/hypeJunction/hypeInbox/commit/bc3dd7f))
+
+
+### BREAKING CHANGES
+
+* releases: Now requires Elgg 2.3
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/hypeJunction/hypeInbox/compare/6.0.5...v6.1.0) (2017-03-13)
 
