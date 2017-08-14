@@ -386,21 +386,51 @@ class Menus {
 			$count = '99+';
 		}
 
-		$text = elgg_view_icon('envelope');
-		$counter = elgg_format_element('span', [
-			'id' => 'inbox-new',
-			'class' => $count ? 'inbox-unread-count' : 'inbox-unread-count hidden',
-		], $count);
+		if (elgg_is_active_plugin('hypeUI')) {
 
-		$return[] = ElggMenuItem::factory(array(
-			'name' => 'inbox',
-			'href' => 'messages#inbox-popup',
-			'text' => $text . $counter,
-			'priority' => 600,
-			'tooltip' => elgg_echo('inbox:thread:unread', array($count)),
-			'rel' => 'popup',
-			'id' => 'inbox-popup-link'
-		));
+			$return[] = ElggMenuItem::factory([
+				'name' => 'inbox',
+				'href' => 'messages#inbox-popup',
+				'text' => elgg_echo('inbox'),
+				'badge' => $count ? : '',
+				'priority' => 600,
+				'tooltip' => elgg_echo('notifications:thread:unread', [$count]),
+				'link_class' => 'has-hidden-label',
+				'tooltip' => elgg_echo('inbox:thread:unread', [$count]),
+				'icon' => 'envelope-o',
+				'rel' => 'popup',
+				'id' => 'inbox-popup-link',
+				'data-position' => json_encode([
+					'my' => 'center top',
+					'of' => 'center bottom',
+					'of' => '.elgg-menu-topbar > .elgg-menu-item-notifications',
+					'collission' => 'fit fit',
+				]),
+			]);
+
+		} else {
+			$text = elgg_view_icon('envelope');
+			$counter = elgg_format_element('span', [
+				'id' => 'inbox-new',
+				'class' => $count ? 'inbox-unread-count' : 'inbox-unread-count hidden',
+			], $count);
+
+			$return[] = ElggMenuItem::factory([
+				'name' => 'inbox',
+				'href' => 'messages#inbox-popup',
+				'text' => $text . $counter,
+				'priority' => 600,
+				'tooltip' => elgg_echo('inbox:thread:unread', [$count]),
+				'rel' => 'popup',
+				'id' => 'inbox-popup-link',
+				'data-position' => json_encode([
+					'my' => 'center top',
+					'of' => 'center bottom',
+					'of' => '.elgg-menu-topbar > .elgg-menu-item-notifications',
+					'collission' => 'fit fit',
+				]),
+			]);
+		}
 
 		return $return;
 	}
