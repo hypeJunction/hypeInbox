@@ -93,7 +93,7 @@ class Menus {
 			'href' => 'admin/inbox/message_types',
 			'priority' => 500,
 			'contexts' => array('admin'),
-			'section' => 'configure'
+			'section' => 'administer'
 		]);
 
 		return $return;
