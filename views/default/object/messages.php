@@ -42,7 +42,7 @@ $summary = elgg_view('object/elements/summary', array(
 ));
 
 $checkbox = '';
-if (elgg_in_context('inbox-form')) {
+if (elgg_in_context('inbox-form') || elgg_in_context('sent-form')) {
 	$checkbox = elgg_format_element('div', [
 		'class' => 'inbox-message-checkbox',
 	], elgg_view('object/messages/elements/checkbox', $vars));
@@ -61,7 +61,7 @@ $attrs = elgg_format_attributes(array(
 		'inbox-message',
 		($entity->isRead($threaded)) ? 'inbox-message-read' : 'inbox-message-unread',
 		($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
-		(elgg_in_context('inbox-form')) ? 'inbox-message-form-row' : '',
+		(elgg_in_context('inbox-form') || elgg_in_context('sent-form')) ? 'inbox-message-form-row' : '',
 	))),
 ));
 
