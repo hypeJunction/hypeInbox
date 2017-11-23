@@ -36,7 +36,6 @@ if (elgg_is_xhr()) {
 	echo $thread;
 } else {
 	$content = elgg_view('framework/inbox/participants', $params);
-	$content .= elgg_view('framework/inbox/controls/thread', $params);
 	$content .= $thread;
 	$content .= elgg_view('framework/inbox/reply', $params);
 
