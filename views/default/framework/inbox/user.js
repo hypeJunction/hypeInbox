@@ -30,7 +30,7 @@ define(function (require) {
 			inbox.showControls();
 		},
 		showControls: function () {
-			if ($('.elgg-form-messages-inbox [type="checkbox"][name="guids[]"]:checked').length) {
+			if ($('.elgg-form-messages-inbox [type="checkbox"][name="guids[]"]:checked').length || $('.elgg-form-messages-sent [type="checkbox"][name="guids[]"]:checked').length) {
 				$('.elgg-menu-inbox').find('.inbox-action').show();
 			} else {
 				$('.elgg-menu-inbox').find('.inbox-action').hide();

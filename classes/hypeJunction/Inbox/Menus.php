@@ -267,25 +267,28 @@ class Menus {
 				'priority' => 50,
 				'link_class' => 'elgg-button elgg-button-action',
 			));
-
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'markread',
-				'text' => elgg_echo('inbox:markread'),
-				'href' => 'action/messages/markread',
-				'data-submit' => true,
-				'priority' => 100,
-				'link_class' => 'elgg-button elgg-button-action',
-				'item_class' => 'inbox-action hidden',
-			));
-			$return[] = ElggMenuItem::factory(array(
-				'name' => 'markunread',
-				'text' => elgg_echo('inbox:markunread'),
-				'href' => 'action/messages/markunread',
-				'link_class' => 'elgg-button elgg-button-action',
-				'data-submit' => true,
-				'priority' => 200,
-				'item_class' => 'inbox-action hidden',
-			));
+			
+			if (!elgg_in_context('sent-form')) {
+				$return[] = ElggMenuItem::factory(array(
+					'name' => 'markread',
+					'text' => elgg_echo('inbox:markread'),
+					'href' => 'action/messages/markread',
+					'data-submit' => true,
+					'priority' => 100,
+					'link_class' => 'elgg-button elgg-button-action',
+					'item_class' => 'inbox-action hidden',
+				));
+				$return[] = ElggMenuItem::factory(array(
+					'name' => 'markunread',
+					'text' => elgg_echo('inbox:markunread'),
+					'href' => 'action/messages/markunread',
+					'link_class' => 'elgg-button elgg-button-action',
+					'data-submit' => true,
+					'priority' => 200,
+					'item_class' => 'inbox-action hidden',
+				));
+			}
+			
 			$return[] = ElggMenuItem::factory(array(
 				'name' => 'delete',
 				'text' => elgg_echo('inbox:delete'),
