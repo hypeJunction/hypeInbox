@@ -97,7 +97,7 @@ foreach ($group_relationships as $r) {
 	$user_group_relationships_options[$r] = $r;
 }
 
-$policy = elgg_extract('policy', $vars, array(''));
+$policy = elgg_extract('policy', $vars, []);
 
 echo '<label>' . elgg_echo('item:object:message:setting:policy') . '</label>';
 echo '<div class="elgg-text-help">' . elgg_echo('item:object:message:setting:policy:help') . '</div>';
