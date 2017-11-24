@@ -6,7 +6,7 @@ $guids = get_input('guids', []);
 $threaded = get_input('threaded');
 
 if (!is_array($guids) || empty($guids)) {
-	register_error(elgg_echo('inbox:markread:error'));
+	register_error(elgg_echo('inbox:markunread:error'));
 	forward(REFERRER);
 }
 
