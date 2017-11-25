@@ -20,10 +20,10 @@ elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username")
 elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
 elgg_push_breadcrumb(elgg_get_excerpt($subject, 50));
 
-$params = array(
+$params = [
 	'entity' => $message,
 	'message_type' => $message_type,
-);
+];
 
 $menu_items = hypeInbox()->hooks->setupInboxThreadMenu(null, null, array(), array('entity' => $message));
 foreach ($menu_items as $item) {
@@ -43,12 +43,11 @@ if (elgg_is_xhr()) {
 		'class' => 'inbox-message-block',
 	], $content);
 	
-	$layout = elgg_view_layout('content', array(
+	$layout = elgg_view_layout('content', [
 		'title' => $subject,
 		'filter' => false,
 		'content' => $content,
-		'sidebar' => elgg_view('framework/inbox/sidebar', $params),
 		'class' => 'inbox-layout inbox-thread-layout',
-	));
+	]);
 	echo elgg_view_page($title, $layout);
 }
