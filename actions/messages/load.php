@@ -29,21 +29,20 @@ $messages = $latest_messages;
 $unread = Inbox::countUnread($user);
 
 elgg_push_context('widgets');
-$list = elgg_view_entity_list($messages, array(
+$list = elgg_view_entity_list($messages, [
 	'list_class' => 'elgg-list-inbox',
 	'no_results' => elgg_echo('inbox:empty'),
 	'full_view' => false,
 	'size' => 'tiny',
-	'threaded' => false,
 	'pagination' => false,
 	'threaded' => true,
-));
+]);
 
 elgg_pop_context();
 
-echo json_encode(array(
+echo json_encode([
 	'list' => $list,
 	'unread' => $unread,
 	'count' => $count,
-));
+]);
 
