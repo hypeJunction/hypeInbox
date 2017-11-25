@@ -18,12 +18,11 @@ $content = elgg_view('framework/inbox/search', $params);
 if (elgg_is_xhr()) {
 	echo $content;
 } else {
-	$layout = elgg_view_layout('content', array(
+	$layout = elgg_view_layout('content', [
 		'title' => elgg_echo('inbox:search'),
 		'filter' => elgg_view('framework/inbox/filters/inbox', $params),
 		'content' => $content,
-		'sidebar' => elgg_view('framework/inbox/sidebar', $params),
 		'class' => 'inbox-layout'
-	));
+	]);
 	echo elgg_view_page($title, $layout);
 }
