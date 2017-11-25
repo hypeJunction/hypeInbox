@@ -31,12 +31,11 @@ elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username")
 elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
 elgg_push_breadcrumb($title);
 
-$layout = elgg_view_layout('content', array(
+$layout = elgg_view_layout('content', [
 	'title' => $title,
 	'filter' => false,
 	'content' => elgg_view('framework/inbox/compose', $params),
-	'sidebar' => elgg_view('framework/inbox/sidebar', $params),
 	'class' => 'inbox-layout inbox-form-layout'
-		));
+]);
 
 echo elgg_view_page($title, $layout);
