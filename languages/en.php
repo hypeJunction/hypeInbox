@@ -32,7 +32,6 @@ $translations = array(
 	'item:object:message:label:plural' => 'Label (plural)',
 	'inbox:send' => 'Send %s',
 	'inbox:sender' => 'Sender',
-	'inbox:relationship' => 'Relationship to recipient',
 	'inbox:recipient' => 'Recipient',
 	'inbox:inverse_relationship' => 'Inverse relationship',
 	'inbox:relationship' => 'Relationship to recipient',
