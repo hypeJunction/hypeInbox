@@ -1,0 +1,15 @@
+<a href="{{actor.getURL}}">{{actor.name}}</a> отправил сообщение
+
+<div class="container">
+	{{& object.description}}
+</div>
+
+{{#params.has_multiple_recipients}}
+<span>У этого сообщения несколько получателей.</span>
+{{/params.has_multiple_recipients}}
+
+<div itemprop="potentialAction" itemscope itemtype="http://schema.org/ViewAction">
+	<a href="{{object.getURL}}" class="elgg-button" itemprop="target">Ответить</a>
+    <meta itemprop="name" content="Ответить"/>
+</div>
+<meta itemprop="description" content="Ответить на {{site.name}}"/>
